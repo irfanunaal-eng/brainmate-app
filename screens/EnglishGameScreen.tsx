@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Animated, Dimensions, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
@@ -21,6 +21,8 @@ export function EnglishGameScreen({ route }: any) {
   const [timerAnimated] = useState(new Animated.Value(100)); // 100% width
   const [isGameOver, setIsGameOver] = useState(false);
 
+  const [gameHistory, setGameHistory] = useState<{en: string, tr: string, correct: boolean}[]>([]);
+
   const currentWord = WORD_DB[currentWordIndex % WORD_DB.length]; // loop for demo
 
   // Timer simulation
@@ -30,18 +32,19 @@ export function EnglishGameScreen({ route }: any) {
     timerAnimated.setValue(100);
     Animated.timing(timerAnimated, {
       toValue: 0,
-      duration: 10000, // 10 seconds per word
+      duration: 10000,
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
-        handleWrongAnswer();
+        handleWrongAnswer(currentWord);
       }
     });
 
     return () => timerAnimated.stopAnimation();
   }, [currentWordIndex, isGameOver]);
 
-  const handleWrongAnswer = () => {
+  const handleWrongAnswer = (wordObj: any) => {
+    setGameHistory(prev => [...prev, { en: wordObj.en, tr: wordObj.tr, correct: false }]);
     if (lives > 1) {
       setLives(prev => prev - 1);
       setCurrentWordIndex(prev => prev + 1);
@@ -55,26 +58,45 @@ export function EnglishGameScreen({ route }: any) {
     timerAnimated.stopAnimation();
     if (selectedOption === currentWord.tr) {
       // Correct
+      setGameHistory(prev => [...prev, { en: currentWord.en, tr: currentWord.tr, correct: true }]);
       setScore(prev => prev + 10);
       setCurrentWordIndex(prev => prev + 1);
     } else {
       // Wrong
-      handleWrongAnswer();
+      handleWrongAnswer(currentWord);
     }
   };
 
   if (isGameOver) {
     return (
-      <SafeAreaView className="flex-1 bg-surface justify-center items-center p-6">
-        <Text className="text-8xl mb-8">💀</Text>
-        <Text className="text-4xl font-black text-gray-800 mb-2">Oyun Bitti!</Text>
-        <Text className="text-xl text-gray-500 font-bold mb-10">Skorun: {score} XP</Text>
+      <SafeAreaView className="flex-1 bg-surface justify-center p-6">
+        <View className="items-center mb-6">
+          <Text className="text-6xl mb-4">💀</Text>
+          <Text className="text-3xl font-black text-gray-800 mb-1">Oyun Bitti!</Text>
+          <Text className="text-lg text-indigo-600 font-bold">Kazanılan: {score} XP</Text>
+        </View>
+
+        <Text className="font-extrabold text-gray-800 mb-3 text-lg">Cevap Özeti</Text>
+        <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6">
+           <ScrollView showsVerticalScrollIndicator={false}>
+             {gameHistory.map((item, idx) => (
+                <View key={idx} className="flex-row items-center border-b border-gray-50 py-3">
+                   <Text className="text-xl mr-3">{item.correct ? '✅' : '❌'}</Text>
+                   <View>
+                     <Text className={`font-bold text-base ${item.correct ? 'text-gray-800' : 'text-red-500'}`}>{item.en}</Text>
+                     <Text className="text-xs text-gray-400">Doğrusu: {item.tr}</Text>
+                   </View>
+                </View>
+             ))}
+           </ScrollView>
+        </View>
         
         <TouchableOpacity 
           onPress={() => {
             setScore(0);
             setLives(3);
             setCurrentWordIndex(0);
+            setGameHistory([]);
             setIsGameOver(false);
           }}
           className="bg-indigo-600 w-full py-4 rounded-xl items-center shadow-lg shadow-indigo-600/30 mb-4"
