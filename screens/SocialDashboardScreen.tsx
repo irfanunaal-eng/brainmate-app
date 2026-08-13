@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, Modal } from 'react-native';
+
+const RELATION_TYPES = [
+  { id: 'rakip', label: '⚔️ Ebedi Rakip' },
+  { id: 'kanka', label: '🤝 Yakın Arkadaş' },
+  { id: 'guven', label: '🛡️ Sonsuz Güven' },
+  { id: 'yeni', label: '👋 Yeni Tanıştık' },
+  { id: 'ehiste', label: '🤷‍♂️ Eh İşte' }
+];
 
 export function SocialDashboardScreen({ navigation }: any) {
   const [friends, setFriends] = useState([
-    { id: '1', name: 'Ahmet Y.', score: 1250 },
-    { id: '2', name: 'Ayşe K.', score: 980 },
-    { id: '3', name: 'Sen (Ben)', score: 850 },
-    { id: '4', name: 'Mehmet D.', score: 420 },
+    { id: '1', name: 'Ahmet Y.', score: 1250, relation: 'rakip' },
+    { id: '2', name: 'Ayşe K.', score: 980, relation: 'kanka' },
+    { id: '3', name: 'Sen (Ben)', score: 850, relation: null },
+    { id: '4', name: 'Mehmet D.', score: 420, relation: 'yeni' },
   ]);
   const [friendCode, setFriendCode] = useState('');
+  const [selectedFriend, setSelectedFriend] = useState<any>(null);
 
   const handleAddFriend = () => {
     if (friendCode.length < 6) {
@@ -29,29 +38,48 @@ export function SocialDashboardScreen({ navigation }: any) {
           text: 'Evet, Çıkar', 
           style: 'destructive', 
           onPress: () => {
-            setFriends(prev => prev.filter(f => f.id !== id));
+             setFriends(prev => prev.filter(f => f.id !== id));
+             setSelectedFriend(null);
           } 
         }
       ]
     );
   };
 
-  const renderFriendItem = ({ item, index }: any) => (
-    <View className={`flex-row justify-between items-center p-4 mb-2 rounded-xl border ${item.name.includes('Sen') ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-50'}`}>
-      <View className="flex-row items-center flex-1">
-        <Text className={`text-lg font-bold w-8 ${item.name.includes('Sen') ? 'text-indigo-500' : 'text-gray-400'}`}>{index + 1}.</Text>
-        <Text className={`text-base font-extrabold flex-1 ${item.name.includes('Sen') ? 'text-indigo-800' : 'text-gray-700'}`} numberOfLines={1}>{item.name}</Text>
-      </View>
-      <View className="flex-row items-center">
-        <Text className={`font-black text-lg mr-3 ${item.name.includes('Sen') ? 'text-indigo-600' : 'text-amber-500'}`}>{item.score} XP</Text>
-        {!item.name.includes('Sen') && (
-          <TouchableOpacity onPress={() => handleRemoveFriend(item.id, item.name)} className="w-8 h-8 items-center justify-center bg-red-50 rounded-lg border border-red-100 opacity-60 active:opacity-100">
-             <Text className="text-sm">🗑️</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
-  );
+  const handleChangeRelation = (friendId: string, relId: string) => {
+    setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: relId } : f));
+    setSelectedFriend(null);
+  };
+
+  const renderFriendItem = ({ item, index }: any) => {
+    const relObj = RELATION_TYPES.find(r => r.id === item.relation);
+    const isMe = item.name.includes('Sen');
+
+    return (
+      <TouchableOpacity 
+        activeOpacity={isMe ? 1 : 0.7}
+        onPress={() => !isMe && setSelectedFriend(item)}
+        className={`flex-row justify-between items-center p-4 mb-3 rounded-2xl border ${isMe ? 'bg-indigo-50 border-indigo-200 shadow-none' : 'bg-white border-gray-100 shadow-sm shadow-gray-100'}`}
+      >
+        <View className="flex-row items-center flex-1">
+          <Text className={`text-xl font-bold w-10 ${isMe ? 'text-indigo-500' : 'text-gray-400'}`}>{index + 1}.</Text>
+          <View className="flex-1">
+            <Text className={`text-base font-extrabold mb-1 ${isMe ? 'text-indigo-800' : 'text-gray-800'}`} numberOfLines={1}>{item.name}</Text>
+            {!isMe && relObj && (
+              <View className="bg-gray-50 self-start px-2 py-1 rounded-md border border-gray-100 mt-0.5">
+                <Text className="text-[10px] text-gray-500 font-bold">{relObj.label}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+        
+        <View className="items-end justify-center ml-2">
+          <Text className={`font-black text-lg ${isMe ? 'text-indigo-600' : 'text-amber-500'}`}>{item.score}</Text>
+          <Text className="text-gray-400 font-bold text-[10px]">XP Puanı</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
@@ -102,6 +130,50 @@ export function SocialDashboardScreen({ navigation }: any) {
           <Text className="text-white font-bold text-lg">🎮 Oyun Lobisine Gir</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Friend Detail / Relation Modal */}
+      <Modal visible={!!selectedFriend} animationType="slide" transparent={true}>
+        <View className="flex-1 bg-black/60 justify-end">
+           <View className="bg-white rounded-t-3xl p-6 min-h-[50%]">
+             <View className="flex-row justify-between items-center mb-6">
+                <View>
+                   <Text className="text-2xl font-extrabold text-gray-800">{selectedFriend?.name}</Text>
+                   <Text className="text-sm font-bold text-gray-400">Yakınlık Derecesi ve Taktik Seç</Text>
+                </View>
+                <TouchableOpacity onPress={() => setSelectedFriend(null)} className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center">
+                   <Text className="text-lg">❌</Text>
+                </TouchableOpacity>
+             </View>
+
+             <View className="mb-6">
+               {RELATION_TYPES.map(rel => (
+                 <TouchableOpacity 
+                   key={rel.id} 
+                   onPress={() => handleChangeRelation(selectedFriend?.id, rel.id)}
+                   className={`flex-row items-center p-4 mb-2 rounded-2xl border ${selectedFriend?.relation === rel.id ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}
+                 >
+                    <Text className={`flex-1 font-bold ${selectedFriend?.relation === rel.id ? 'text-indigo-700' : 'text-gray-600'}`}>{rel.label}</Text>
+                    {selectedFriend?.relation === rel.id && <Text>✅</Text>}
+                 </TouchableOpacity>
+               ))}
+             </View>
+
+             <View className="border-t border-gray-100 pt-6">
+                <Text className="text-xs text-center text-gray-400 mb-4 font-bold px-4">
+                  Oyunlarda rakip veya kanka olmak algoritmada eşleşme durumunuzu çok etkiler, rekabeti kızıştırır!
+                </Text>
+
+                <TouchableOpacity 
+                  onPress={() => handleRemoveFriend(selectedFriend?.id, selectedFriend?.name)}
+                  className="bg-red-50 border border-red-100 w-full py-4 rounded-xl flex-row justify-center items-center"
+                >
+                   <Text className="mr-2">🗑️</Text>
+                   <Text className="text-red-500 font-extrabold text-base">Arkadaşlıktan Çıkar</Text>
+                </TouchableOpacity>
+             </View>
+           </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
