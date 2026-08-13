@@ -241,12 +241,16 @@ export function ParentDashboardScreen({ navigation }: any) {
             <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-indigo-50 border-2 border-indigo-100 w-[56px] h-[56px] rounded-2xl mr-4">
               <Text className="text-4xl">🏠</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🗓️</Text>
+            </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Sınav notu girme ekranı eklenecek.')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
               <Text className="text-4xl">📝</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Devamsızlık girme ekranı eklenecek.')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
               <Text className="text-4xl">📅</Text>
             </TouchableOpacity>
             
@@ -256,10 +260,6 @@ export function ParentDashboardScreen({ navigation }: any) {
             
             <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenci hakkında özel not alma ekranı eklenecek.')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">
               <Text className="text-4xl">✍️</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">🗓️</Text>
             </TouchableOpacity>
             
             <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin eğitim ve kronometre performansını görebileceksin.')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">

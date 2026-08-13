@@ -17,7 +17,9 @@ export function RoleSelectionScreen({ navigation }: any) {
       if (data && data.role) {
         if (data.role === 'student') navigation.replace('StudentDashboard');
         else if (data.role === 'teacher') navigation.replace('TeacherDashboard');
-        // Parent, Class Teacher, Private Tutor, and Student Coach all share the ParentDashboard tracking system
+        else if (data.role === 'class_teacher') navigation.replace('ClassTeacherDashboard');
+        else if (data.role === 'private_tutor') navigation.replace('PrivateTutorDashboard');
+        else if (data.role === 'student_coach') navigation.replace('StudentCoachDashboard');
         else navigation.replace('ParentDashboard');
         return;
       }

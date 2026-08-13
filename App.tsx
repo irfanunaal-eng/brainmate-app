@@ -13,6 +13,12 @@ import { TeacherDashboardScreen } from './screens/TeacherDashboardScreen';
 import { SocialDashboardScreen } from './screens/SocialDashboardScreen';
 import { EducationDashboardScreen } from './screens/EducationDashboardScreen';
 import { AcademicDashboardScreen } from './screens/AcademicDashboardScreen';
+import { ClassTeacherDashboardScreen } from './screens/ClassTeacherDashboardScreen';
+import { PrivateTutorDashboardScreen } from './screens/PrivateTutorDashboardScreen';
+import { StudentCoachDashboardScreen } from './screens/StudentCoachDashboardScreen';
+import { GradesScreen } from './screens/GradesScreen';
+import { AttendanceScreen } from './screens/AttendanceScreen';
+import { NotesScreen } from './screens/NotesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +35,13 @@ export default function App() {
         <Stack.Screen name="SocialDashboard" component={SocialDashboardScreen} />
         <Stack.Screen name="EducationDashboard" component={EducationDashboardScreen} />
         <Stack.Screen name="AcademicDashboard" component={AcademicDashboardScreen} />
+        <Stack.Screen name="ClassTeacherDashboard" component={ClassTeacherDashboardScreen} />
+        <Stack.Screen name="PrivateTutorDashboard" component={PrivateTutorDashboardScreen} />
+        <Stack.Screen name="StudentCoachDashboard" component={StudentCoachDashboardScreen} />
         <Stack.Screen name="ScheduleScreen" component={ScheduleScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="GradesScreen" component={GradesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AttendanceScreen" component={AttendanceScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NotesScreen" component={NotesScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -11,7 +11,10 @@ export function LoginScreen({ route, navigation }: any) {
   const navigateToDashboard = () => {
     if (role === 'student') navigation.replace('StudentDashboard');
     else if (role === 'teacher') navigation.replace('TeacherDashboard');
-    else navigation.replace('ParentDashboard'); // parent, class_teacher, private_tutor, student_coach all go here
+    else if (role === 'class_teacher') navigation.replace('ClassTeacherDashboard');
+    else if (role === 'private_tutor') navigation.replace('PrivateTutorDashboard');
+    else if (role === 'student_coach') navigation.replace('StudentCoachDashboard');
+    else navigation.replace('ParentDashboard');
   };
 
   const handleLogin = async () => {

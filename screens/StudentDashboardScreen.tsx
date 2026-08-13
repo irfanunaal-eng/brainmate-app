@@ -272,6 +272,18 @@ export function StudentDashboardScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
             <Text className="text-3xl">🗓️</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
+            <Text className="text-3xl">📝</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
+            <Text className="text-3xl">🚦</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('NotesScreen')} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mr-4">
+            <Text className="text-3xl">📅</Text>
+          </TouchableOpacity>
           
           <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">
             <Text className="text-3xl">📚</Text>
@@ -283,10 +295,6 @@ export function StudentDashboardScreen({ navigation }: any) {
 
           <TouchableOpacity onPress={() => navigation.navigate('AcademicDashboard')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mr-4">
             <Text className="text-3xl">📊</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Devamsızlık detayların burada görünecek.')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">📅</Text>
           </TouchableOpacity>
           
           <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">

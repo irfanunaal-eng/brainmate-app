@@ -135,12 +135,8 @@ export function TeacherDashboardScreen({ navigation }: any) {
               <Text className="text-4xl">🏠</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Sınav notu girme ekranı eklenecek.')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📝</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Devamsızlık girme ekranı eklenecek.')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📅</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🗓️</Text>
             </TouchableOpacity>
             
             <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Görev atama ekranı eklenecek.')} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mr-4">
@@ -149,10 +145,6 @@ export function TeacherDashboardScreen({ navigation }: any) {
             
             <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenci hakkında özel not alma ekranı eklenecek.')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">
               <Text className="text-4xl">✍️</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">🗓️</Text>
             </TouchableOpacity>
             
             <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin eğitim ve kronometre performansını görebileceksin.')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">
