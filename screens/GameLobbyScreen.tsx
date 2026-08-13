@@ -3,11 +3,11 @@ import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Animated } from
 import { useNavigation } from '@react-navigation/native';
 
 const LEVELS = [
-  { id: '200', title: 'İlk 200 Kelime', desc: 'Başlangıç Seviyesi (1 - 200)', unlocked: true, stars: 3, stages: 10, words: 20 },
-  { id: '500', title: 'İlk 500 Kelime', desc: 'Temel Seviye (201 - 500)', unlocked: true, stars: 1, stages: 12, words: 25 },
-  { id: '1000', title: 'İlk 1000 Kelime', desc: 'Orta Seviye (501 - 1000)', unlocked: true, stars: 0, stages: 10, words: 50 },
-  { id: '2000', title: 'İlk 2000 Kelime', desc: 'İleri Seviye (1001 - 2000)', unlocked: false, stars: 0, stages: 20, words: 50 },
-  { id: '3000', title: 'İlk 3000 Kelime', desc: 'Akıcı (2001 - 3000)', unlocked: false, stars: 0, stages: 20, words: 50 },
+  { id: 'A1', title: 'A1 Şampiyonu', desc: 'Bu bölümde ilk 200 kelimeyi öğreneceksiniz.', unlocked: true, stars: 3, stages: 10, words: 20 },
+  { id: 'A2', title: 'A2 Kaptanı', desc: 'Bu bölümde 300 yeni kelime (201-500) öğreneceksiniz.', unlocked: true, stars: 1, stages: 12, words: 25 },
+  { id: 'B1', title: 'B1 Uzmanı', desc: 'Bu bölümde 500 yeni kelime (501-1000) öğreneceksiniz.', unlocked: true, stars: 0, stages: 10, words: 50 },
+  { id: 'B2', title: 'B2 Lideri', desc: 'Bu bölümde 1000 yeni kelime (1001-2000) öğreneceksiniz.', unlocked: false, stars: 0, stages: 20, words: 50 },
+  { id: 'C1', title: 'C1 Efsanesi', desc: 'Bu bölümde son 1000 kelimeyi (2001-3000) öğreneceksiniz.', unlocked: false, stars: 0, stages: 20, words: 50 },
 ];
 
 export function GameLobbyScreen() {
