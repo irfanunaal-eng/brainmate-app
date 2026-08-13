@@ -128,8 +128,13 @@ export function ParentDashboardScreen({ navigation }: any) {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigation.replace('RoleSelection');
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.log('Logout error:', error);
+    } finally {
+      navigation.replace('RoleSelection');
+    }
   };
 
   return (
@@ -170,22 +175,17 @@ export function ParentDashboardScreen({ navigation }: any) {
             className="py-3 items-center mt-auto mb-4"
             onPress={handleLogout}
           >
-            <Text className="text-gray-400 font-bold">Çıkış Yap</Text>
+            <Text className="text-gray-500 font-bold text-base">🏠 Ana Ekran</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       ) : (
+        <View className="flex-1">
         <ScrollView className="flex-1 p-6" style={{ flex: 1, padding: 24 }} showsVerticalScrollIndicator={false}>
           <View className="flex-row justify-between items-center mb-6 mt-2" style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, marginTop: 8 }}>
             <View>
               <Text className="text-3xl font-extrabold text-text">{panelTitle}</Text>
               <Text className="text-gray-500 font-medium">Bağlı Öğrenci: {studentName}</Text>
             </View>
-            <TouchableOpacity 
-              className="bg-gray-100 p-3 rounded-xl"
-              onPress={handleLogout}
-            >
-              <Text className="text-gray-600 font-bold">Çıkış</Text>
-            </TouchableOpacity>
           </View>
 
           {/* Hızlı Özet */}
@@ -200,14 +200,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
           </View>
 
-          {/* Görev Ata Butonu */}
-          <TouchableOpacity 
-            onPress={() => setIsTaskModalVisible(true)}
-            className="bg-emerald-500 w-full py-5 rounded-2xl items-center shadow-sm mb-8 flex-row justify-center"
-            style={{ paddingVertical: 20, marginBottom: 32, flexDirection: 'row', justifyContent: 'center' }}
-          >
-            <Text className="text-white font-extrabold text-lg mr-2">🎯 Yeni Görev Ata (Planlama)</Text>
-          </TouchableOpacity>
+
 
           {/* Kilitli İçerik / Premium Çağrısı */}
           <View className="bg-amber-50 p-6 rounded-3xl mb-8 border-2 border-amber-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
@@ -235,9 +228,54 @@ export function ParentDashboardScreen({ navigation }: any) {
             <Text className="font-bold text-gray-700 text-base">Fizik 1. Sınav</Text>
             <Text className="text-amber-500 font-extrabold text-xl">60</Text>
           </View>
-          <View style={{ height: 40 }} />
+          <View style={{ height: 80 }} />
           
         </ScrollView>
+        
+        {/* Scrollable Bottom Navigation Bar */}
+        <View 
+          className="bg-white border-t border-gray-100 pt-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
+          style={{ paddingBottom: Platform.OS === 'ios' ? 24 : 16 }}
+        >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
+            <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-indigo-50 border-2 border-indigo-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🏠</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Sınav notu girme ekranı eklenecek.')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📝</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Devamsızlık girme ekranı eklenecek.')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📅</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => setIsTaskModalVisible(true)} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🎯</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenci hakkında özel not alma ekranı eklenecek.')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">✍️</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🗓️</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin eğitim ve kronometre performansını görebileceksin.')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📚</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin detaylı raporları eklenecek.')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📊</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenciye mesaj gönder.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl">
+              <Text className="text-4xl">💬</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+        </View>
       )}
 
       {/* Görev Atama Modalı */}

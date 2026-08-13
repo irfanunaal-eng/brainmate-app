@@ -18,23 +18,48 @@ const regions = [
 ];
 
 const sql = `
-CREATE TABLE IF NOT EXISTS public.tasks (
+CREATE TABLE IF NOT EXISTS public.schedules (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
   creator_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  day_of_week INTEGER NOT NULL, -- 1: Pazartesi, 7: Pazar
+  start_time TIME NOT NULL,
+  end_time TIME NOT NULL,
   title TEXT NOT NULL,
-  description TEXT,
-  planned_minutes INTEGER DEFAULT 60,
-  completed_minutes INTEGER DEFAULT 0,
-  status TEXT DEFAULT 'bekliyor',
-  due_date TIMESTAMPTZ,
+  schedule_type TEXT, -- 'okul', 'dersane', 'ozel_ders'
+  materials_needed TEXT, -- Örn: "Eşofman, Pergel Takımı"
+  is_reminder_active BOOLEAN DEFAULT false,
+  reminder_minutes INTEGER DEFAULT 15,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
-ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Olusturan gorevleri gorebilir" ON public.tasks FOR SELECT USING (auth.uid() = creator_id);
-CREATE POLICY "Ogrenci kendine atanan gorevleri gorebilir" ON public.tasks FOR SELECT USING (auth.uid() = student_id);
-CREATE POLICY "Veli veya ogretmen gorev ekleyebilir" ON public.tasks FOR INSERT WITH CHECK (auth.uid() = creator_id);
-CREATE POLICY "Ogrenci gorevini guncelleyebilir" ON public.tasks FOR UPDATE USING (auth.uid() = student_id) WITH CHECK (auth.uid() = student_id);
+
+-- RLS (Row Level Security) Aktifleştirme
+ALTER TABLE public.schedules ENABLE ROW LEVEL SECURITY;
+
+-- 1. Okuma İzinleri (Select)
+CREATE POLICY "Schedules_select_creator" ON public.schedules 
+  FOR SELECT USING (auth.uid() = creator_id);
+
+CREATE POLICY "Schedules_select_student" ON public.schedules 
+  FOR SELECT USING (auth.uid() = student_id);
+
+-- 2. Ekleme İzni (Insert)
+CREATE POLICY "Schedules_insert" ON public.schedules 
+  FOR INSERT WITH CHECK (auth.uid() = creator_id);
+
+-- 3. Güncelleme İzinleri (Update)
+CREATE POLICY "Schedules_update_creator" ON public.schedules 
+  FOR UPDATE USING (auth.uid() = creator_id) WITH CHECK (auth.uid() = creator_id);
+
+CREATE POLICY "Schedules_update_student" ON public.schedules 
+  FOR UPDATE USING (auth.uid() = student_id) WITH CHECK (auth.uid() = student_id);
+
+-- 4. Silme İzinleri (Delete)
+CREATE POLICY "Schedules_delete_creator" ON public.schedules 
+  FOR DELETE USING (auth.uid() = creator_id);
+
+CREATE POLICY "Schedules_delete_student" ON public.schedules 
+  FOR DELETE USING (auth.uid() = student_id);
 `;
 
 async function testRegions() {

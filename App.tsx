@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 
 import { RoleSelectionScreen } from './screens/RoleSelectionScreen';
+import ScheduleScreen from './screens/ScheduleScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { StudentDashboardScreen } from './screens/StudentDashboardScreen';
 import { ParentDashboardScreen } from './screens/ParentDashboardScreen';
@@ -28,6 +29,7 @@ export default function App() {
         <Stack.Screen name="SocialDashboard" component={SocialDashboardScreen} />
         <Stack.Screen name="EducationDashboard" component={EducationDashboardScreen} />
         <Stack.Screen name="AcademicDashboard" component={AcademicDashboardScreen} />
+        <Stack.Screen name="ScheduleScreen" component={ScheduleScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
+import { supabase } from '../lib/supabase';
 
 export function TeacherDashboardScreen({ navigation }: any) {
   const [activeTab, setActiveTab] = useState('students');
@@ -24,8 +25,19 @@ export function TeacherDashboardScreen({ navigation }: any) {
     Alert.alert('Dosya Yükleme', 'PDF yükleme penceresi açılıyor...');
   };
 
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.log('Logout error:', error);
+    } finally {
+      navigation.replace('RoleSelection');
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      <View className="flex-1">
       <ScrollView className="flex-1 p-6" showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-between items-center mb-6 mt-2">
           <View>
@@ -33,10 +45,10 @@ export function TeacherDashboardScreen({ navigation }: any) {
             <Text className="text-gray-500 font-medium">Hoş geldiniz, Hocam.</Text>
           </View>
           <TouchableOpacity 
-            className="bg-gray-100 p-3 rounded-xl"
-            onPress={() => navigation.navigate('RoleSelection')}
+            className="bg-indigo-50 px-4 py-3 rounded-xl flex-row items-center border border-indigo-100"
+            onPress={handleLogout}
           >
-            <Text className="text-gray-600 font-bold">Çıkış</Text>
+            <Text className="text-indigo-800 font-bold">🏠 Ana Ekran</Text>
           </TouchableOpacity>
         </View>
 
@@ -112,6 +124,51 @@ export function TeacherDashboardScreen({ navigation }: any) {
         )}
 
       </ScrollView>
+
+        {/* Scrollable Bottom Navigation Bar */}
+        <View 
+          className="bg-white border-t border-gray-100 pt-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
+          style={{ paddingBottom: 16 }}
+        >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
+            <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-indigo-50 border-2 border-indigo-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🏠</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Sınav notu girme ekranı eklenecek.')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📝</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Devamsızlık girme ekranı eklenecek.')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📅</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Görev atama ekranı eklenecek.')} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🎯</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenci hakkında özel not alma ekranı eklenecek.')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">✍️</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">🗓️</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin eğitim ve kronometre performansını görebileceksin.')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📚</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin detaylı raporları eklenecek.')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📊</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenciye mesaj gönder.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl">
+              <Text className="text-4xl">💬</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }

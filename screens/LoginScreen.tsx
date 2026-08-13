@@ -57,6 +57,48 @@ export function LoginScreen({ route, navigation }: any) {
     setLoading(false);
   };
 
+  // Geliştirici (Dev) Ortamı İçin Hızlı Giriş
+  const handleDevQuickLogin = async () => {
+    setLoading(true);
+    const devEmail = `dev_${role}@brainmate.app`;
+    const devPass = '123456';
+    
+    // Önce giriş yapmayı dene
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email: devEmail, password: devPass });
+    
+    if (signInError) {
+      // Hesap yoksa otomatik kaydet
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        email: devEmail,
+        password: devPass,
+        options: { data: { role: role } }
+      });
+      
+      if (!signUpError && authData.user) {
+        let pairingCode = null;
+        if (role === 'student') {
+          const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+          pairingCode = '';
+          for (let i = 0; i < 6; i++) {
+            pairingCode += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+        }
+        
+        await supabase
+          .from('profiles')
+          .upsert({ id: authData.user.id, role: role, pairing_code: pairingCode })
+          .select();
+          
+        navigateToDashboard();
+      } else {
+        Alert.alert('Hızlı Giriş Hatası', signUpError?.message || 'Bilinmeyen hata');
+      }
+    } else {
+      navigateToDashboard();
+    }
+    setLoading(false);
+  };
+
   let roleText = 'Kullanıcı';
   if (role === 'student') roleText = 'Öğrenci';
   else if (role === 'parent') roleText = 'Veli';
@@ -82,6 +124,17 @@ export function LoginScreen({ route, navigation }: any) {
         <Text className="text-gray-500 mb-10 text-base">Eğitim asistanına hoş geldin. Hemen giriş yap veya yeni bir hesap oluştur.</Text>
 
         <View>
+          {__DEV__ && (
+            <TouchableOpacity 
+              onPress={handleDevQuickLogin}
+              disabled={loading}
+              className="bg-amber-400 w-full py-4 rounded-xl items-center mb-8 shadow-sm flex-row justify-center border-2 border-amber-500"
+            >
+              <Text className="text-2xl mr-2">⚡</Text>
+              <Text className="text-amber-900 font-extrabold text-lg">Tek Tıkla Giriş (Test Hesabı)</Text>
+            </TouchableOpacity>
+          )}
+
           <View className="mb-4" style={{ marginBottom: 16 }}>
             <Text className="text-gray-700 font-bold mb-2 ml-1">E-posta Adresi</Text>
             <TextInput 

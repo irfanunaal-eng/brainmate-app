@@ -37,18 +37,18 @@ export function RoleSelectionScreen({ navigation }: any) {
           <Text className="text-gray-500 font-bold mt-4 text-lg">Oturum kontrol ediliyor...</Text>
         </View>
       ) : (
-        <ScrollView className="flex-1 px-6 pt-10" style={{ flex: 1, paddingHorizontal: 24, paddingTop: 40 }} showsVerticalScrollIndicator={false}>
-          <View className="mb-12 items-center">
-            <Text className="text-6xl font-extrabold mb-2" style={{ color: '#FFFFFF', textShadowColor: 'rgba(0, 0, 0, 0.1)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 }}>BrainMate</Text>
-            <Text className="text-lg text-center font-bold" style={{ color: '#0F4C5C' }}>
+        <ScrollView className="flex-1 px-5 pt-6" style={{ flex: 1, paddingHorizontal: 20, paddingTop: 24 }} showsVerticalScrollIndicator={false}>
+          <View className="mb-6 items-center">
+            <Text className="text-5xl font-extrabold mb-1" style={{ color: '#FFFFFF', textShadowColor: 'rgba(0, 0, 0, 0.1)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 }}>BrainMate</Text>
+            <Text className="text-base text-center font-bold" style={{ color: '#0F4C5C' }}>
               Sana en uygun rolü seçerek başlayalım
             </Text>
           </View>
 
-        <View className="pb-12">
+        <View className="pb-8">
           <TouchableOpacity 
             onPress={() => selectRole('student')}
-            className="bg-blue-50 px-6 py-5 mb-4 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-blue-100 border border-blue-200"
+            className="bg-blue-50 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-blue-100 border border-blue-200"
           >
             <View className="flex-1 pr-4">
               <Text className="text-xl font-extrabold text-blue-800">Öğrenci</Text>
@@ -59,7 +59,7 @@ export function RoleSelectionScreen({ navigation }: any) {
 
           <TouchableOpacity 
             onPress={() => selectRole('parent')}
-            className="bg-rose-50 px-6 py-5 mb-4 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-rose-100 border border-rose-200"
+            className="bg-rose-50 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-rose-100 border border-rose-200"
           >
             <View className="flex-1 pr-4">
               <Text className="text-xl font-extrabold text-rose-800">Veli</Text>
@@ -70,7 +70,7 @@ export function RoleSelectionScreen({ navigation }: any) {
 
           <TouchableOpacity 
             onPress={() => selectRole('teacher')}
-            className="bg-purple-50 px-6 py-5 mb-4 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-purple-100 border border-purple-200"
+            className="bg-purple-50 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-purple-100 border border-purple-200"
           >
             <View className="flex-1 pr-4">
               <Text className="text-xl font-extrabold text-purple-800">Rehber Öğretmen</Text>
@@ -81,7 +81,7 @@ export function RoleSelectionScreen({ navigation }: any) {
           
           <TouchableOpacity 
             onPress={() => selectRole('class_teacher')}
-            className="bg-amber-50 px-6 py-5 mb-4 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-amber-100 border border-amber-200"
+            className="bg-amber-50 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-amber-100 border border-amber-200"
           >
             <View className="flex-1 pr-4">
               <Text className="text-xl font-extrabold text-amber-800">Sınıf Rehber Öğretmeni</Text>
@@ -92,7 +92,7 @@ export function RoleSelectionScreen({ navigation }: any) {
           
           <TouchableOpacity 
             onPress={() => selectRole('private_tutor')}
-            className="bg-emerald-50 px-6 py-5 mb-4 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-emerald-100 border border-emerald-200"
+            className="bg-emerald-50 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-emerald-100 border border-emerald-200"
           >
             <View className="flex-1 pr-4">
               <Text className="text-xl font-extrabold text-emerald-800">Özel Ders Öğretmeni</Text>
@@ -103,7 +103,7 @@ export function RoleSelectionScreen({ navigation }: any) {
 
           <TouchableOpacity 
             onPress={() => selectRole('student_coach')}
-            className="bg-indigo-100 px-6 py-5 mb-4 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-indigo-200 border border-indigo-200"
+            className="bg-indigo-100 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-indigo-200 border border-indigo-200"
           >
             <View className="flex-1 pr-4">
               <Text className="text-xl font-extrabold text-indigo-800">Öğrenci Koçu</Text>

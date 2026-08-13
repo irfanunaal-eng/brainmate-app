@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Alert, TextInput } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Alert, TextInput, ActivityIndicator } from 'react-native';
 import { supabase } from '../lib/supabase';
 
 // Global state to persist timer across screen navigations
