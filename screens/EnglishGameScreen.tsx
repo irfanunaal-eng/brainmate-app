@@ -4,13 +4,23 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-// Mock Vocabulary DB for 200 Level
+// Mock Vocabulary DB for initial 200 Level (Demo subset)
 const WORD_DB = [
-  { en: 'Time', tr: 'Zaman', options: ['Zaman', 'Gün', 'Saat', 'Dakika'] },
-  { en: 'Person', tr: 'Kişi', options: ['İnsan', 'Kişi', 'Çocuk', 'Adam'] },
-  { en: 'Year', tr: 'Yıl', options: ['Yıl', 'Ay', 'Hafta', 'Dönem'] },
-  { en: 'Way', tr: 'Yol', options: ['Sokak', 'Cadde', 'Yol', 'Yön'] },
-  { en: 'Day', tr: 'Gün', options: ['Gün', 'Gece', 'Sabah', 'Akşam'] },
+  { en: 'Time', tr: 'Zaman' },
+  { en: 'Person', tr: 'Kişi' },
+  { en: 'Year', tr: 'Yıl' },
+  { en: 'Way', tr: 'Yol' },
+  { en: 'Day', tr: 'Gün' },
+  { en: 'Thing', tr: 'Şey' },
+  { en: 'Man', tr: 'Adam' },
+  { en: 'World', tr: 'Dünya' },
+  { en: 'Life', tr: 'Hayat' },
+  { en: 'Hand', tr: 'El' },
+  { en: 'Part', tr: 'Parça' },
+  { en: 'Child', tr: 'Çocuk' },
+  { en: 'Eye', tr: 'Göz' },
+  { en: 'Woman', tr: 'Kadın' },
+  { en: 'Place', tr: 'Yer' },
 ];
 
 export function EnglishGameScreen({ route }: any) {
@@ -18,12 +28,26 @@ export function EnglishGameScreen({ route }: any) {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
-  const [timerAnimated] = useState(new Animated.Value(100)); // 100% width
+  const [timerAnimated] = useState(new Animated.Value(100));
   const [isGameOver, setIsGameOver] = useState(false);
-
   const [gameHistory, setGameHistory] = useState<{en: string, tr: string, correct: boolean}[]>([]);
+  const [currentOptions, setCurrentOptions] = useState<string[]>([]);
+  
+  const currentWord = WORD_DB[currentWordIndex % WORD_DB.length];
 
-  const currentWord = WORD_DB[currentWordIndex % WORD_DB.length]; // loop for demo
+  // Generate dynamic options when word changes
+  useEffect(() => {
+    // Pick 3 random wrong answers
+    const wrongAnswers = WORD_DB
+      .filter(w => w.en !== currentWord.en)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+      .map(w => w.tr);
+    
+    // Combine with correct answer and shuffle
+    const combined = [...wrongAnswers, currentWord.tr].sort(() => 0.5 - Math.random());
+    setCurrentOptions(combined);
+  }, [currentWordIndex]);
 
   // Timer simulation
   useEffect(() => {
@@ -157,7 +181,7 @@ export function EnglishGameScreen({ route }: any) {
 
          {/* Options Grid */}
          <View className="flex-row flex-wrap justify-between">
-           {currentWord.options.map((opt, i) => (
+           {currentOptions.map((opt: string, i: number) => (
              <TouchableOpacity 
                key={i}
                onPress={() => handleOptionPress(opt)}
