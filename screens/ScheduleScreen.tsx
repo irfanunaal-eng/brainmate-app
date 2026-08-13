@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, TextInput, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, TextInput, Alert, ActivityIndicator, Image } from 'react-native';
 import { supabase } from '../lib/supabase';
 import { Picker } from '@react-native-picker/picker';
+import * as ImagePicker from 'expo-image-picker';
+import { scanScheduleImage, ParsedSchedule } from '../lib/ai-scanner';
 
 const DAYS = [
   { id: 1, name: 'Pzt' },
@@ -36,6 +38,11 @@ export default function ScheduleScreen({ navigation, route }: any) {
   const [newMaterials, setNewMaterials] = useState('');
   const [newIsReminder, setNewIsReminder] = useState(false);
   const [newReminderMinutes, setNewReminderMinutes] = useState('15');
+
+  // AI Scanner State
+  const [isScanning, setIsScanning] = useState(false);
+  const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
+  const [previewSchedules, setPreviewSchedules] = useState<ParsedSchedule[]>([]);
 
   // If passed from parent/teacher dashboard
   const passedStudentId = route.params?.studentId;
@@ -167,6 +174,87 @@ export default function ScheduleScreen({ navigation, route }: any) {
     setNewMaterials('');
     setNewIsReminder(false);
     setNewReminderMinutes('15');
+  };
+
+  const handlePickImage = async (useCamera: boolean = false) => {
+    try {
+      let result;
+      if (useCamera) {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('İzin Gerekli', 'Kamerayı kullanabilmek için izin vermelisin.');
+          return;
+        }
+        result = await ImagePicker.launchCameraAsync({
+          base64: true,
+          quality: 0.5,
+        });
+      } else {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('İzin Gerekli', 'Galeriyi kullanabilmek için izin vermelisin.');
+          return;
+        }
+        result = await ImagePicker.launchImageLibraryAsync({
+          base64: true,
+          quality: 0.5,
+        });
+      }
+
+      if (!result.canceled && result.assets[0].base64) {
+        setIsModalVisible(false); // Close add modal
+        setIsScanning(true); // Start loading animation
+
+        const parsedData = await scanScheduleImage(result.assets[0].base64);
+        
+        if (parsedData && parsedData.length > 0) {
+          setPreviewSchedules(parsedData);
+          setIsPreviewModalVisible(true);
+        } else {
+          Alert.alert('Bulunamadı', 'Görselde anlaşılır bir ders programı bulunamadı.');
+        }
+      }
+    } catch (error: any) {
+      Alert.alert('Hata', error.message || 'Görsel işlenirken bir sorun oluştu.');
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  const handleSavePreviewSchedules = async () => {
+    try {
+      setIsScanning(true);
+      
+      let targetStudentId = currentUserId;
+      if (userRole !== 'student' && passedStudentId) {
+        targetStudentId = passedStudentId;
+      }
+
+      const rowsToInsert = previewSchedules.map(sch => ({
+        student_id: targetStudentId,
+        creator_id: currentUserId,
+        day_of_week: sch.day_of_week,
+        start_time: sch.start_time,
+        end_time: sch.end_time,
+        title: sch.title,
+        schedule_type: sch.schedule_type,
+        materials_needed: null,
+        is_reminder_active: false,
+        reminder_minutes: 15
+      }));
+
+      const { error } = await supabase.from('schedules').insert(rowsToInsert);
+      if (error) throw error;
+
+      setIsPreviewModalVisible(false);
+      setPreviewSchedules([]);
+      fetchUserDataAndSchedules();
+      Alert.alert('Harika! 🎉', `${rowsToInsert.length} adet ders başarıyla eklendi.`);
+    } catch (error: any) {
+      Alert.alert('Kayıt Hatası', error.message);
+    } finally {
+      setIsScanning(false);
+    }
   };
 
   const getTypeStyle = (typeId: string) => {
@@ -301,6 +389,29 @@ export default function ScheduleScreen({ navigation, route }: any) {
           </View>
 
           <ScrollView className="flex-1 px-6 pt-6">
+            
+            {/* AI Image Scanner Buttons */}
+            <View className="bg-indigo-50 rounded-2xl p-4 mb-8 border border-indigo-100">
+              <Text className="text-indigo-800 font-bold mb-3 text-center">🤖 Fotoğraftan Otomatik Ekle</Text>
+              <View className="flex-row justify-between space-x-3">
+                <TouchableOpacity onPress={() => handlePickImage(true)} className="flex-1 bg-white border border-indigo-200 py-3 rounded-xl items-center shadow-sm">
+                  <Text className="text-2xl mb-1">📸</Text>
+                  <Text className="text-indigo-700 font-semibold text-xs">Kamera</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handlePickImage(false)} className="flex-1 bg-white border border-indigo-200 py-3 rounded-xl items-center shadow-sm">
+                  <Text className="text-2xl mb-1">🖼️</Text>
+                  <Text className="text-indigo-700 font-semibold text-xs">Galeri</Text>
+                </TouchableOpacity>
+              </View>
+              <Text className="text-indigo-400 text-xs text-center mt-3">Programın fotoğrafını çek, yapay zeka senin yerine doldursun!</Text>
+            </View>
+
+            <View className="flex-row items-center justify-center mb-8">
+              <View className="h-[1px] bg-gray-200 flex-1" />
+              <Text className="text-gray-400 mx-4 font-medium">veya manuel ekle</Text>
+              <View className="h-[1px] bg-gray-200 flex-1" />
+            </View>
+
             <Text className="text-gray-500 font-semibold mb-2">Ders Adı</Text>
             <TextInput
               value={newTitle}
@@ -392,6 +503,55 @@ export default function ScheduleScreen({ navigation, route }: any) {
           </ScrollView>
         </SafeAreaView>
       </Modal>
+
+      {/* AI Preview Modal */}
+      <Modal visible={isPreviewModalVisible} animationType="slide" presentationStyle="pageSheet">
+        <SafeAreaView className="flex-1 bg-white">
+          <View className="flex-row justify-between items-center px-6 py-4 border-b border-indigo-100 bg-indigo-50">
+            <Text className="text-xl font-bold text-indigo-800">🤖 Bulunan Dersler</Text>
+            <TouchableOpacity onPress={() => setIsPreviewModalVisible(false)} className="bg-indigo-100 w-10 h-10 rounded-full items-center justify-center">
+              <Text className="text-lg">❌</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView className="flex-1 px-6 pt-4">
+            <Text className="text-gray-500 mb-4 text-center">Yapay zeka aşağıdaki programı tespit etti. Kaydetmek istiyor musun?</Text>
+            {previewSchedules.map((sch, idx) => (
+              <View key={idx} className="bg-gray-50 p-4 rounded-xl mb-3 border border-gray-100 flex-row items-center justify-between">
+                <View>
+                  <Text className="font-bold text-gray-800 text-lg">{sch.title}</Text>
+                  <Text className="text-gray-500 text-sm">
+                    {DAYS.find(d => d.id === sch.day_of_week)?.name} • {formatTime(sch.start_time)} - {formatTime(sch.end_time)}
+                  </Text>
+                </View>
+                <View className="bg-indigo-100 px-3 py-1 rounded-full">
+                  <Text className="text-indigo-800 text-xs font-bold">{getTypeLabel(sch.schedule_type).split(' ')[1] || sch.schedule_type}</Text>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+          <View className="p-6 border-t border-gray-100 bg-white">
+            <TouchableOpacity 
+              onPress={handleSavePreviewSchedules}
+              disabled={isScanning}
+              className={`w-full py-4 rounded-2xl items-center ${isScanning ? 'bg-indigo-300' : 'bg-indigo-600 shadow-md shadow-indigo-500/30'}`}
+            >
+              <Text className="text-white font-bold text-xl">{isScanning ? 'Kaydediliyor...' : 'Tümünü Kaydet'}</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Global Loading Overlay for AI */}
+      {isScanning && (
+        <View className="absolute inset-0 bg-black/60 items-center justify-center z-50">
+          <View className="bg-white p-8 rounded-3xl items-center shadow-2xl">
+            <ActivityIndicator size="large" color="#4f46e5" />
+            <Text className="text-indigo-600 font-bold text-lg mt-4">Yapay Zeka Analiz Ediyor...</Text>
+            <Text className="text-gray-500 text-sm mt-2 text-center">Bu işlem birkaç saniye sürebilir,{'\n'}lütfen bekle.</Text>
+          </View>
+        </View>
+      )}
+
     </SafeAreaView>
   );
 }

@@ -168,8 +168,8 @@ export function EducationDashboardScreen({ navigation }: any) {
     <SafeAreaView className="flex-1 bg-surface">
       <ScrollView className="flex-1 p-6" showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-between items-center mb-6 mt-2">
-          <TouchableOpacity onPress={() => navigation.goBack()} className="p-2 -ml-2">
-            <Text className="text-primary font-bold text-lg">← Geri</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
+            <Text className="text-xl">🔙</Text>
           </TouchableOpacity>
           <Text className="text-2xl font-extrabold text-text">Eğitim & Takip</Text>
           <View className="w-10" />
