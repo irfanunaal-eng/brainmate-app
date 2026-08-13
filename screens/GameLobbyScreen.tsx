@@ -14,6 +14,7 @@ export function GameLobbyScreen() {
   const navigation = useNavigation<any>();
   const [selectedMode, setSelectedMode] = useState<'solo' | 'duel'>('solo');
   const [expandedLevel, setExpandedLevel] = useState<string | null>(null);
+  const [adminOverride, setAdminOverride] = useState(false);
 
   const toggleLevel = (id: string, isUnlocked: boolean) => {
     if (!isUnlocked) return;
@@ -29,10 +30,13 @@ export function GameLobbyScreen() {
             <Text className="text-xl">🔙</Text>
           </TouchableOpacity>
           <Text className="text-2xl font-extrabold text-gray-800">İngilizce Ustası</Text>
-          <View className="bg-amber-100 px-3 py-2 rounded-full flex-row items-center">
-            <Text className="text-amber-600 font-black mr-1">450</Text>
-            <Text className="text-xs">⚡</Text>
-          </View>
+          <TouchableOpacity 
+            onPress={() => setAdminOverride(!adminOverride)}
+            className={`px-3 py-2 rounded-full flex-row items-center ${adminOverride ? 'bg-purple-100' : 'bg-amber-100'}`}
+          >
+            <Text className={`${adminOverride ? 'text-purple-600' : 'text-amber-600'} font-black mr-1`}>450</Text>
+            <Text className="text-xs">{adminOverride ? '🔓' : '⚡'}</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Mode Selection */}
@@ -67,27 +71,29 @@ export function GameLobbyScreen() {
 
         {/* Levels List */}
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-          {LEVELS.map((level) => (
+          {LEVELS.map((level) => {
+            const levelUnlocked = adminOverride || level.unlocked;
+            return (
             <View key={level.id} className="mb-3">
               <TouchableOpacity 
-                disabled={!level.unlocked}
-                onPress={() => toggleLevel(level.id, level.unlocked)}
-                className={`flex-row items-center border p-5 rounded-2xl ${level.unlocked ? (expandedLevel === level.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-100') : 'bg-gray-50 border-gray-200 opacity-60'}`}
+                disabled={!levelUnlocked}
+                onPress={() => toggleLevel(level.id, levelUnlocked)}
+                className={`flex-row items-center border p-5 rounded-2xl ${levelUnlocked ? (expandedLevel === level.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-100') : 'bg-gray-50 border-gray-200 opacity-60'}`}
               >
-                <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${level.unlocked ? 'bg-indigo-100' : 'bg-gray-200'}`}>
-                  {level.unlocked ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">🔒</Text>}
+                <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${levelUnlocked ? 'bg-indigo-100' : 'bg-gray-200'}`}>
+                  {levelUnlocked ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">🔒</Text>}
                 </View>
                 
                 <View className="flex-1">
-                  <Text className={`text-lg font-black ${level.unlocked ? 'text-gray-800' : 'text-gray-500'}`}>{level.title}</Text>
+                  <Text className={`text-lg font-black ${levelUnlocked ? 'text-gray-800' : 'text-gray-500'}`}>{level.title}</Text>
                   <Text className="text-gray-400 font-medium text-xs">{level.desc}</Text>
                 </View>
 
                 <View className="items-end">
-                  {level.unlocked && (
+                  {levelUnlocked && (
                     <Text className="text-gray-400 font-bold">{expandedLevel === level.id ? '🔼 Kapat' : '🔽 Aç'}</Text>
                   )}
-                  {!level.unlocked && (
+                  {!levelUnlocked && (
                     <Text className="text-xs font-bold text-gray-400 mt-1">Kilitli</Text>
                   )}
                 </View>
@@ -98,7 +104,7 @@ export function GameLobbyScreen() {
                 <View className="bg-indigo-50/50 rounded-b-2xl border border-t-0 border-indigo-100 p-2 mx-2">
                    <View className="flex-row flex-wrap justify-between p-2">
                      {[...Array(level.stages)].map((_, i) => {
-                        const isStageUnlocked = i < 3; // Demo: first three stages unlocked
+                        const isStageUnlocked = adminOverride || i < 3; // Demo: first three stages unlocked natively
                         return (
                           <TouchableOpacity 
                             key={i}
@@ -115,7 +121,7 @@ export function GameLobbyScreen() {
                 </View>
               )}
             </View>
-          ))}
+          )})}
         </ScrollView>
 
       </View>
