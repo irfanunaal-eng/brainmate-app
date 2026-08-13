@@ -13,6 +13,12 @@ const LEVELS = [
 export function GameLobbyScreen() {
   const navigation = useNavigation<any>();
   const [selectedMode, setSelectedMode] = useState<'solo' | 'duel'>('solo');
+  const [expandedLevel, setExpandedLevel] = useState<string | null>(null);
+
+  const toggleLevel = (id: string, isUnlocked: boolean) => {
+    if (!isUnlocked) return;
+    setExpandedLevel(prev => prev === id ? null : id);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
@@ -61,35 +67,54 @@ export function GameLobbyScreen() {
 
         {/* Levels List */}
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-          {LEVELS.map((level, index) => (
-            <TouchableOpacity 
-              key={level.id}
-              disabled={!level.unlocked}
-              onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, mode: selectedMode })}
-              className={`flex-row items-center border p-5 mb-3 rounded-2xl ${level.unlocked ? 'bg-white border-gray-100 shadow-sm shadow-gray-100 active:bg-gray-50' : 'bg-gray-50 border-gray-200 opacity-60'}`}
-            >
-              <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${level.unlocked ? 'bg-indigo-100' : 'bg-gray-200'}`}>
-                {level.unlocked ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">🔒</Text>}
-              </View>
-              
-              <View className="flex-1">
-                <Text className={`text-lg font-black ${level.unlocked ? 'text-gray-800' : 'text-gray-500'}`}>{level.title}</Text>
-                <Text className="text-gray-400 font-medium text-xs">{level.desc}</Text>
-              </View>
+          {LEVELS.map((level) => (
+            <View key={level.id} className="mb-3">
+              <TouchableOpacity 
+                disabled={!level.unlocked}
+                onPress={() => toggleLevel(level.id, level.unlocked)}
+                className={`flex-row items-center border p-5 rounded-2xl ${level.unlocked ? (expandedLevel === level.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-100') : 'bg-gray-50 border-gray-200 opacity-60'}`}
+              >
+                <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${level.unlocked ? 'bg-indigo-100' : 'bg-gray-200'}`}>
+                  {level.unlocked ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">🔒</Text>}
+                </View>
+                
+                <View className="flex-1">
+                  <Text className={`text-lg font-black ${level.unlocked ? 'text-gray-800' : 'text-gray-500'}`}>{level.title}</Text>
+                  <Text className="text-gray-400 font-medium text-xs">{level.desc}</Text>
+                </View>
 
-              <View className="items-end">
-                {level.unlocked && (
-                  <View className="flex-row">
-                    {[1, 2, 3].map(star => (
-                      <Text key={star} className={`text-sm ${star <= level.stars ? 'opacity-100' : 'opacity-20 grayscale'}`}>⭐</Text>
-                    ))}
-                  </View>
-                )}
-                {!level.unlocked && (
-                  <Text className="text-xs font-bold text-gray-400 mt-1">Kilitli</Text>
-                )}
-              </View>
-            </TouchableOpacity>
+                <View className="items-end">
+                  {level.unlocked && (
+                    <Text className="text-gray-400 font-bold">{expandedLevel === level.id ? '🔼 Kapat' : '🔽 Aç'}</Text>
+                  )}
+                  {!level.unlocked && (
+                    <Text className="text-xs font-bold text-gray-400 mt-1">Kilitli</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+
+              {/* Sub-stages (Accordion Expansion) */}
+              {expandedLevel === level.id && (
+                <View className="bg-indigo-50/50 rounded-b-2xl border border-t-0 border-indigo-100 p-2 mx-2">
+                   <View className="flex-row flex-wrap justify-between p-2">
+                     {[...Array(10)].map((_, i) => {
+                        const isStageUnlocked = i < 2; // Demo: first two are unlocked
+                        return (
+                          <TouchableOpacity 
+                            key={i}
+                            disabled={!isStageUnlocked}
+                            onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, stage: i + 1, mode: selectedMode })}
+                            className={`w-[48%] py-3 mb-2 rounded-xl items-center border ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
+                          >
+                             <Text className={`font-bold ${isStageUnlocked ? 'text-indigo-800' : 'text-gray-400'}`}>Aşama {i+1}</Text>
+                             <Text className="text-[10px] text-gray-400 mt-0.5">20 Kelime</Text>
+                          </TouchableOpacity>
+                        );
+                     })}
+                   </View>
+                </View>
+              )}
+            </View>
           ))}
         </ScrollView>
 
