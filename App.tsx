@@ -22,6 +22,7 @@ import { NotesScreen } from './screens/NotesScreen';
 
 import LocationTrackingScreen from './screens/LocationTrackingScreen';
 import { GameLobbyScreen } from './screens/GameLobbyScreen';
+import { EnglishGameScreen } from './screens/EnglishGameScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ export default function App() {
         <Stack.Screen name="NotesScreen" component={NotesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LocationTrackingScreen" component={LocationTrackingScreen} options={{ headerShown: false }} />
         <Stack.Screen name="GameLobbyScreen" component={GameLobbyScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="EnglishGameScreen" component={EnglishGameScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

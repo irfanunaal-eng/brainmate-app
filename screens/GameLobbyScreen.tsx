@@ -11,7 +11,7 @@ const LEVELS = [
 ];
 
 export function GameLobbyScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [selectedMode, setSelectedMode] = useState<'solo' | 'duel'>('solo');
 
   return (
@@ -95,6 +95,13 @@ export function GameLobbyScreen() {
         {/* Start Game Floating Button */}
         <View className="absolute bottom-6 left-6 right-6">
           <TouchableOpacity 
+             onPress={() => {
+                if (selectedMode === 'solo') {
+                  navigation.navigate('EnglishGameScreen');
+                } else {
+                  // Duel logic later
+                }
+             }}
              className={`w-full py-4 rounded-xl flex-row justify-center items-center shadow-lg ${selectedMode === 'solo' ? 'bg-indigo-600 shadow-indigo-600/30' : 'bg-rose-500 shadow-rose-600/30'}`}
           >
              <Text className="text-white font-extrabold text-lg mr-2">
