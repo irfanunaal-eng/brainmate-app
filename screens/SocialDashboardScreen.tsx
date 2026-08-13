@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
 
-const dummyFriends = [
-  { id: '1', name: 'Ahmet Y.', score: 1250 },
-  { id: '2', name: 'Ayşe K.', score: 980 },
-  { id: '3', name: 'Sen (Ben)', score: 850 },
-  { id: '4', name: 'Mehmet D.', score: 420 },
-];
-
 export function SocialDashboardScreen({ navigation }: any) {
+  const [friends, setFriends] = useState([
+    { id: '1', name: 'Ahmet Y.', score: 1250 },
+    { id: '2', name: 'Ayşe K.', score: 980 },
+    { id: '3', name: 'Sen (Ben)', score: 850 },
+    { id: '4', name: 'Mehmet D.', score: 420 },
+  ]);
   const [friendCode, setFriendCode] = useState('');
 
   const handleAddFriend = () => {
@@ -20,13 +19,37 @@ export function SocialDashboardScreen({ navigation }: any) {
     setFriendCode('');
   };
 
+  const handleRemoveFriend = (id: string, name: string) => {
+    Alert.alert(
+      'Bağlantıyı Sil',
+      `${name} adlı kişiyi arkadaş ağından çıkarmak istediğine emin misin? Bu işlem geri alınamaz.`,
+      [
+        { text: 'Vazgeç', style: 'cancel' },
+        { 
+          text: 'Evet, Çıkar', 
+          style: 'destructive', 
+          onPress: () => {
+            setFriends(prev => prev.filter(f => f.id !== id));
+          } 
+        }
+      ]
+    );
+  };
+
   const renderFriendItem = ({ item, index }: any) => (
-    <View className={`flex-row justify-between items-center p-4 mb-2 rounded-xl border ${item.name.includes('Sen') ? 'bg-primary/10 border-primary' : 'bg-white border-gray-100'}`}>
-      <View className="flex-row items-center">
-        <Text className="text-lg font-bold text-gray-500 w-8">{index + 1}.</Text>
-        <Text className={`text-lg font-bold ${item.name.includes('Sen') ? 'text-primary' : 'text-gray-700'}`}>{item.name}</Text>
+    <View className={`flex-row justify-between items-center p-4 mb-2 rounded-xl border ${item.name.includes('Sen') ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-50'}`}>
+      <View className="flex-row items-center flex-1">
+        <Text className={`text-lg font-bold w-8 ${item.name.includes('Sen') ? 'text-indigo-500' : 'text-gray-400'}`}>{index + 1}.</Text>
+        <Text className={`text-base font-extrabold flex-1 ${item.name.includes('Sen') ? 'text-indigo-800' : 'text-gray-700'}`} numberOfLines={1}>{item.name}</Text>
       </View>
-      <Text className="text-secondary font-extrabold text-lg">{item.score} XP</Text>
+      <View className="flex-row items-center">
+        <Text className={`font-black text-lg mr-3 ${item.name.includes('Sen') ? 'text-indigo-600' : 'text-amber-500'}`}>{item.score} XP</Text>
+        {!item.name.includes('Sen') && (
+          <TouchableOpacity onPress={() => handleRemoveFriend(item.id, item.name)} className="w-8 h-8 items-center justify-center bg-red-50 rounded-lg border border-red-100 opacity-60 active:opacity-100">
+             <Text className="text-sm">🗑️</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 
@@ -65,7 +88,7 @@ export function SocialDashboardScreen({ navigation }: any) {
         <Text className="text-xl font-extrabold text-text mb-4">Liderlik Tablosu 🏆</Text>
         
         <FlatList
-          data={dummyFriends.sort((a, b) => b.score - a.score)}
+          data={[...friends].sort((a, b) => b.score - a.score)}
           keyExtractor={item => item.id}
           renderItem={renderFriendItem}
           showsVerticalScrollIndicator={false}
