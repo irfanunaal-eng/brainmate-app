@@ -49,16 +49,26 @@ export function SocialDashboardScreen({ navigation }: any) {
 
   const handleChangeRelation = (friendId: string, relId: string, relLabel: string) => {
     Alert.alert(
-      'İstek Gönderildi 📩',
-      `"${relLabel}" etiketi için karşı tarafa bildirim gönderildi. Karşı taraf mesaj kutusundan bu isteği onayladığında etiketiniz karşılıklı olarak aktifleşecek!`,
-      [{ 
-        text: 'Tamam', 
-        onPress: () => {
-          // Simulate pending UI status by directly mutating local state immediately for demo purposes
-          setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: relId } : f));
-          setSelectedFriend(null);
-        } 
-      }]
+      'Bağlantı İsteği',
+      `Arkadaşına "${relLabel}" etiketi isteği göndermek istediğinden emin misin?`,
+      [
+        { text: 'Vazgeç', style: 'cancel' },
+        { 
+          text: 'Evet, Gönder', 
+          onPress: () => {
+            // Apply the tag instantly upon user confirmation, then notify them about the pending status
+            setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: relId } : f));
+            setSelectedFriend(null);
+            
+            setTimeout(() => {
+              Alert.alert(
+                'İstek Gönderildi 📩', 
+                `Bildirim başarıyla gönderildi. Karşı taraf onayladığında bu etiket karşılıklı olarak kilitlenecek!`
+              );
+            }, 500);
+          } 
+        }
+      ]
     );
   };
 
