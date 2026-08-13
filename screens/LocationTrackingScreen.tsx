@@ -17,13 +17,23 @@ export default function LocationTrackingScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [currentLocation, setCurrentLocation] = useState(MOCK_STUDENT_PATH[2]);
+  const [fetchingLocation, setFetchingLocation] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState('1 dk önce');
 
   useEffect(() => {
-    // Simulate fetching GPS data from student device
     setTimeout(() => {
       setLoading(false);
     }, 1500);
   }, []);
+
+  const handleFetchLocation = () => {
+    setFetchingLocation(true);
+    // Simulate background push triggering student's phone and awaiting response
+    setTimeout(() => {
+      setFetchingLocation(false);
+      setLastUpdated('Şimdi');
+    }, 2000);
+  };
 
   if (loading) {
     return (
@@ -84,10 +94,10 @@ export default function LocationTrackingScreen() {
         <View className="absolute bottom-10 left-5 right-5 bg-white rounded-3xl p-5 shadow-2xl border border-gray-100">
            <View className="flex-row items-center justify-between mb-4">
               <View className="flex-row items-center">
-                 <View className="w-3 h-3 bg-emerald-500 rounded-full mr-2 shadow-sm shadow-emerald-500" />
+                 <View className={`w-3 h-3 rounded-full mr-2 shadow-sm ${fetchingLocation ? 'bg-amber-500 shadow-amber-500' : 'bg-emerald-500 shadow-emerald-500'}`} />
                  <Text className="font-extrabold text-gray-800">Şu Anki Durum</Text>
               </View>
-              <Text className="text-xs font-bold text-gray-400">Son Güncelleme: 1 dk önce</Text>
+              <Text className="text-xs font-bold text-gray-400">Son Güncelleme: {lastUpdated}</Text>
            </View>
            
            <View className="bg-gray-50 flex-row items-center p-4 rounded-2xl mb-4 border border-gray-200">
@@ -100,9 +110,26 @@ export default function LocationTrackingScreen() {
               </View>
            </View>
 
-           <TouchableOpacity className="w-full bg-indigo-600 py-4 rounded-xl flex-row justify-center items-center shadow-lg shadow-indigo-600/30">
-              <Text className="text-white font-extrabold text-sm mr-2">Nerede Olduğunu Gör</Text>
-              <Text>📳</Text>
+           <Text className="text-[10px] text-gray-400 text-center mb-2 px-2">
+              Öğrencinin şarjını korumak için konum sürekli arka planda izlenmez. Güncel konumu öğrenmek için aşağıdaki butona basarak cihazına anlık sinyal gönderebilirsiniz.
+           </Text>
+
+           <TouchableOpacity 
+              onPress={handleFetchLocation}
+              disabled={fetchingLocation}
+              className={`w-full py-4 rounded-xl flex-row justify-center items-center shadow-lg ${fetchingLocation ? 'bg-indigo-400 shadow-indigo-400/30' : 'bg-indigo-600 shadow-indigo-600/30'}`}
+           >
+              {fetchingLocation ? (
+                 <>
+                    <ActivityIndicator color="white" size="small" style={{ marginRight: 8 }} />
+                    <Text className="text-white font-extrabold text-sm mr-2">Cihazdan Yanıt Bekleniyor...</Text>
+                 </>
+              ) : (
+                 <>
+                    <Text className="text-white font-extrabold text-sm mr-2">Nerede Olduğunu Gör</Text>
+                    <Text>📳</Text>
+                 </>
+              )}
            </TouchableOpacity>
         </View>
       </View>
