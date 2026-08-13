@@ -1,0 +1,129 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { supabase } from '../lib/supabase';
+
+export function LoginScreen({ route, navigation }: any) {
+  const { role } = route.params;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const navigateToDashboard = () => {
+    if (role === 'student') navigation.replace('StudentDashboard');
+    else if (role === 'teacher') navigation.replace('TeacherDashboard');
+    else navigation.replace('ParentDashboard'); // parent, class_teacher, private_tutor, student_coach all go here
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      Alert.alert('Hata', error.message);
+    } else {
+      navigateToDashboard();
+    }
+    setLoading(false);
+  };
+
+  const handleRegister = async () => {
+    setLoading(true);
+    const { data: authData, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: { data: { role: role } }
+    });
+    if (error) {
+      Alert.alert('Hata', error.message);
+    } else if (authData.user) {
+      // Eger ogrenciyse 6 haneli baglanti kodu uret (Karisik harflerden arindirilmis)
+      let pairingCode = null;
+      if (role === 'student') {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 0, O, 1, I haric tutuldu
+        pairingCode = '';
+        for (let i = 0; i < 6; i++) {
+          pairingCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+      }
+      
+      // Profili upsert yap (Eski hesaplarda veya trigger calismadiginda foreign_key hatasini onlemek icin)
+      await supabase
+        .from('profiles')
+        .upsert({ id: authData.user.id, role: role, pairing_code: pairingCode })
+        .select();
+
+      // Not: E-posta doğrulaması kapalıysa direkt giriş yapmış sayılır
+      navigateToDashboard();
+    }
+    setLoading(false);
+  };
+
+  let roleText = 'Kullanıcı';
+  if (role === 'student') roleText = 'Öğrenci';
+  else if (role === 'parent') roleText = 'Veli';
+  else if (role === 'teacher') roleText = 'Rehber Öğretmen';
+  else if (role === 'class_teacher') roleText = 'Sınıf Rehber Öğretmeni';
+  else if (role === 'private_tutor') roleText = 'Özel Ders Öğretmeni';
+  else if (role === 'student_coach') roleText = 'Öğrenci Koçu';
+
+  return (
+    <SafeAreaView className="flex-1 bg-surface">
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1 px-6 justify-center relative"
+      >
+        <TouchableOpacity 
+          onPress={() => navigation.goBack()} 
+          className="absolute top-4 left-4 z-10 p-2 bg-white/80 rounded-full"
+        >
+          <Text className="text-primary font-bold text-lg">← Geri</Text>
+        </TouchableOpacity>
+
+        <Text className="text-4xl font-extrabold text-gray-800 mb-2 mt-16">{roleText} Girişi</Text>
+        <Text className="text-gray-500 mb-10 text-base">Eğitim asistanına hoş geldin. Hemen giriş yap veya yeni bir hesap oluştur.</Text>
+
+        <View>
+          <View className="mb-4" style={{ marginBottom: 16 }}>
+            <Text className="text-gray-700 font-bold mb-2 ml-1">E-posta Adresi</Text>
+            <TextInput 
+              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 text-base"
+              placeholder="ornek@mail.com"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+
+          <View className="mb-8" style={{ marginBottom: 32 }}>
+            <Text className="text-gray-700 font-bold mb-2 ml-1">Şifre</Text>
+            <TextInput 
+              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 text-base"
+              placeholder="••••••••"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+
+          <TouchableOpacity 
+            onPress={handleLogin}
+            disabled={loading}
+            className="bg-primary w-full py-4 rounded-xl items-center mb-4 active:bg-indigo-700 shadow-sm"
+            style={{ marginBottom: 16, paddingVertical: 16 }}
+          >
+            <Text className="text-white font-bold text-lg">{loading ? 'Bekleniyor...' : 'Giriş Yap'}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            onPress={handleRegister}
+            disabled={loading}
+            className="bg-emerald-500 w-full py-4 rounded-xl items-center active:bg-emerald-600 shadow-sm"
+            style={{ marginBottom: 16, paddingVertical: 16 }}
+          >
+            <Text className="text-white font-bold text-lg">{loading ? 'Bekleniyor...' : 'Yeni Kayıt Ol'}</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}

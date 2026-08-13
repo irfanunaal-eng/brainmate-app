@@ -1,0 +1,291 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Modal } from 'react-native';
+import { supabase } from '../lib/supabase';
+
+export function ParentDashboardScreen({ navigation }: any) {
+  const [pairingCode, setPairingCode] = useState('');
+  const [isPaired, setIsPaired] = useState(false);
+  const [studentName, setStudentName] = useState('Öğrenci');
+  const [studentId, setStudentId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [panelTitle, setPanelTitle] = useState('Eğitimci Paneli');
+  
+  // Task assignment state
+  const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [newTaskMinutes, setNewTaskMinutes] = useState('50');
+  const [assigningTask, setAssigningTask] = useState(false);
+
+  useEffect(() => {
+    checkExistingPairing();
+  }, []);
+
+  const checkExistingPairing = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      if (profile) {
+        if (profile.role === 'parent') setPanelTitle('Veli Paneli');
+        else if (profile.role === 'class_teacher') setPanelTitle('Sınıf Rehber Öğretmeni Paneli');
+        else if (profile.role === 'private_tutor') setPanelTitle('Özel Ders Öğretmeni Paneli');
+        else if (profile.role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
+      }
+
+      const { data, error } = await supabase
+        .from('parent_student_links')
+        .select(`
+          student_id,
+          profiles:student_id ( full_name, role )
+        `)
+        .eq('parent_id', user.id)
+        .limit(1);
+      
+      if (data && data.length > 0) {
+        setIsPaired(true);
+        setStudentId(data[0].student_id);
+        // Fallback for full_name if null, use email or generic
+        setStudentName((data[0].profiles as any)?.full_name || 'Öğrenci');
+      }
+    }
+    setLoading(false);
+  };
+
+  const handlePairing = async () => {
+    setErrorMessage('');
+    if (pairingCode.length < 6) {
+      setErrorMessage('Lütfen 6 haneli kodu eksiksiz girin.');
+      return;
+    }
+    
+    setLoading(true);
+    // Find student by pairing code
+    const { data: studentProfile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, full_name')
+      .eq('pairing_code', pairingCode.toUpperCase().trim())
+      .single();
+
+    if (profileError || !studentProfile) {
+      setErrorMessage(`Öğrenci bulunamadı. (Detay: ${profileError?.message || 'Bilinmiyor'})`);
+      setLoading(false);
+      return;
+    }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      // Create link
+      const { error: linkError } = await supabase
+        .from('parent_student_links')
+        .insert([{ parent_id: user.id, student_id: studentProfile.id }]);
+
+      if (linkError) {
+        setErrorMessage(`Bağlantı Hatası: ${linkError.message}`);
+      } else {
+        setStudentName(studentProfile.full_name || 'Öğrenci');
+        setStudentId(studentProfile.id);
+        setIsPaired(true);
+      }
+    }
+    setLoading(false);
+  };
+
+  const handlePremiumPurchase = () => {
+    Alert.alert('Premium Satın Al', 'Burada RevenueCat ile Apple/Google Pay ekranı açılacaktır.');
+  };
+
+  const handleAssignTask = async () => {
+    if (!newTaskTitle.trim()) {
+      return Alert.alert('Hata', 'Lütfen ders veya konu adı girin.');
+    }
+    const minutes = parseInt(newTaskMinutes);
+    if (isNaN(minutes) || minutes <= 0) {
+      return Alert.alert('Hata', 'Geçerli bir süre girin.');
+    }
+
+    setAssigningTask(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user && studentId) {
+      const { error } = await supabase.from('tasks').insert([{
+        student_id: studentId,
+        creator_id: user.id,
+        title: newTaskTitle.trim(),
+        planned_minutes: minutes,
+        status: 'bekliyor'
+      }]);
+
+      if (error) {
+        Alert.alert('Hata', 'Görev atanamadı: ' + error.message);
+      } else {
+        Alert.alert('Başarılı! 🎯', `${studentName} isimli öğrenciye görev atandı!`);
+        setNewTaskTitle('');
+        setNewTaskMinutes('50');
+        setIsTaskModalVisible(false);
+      }
+    }
+    setAssigningTask(false);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigation.replace('RoleSelection');
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-surface">
+      {loading ? (
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#fcd34d" />
+        </View>
+      ) : !isPaired ? (
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 p-6 justify-center">
+          <Text className="text-3xl font-extrabold text-text mb-2 mt-4">{panelTitle}</Text>
+          <Text className="text-gray-500 mb-10 text-base">Öğrencinizin gelişimini, ders çalışma sürelerini ve devamsızlıklarını anlık takip etmek için onun cihazındaki 6 haneli bağlantı kodunu girin.</Text>
+          
+          <View className="mb-8">
+            <Text className="text-gray-700 font-bold ml-1 mb-2 text-lg">Öğrenci Bağlantı Kodu</Text>
+            <TextInput 
+              className="bg-gray-50 px-5 py-6 rounded-2xl border border-gray-200 text-3xl tracking-widest uppercase font-extrabold text-center text-primary"
+              placeholder="XXXXXX"
+              placeholderTextColor="#cbd5e1"
+              maxLength={6}
+              autoCapitalize="characters"
+              value={pairingCode}
+              onChangeText={setPairingCode}
+            />
+            {errorMessage ? (
+              <Text className="text-red-500 font-bold mt-3 text-center px-2">{errorMessage}</Text>
+            ) : null}
+          </View>
+
+          <TouchableOpacity 
+            onPress={handlePairing}
+            className="bg-secondary w-full py-4 rounded-xl items-center mb-6 shadow-sm"
+          >
+            <Text className="text-white font-bold text-lg">Öğrenciyi Ekle</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            className="py-3 items-center mt-auto mb-4"
+            onPress={handleLogout}
+          >
+            <Text className="text-gray-400 font-bold">Çıkış Yap</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      ) : (
+        <ScrollView className="flex-1 p-6" style={{ flex: 1, padding: 24 }} showsVerticalScrollIndicator={false}>
+          <View className="flex-row justify-between items-center mb-6 mt-2" style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, marginTop: 8 }}>
+            <View>
+              <Text className="text-3xl font-extrabold text-text">{panelTitle}</Text>
+              <Text className="text-gray-500 font-medium">Bağlı Öğrenci: {studentName}</Text>
+            </View>
+            <TouchableOpacity 
+              className="bg-gray-100 p-3 rounded-xl"
+              onPress={handleLogout}
+            >
+              <Text className="text-gray-600 font-bold">Çıkış</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Hızlı Özet */}
+          <View className="flex-row justify-between mb-6" style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
+            <View className="bg-primary p-4 rounded-2xl w-[48%] items-center shadow-sm" style={{ padding: 16, width: '48%', alignItems: 'center' }}>
+              <Text className="text-white/80 font-bold text-xs mb-1">Bu Hafta Çalışılan</Text>
+              <Text className="text-2xl font-extrabold text-white">12 Saat</Text>
+            </View>
+            <View className="bg-red-50 p-4 rounded-2xl w-[48%] items-center border border-red-100 shadow-sm">
+              <Text className="text-red-400 font-bold text-xs mb-1">Devamsızlık</Text>
+              <Text className="text-2xl font-extrabold text-red-600">3.5 Gün</Text>
+            </View>
+          </View>
+
+          {/* Görev Ata Butonu */}
+          <TouchableOpacity 
+            onPress={() => setIsTaskModalVisible(true)}
+            className="bg-emerald-500 w-full py-5 rounded-2xl items-center shadow-sm mb-8 flex-row justify-center"
+            style={{ paddingVertical: 20, marginBottom: 32, flexDirection: 'row', justifyContent: 'center' }}
+          >
+            <Text className="text-white font-extrabold text-lg mr-2">🎯 Yeni Görev Ata (Planlama)</Text>
+          </TouchableOpacity>
+
+          {/* Kilitli İçerik / Premium Çağrısı */}
+          <View className="bg-amber-50 p-6 rounded-3xl mb-8 border-2 border-amber-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
+            <View className="absolute -right-4 -top-4 w-20 h-20 bg-amber-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
+            
+            <Text className="text-amber-800 font-extrabold text-xl mb-2" style={{ marginBottom: 8 }}>⭐ Premium Takip Aboneliği</Text>
+            <Text className="text-amber-700 mb-5 text-sm leading-5">
+              Öğrencinizin branş bazlı Türkiye geneli sıralamasını, zayıf olduğu konuları analiz eden yapay zeka raporunu ve anlık bildirimleri açmak için BrainMate Premium'a geçin.
+            </Text>
+            
+            <TouchableOpacity 
+              onPress={handlePremiumPurchase}
+              className="bg-amber-500 w-full py-4 rounded-xl items-center shadow-sm"
+            >
+              <Text className="text-white font-extrabold text-lg">Aylık 199₺ ile Kilidi Aç</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text className="text-xl font-extrabold text-gray-800 mb-4" style={{ marginBottom: 16 }}>Son Girilen Notlar</Text>
+          <View className="bg-white p-4 rounded-2xl mb-3 border border-gray-100 flex-row justify-between items-center shadow-sm" style={{ padding: 16, marginBottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text className="font-bold text-gray-700 text-base">Matematik 1. Sınav</Text>
+            <Text className="text-emerald-500 font-extrabold text-xl">85</Text>
+          </View>
+          <View className="bg-white p-4 rounded-2xl mb-3 border border-gray-100 flex-row justify-between items-center shadow-sm" style={{ padding: 16, marginBottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text className="font-bold text-gray-700 text-base">Fizik 1. Sınav</Text>
+            <Text className="text-amber-500 font-extrabold text-xl">60</Text>
+          </View>
+          <View style={{ height: 40 }} />
+          
+        </ScrollView>
+      )}
+
+      {/* Görev Atama Modalı */}
+      <Modal
+        visible={isTaskModalVisible}
+        transparent={true}
+        animationType="slide"
+      >
+        <View className="flex-1 bg-black/60 justify-end">
+          <View className="bg-white p-6 rounded-t-3xl">
+            <View className="flex-row justify-between items-center mb-6">
+              <Text className="text-2xl font-extrabold text-text">Yeni Görev Ata</Text>
+              <TouchableOpacity onPress={() => setIsTaskModalVisible(false)} className="bg-gray-100 p-2 rounded-full">
+                <Text className="text-gray-500 font-bold">Kapat</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text className="text-gray-700 font-bold ml-1 mb-2">Ders veya Konu Adı</Text>
+            <TextInput
+              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 font-bold text-text mb-4"
+              placeholder="Örn: Fizik - Elektrik Devreleri"
+              value={newTaskTitle}
+              onChangeText={setNewTaskTitle}
+            />
+
+            <Text className="text-gray-700 font-bold ml-1 mb-2">Hedeflenen Süre (Dakika)</Text>
+            <TextInput
+              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 font-bold text-text mb-8"
+              placeholder="50"
+              keyboardType="number-pad"
+              value={newTaskMinutes}
+              onChangeText={setNewTaskMinutes}
+            />
+
+            <TouchableOpacity
+              onPress={handleAssignTask}
+              disabled={assigningTask}
+              className={`w-full py-4 rounded-xl items-center shadow-sm mb-4 ${assigningTask ? 'bg-gray-400' : 'bg-secondary'}`}
+            >
+              {assigningTask ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-white font-bold text-lg">Öğrenciye Gönder</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+}
