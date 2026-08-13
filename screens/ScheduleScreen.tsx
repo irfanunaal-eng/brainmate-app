@@ -682,53 +682,58 @@ export default function ScheduleScreen({ navigation, route }: any) {
            </View>
            {isOkul && <Text className="text-gray-500 font-medium mb-4 text-xs leading-5">MEB kurallarına göre hafta içi 5 gün, günlük max 8 saate (Toplam 40 saat) dağıtılır.</Text>}
            
-           {isOkul && isSchoolQuotaLocked ? (
-             <View className="items-center py-6 bg-white rounded-2xl border border-gray-100 shadow-sm shadow-gray-50 mb-2">
-                <Text className="text-4xl mb-3">🔒</Text>
-                <Text className="text-gray-800 font-extrabold text-sm mb-1 text-center px-4">Bu Liste Kilitlendi</Text>
+           {/* IF UNLOCKED, show warning */}
+           {(isOkul && !isSchoolQuotaLocked) && (
+              <View className="mb-4 bg-orange-50 border border-orange-200 p-3 rounded-xl flex-row items-center shadow-sm shadow-orange-50/50">
+                <Text className="text-xl mr-2">⚠️</Text>
+                <Text className="text-[10px] flex-1 font-bold text-orange-800 leading-4">DİKKAT: Programı kaydettiğinizde bu liste Notlar sayfasıyla eşleşecek ve sonradan kolayca değiştirilememesi için <Text className="font-extrabold text-orange-900 underline">kilitlenecektir</Text>.</Text>
+              </View>
+           )}
+
+           {quota.length === 0 ? (
+             <Text className="text-gray-400 font-semibold italic text-xs py-2">Henüz ders saati yapılandırmadınız.</Text>
+           ) : (
+             <View className="flex-col">
+               {quota.map((q: any) => (
+                 <View key={q.id} className={`flex-row items-center mb-2 px-3 py-2 rounded-xl border shadow-sm ${isOkul && isSchoolQuotaLocked ? 'bg-gray-50 border-gray-200 opacity-80' : 'bg-white border-gray-100 shadow-gray-50'}`}>
+                    <TouchableOpacity disabled={isOkul && isSchoolQuotaLocked} onPress={() => openSubjectPickerForQuota(type, q.id)} className="flex-1 pr-2">
+                       <Text className={`font-bold text-[11px] ${q.name ? 'text-gray-800' : 'text-gray-400'}`} numberOfLines={2}>
+                           {q.name || "Ders Seç (Satıra tıkla)"}
+                       </Text>
+                    </TouchableOpacity>
+                    
+                    <View className={`flex-row items-center border rounded-xl h-9 px-1 ${isOkul && isSchoolQuotaLocked ? 'bg-gray-100 border-gray-300' : 'bg-gray-50 border-gray-200'}`}>
+                       <TextInput 
+                          editable={!(isOkul && isSchoolQuotaLocked)}
+                          value={q.hours} onChangeText={(v) => handleUpdate(q.id, 'hours', v)}
+                          keyboardType="numeric" maxLength={2} className={`w-10 text-center font-black h-full text-base ${isOkul && isSchoolQuotaLocked ? 'text-gray-500' : 'text-indigo-700'}`}
+                       />
+                       <Text className="text-[10px] text-gray-500 font-extrabold pr-2 pl-1">Saat</Text>
+                    </View>
+                 </View>
+               ))}
+             </View>
+           )}
+           
+           {/* Render ADD button ONLY if NOT locked */}
+           {!(isOkul && isSchoolQuotaLocked) && (
+               <TouchableOpacity onPress={handleAdd} className="mt-2 py-3 border-2 border-dashed border-indigo-200 rounded-xl items-center bg-indigo-50/50 active:bg-indigo-100">
+                  <Text className="text-indigo-600 font-extrabold text-xs">+ Yeni Ders Kotası Ekle</Text>
+               </TouchableOpacity>
+           )}
+
+           {/* IF LOCKED, show the lock widget (below the list) */}
+           {(isOkul && isSchoolQuotaLocked) && (
+             <View className="items-center mt-4 py-4 bg-white rounded-2xl border border-gray-100 shadow-sm shadow-gray-50">
+                <Text className="text-3xl mb-2">🔒</Text>
+                <Text className="text-gray-800 font-extrabold text-sm mb-1 text-center px-4">Liste Kullanıma Açık, Ancak Düzenlemeye Kilitli</Text>
                 <Text className="text-gray-500 font-medium text-[11px] text-center px-6 leading-5 mb-4">
-                   Okul programı saatleri "Notlar" (Grades) modülü ile doğrudan senkronizedir. Burada yapılacak değişiklikler önceden girdiğiniz not yapılandırmalarını sıfırlayabilir.
+                   Okul programı saatleri "Notlar" (Grades) modülü ile doğrudan senkronizedir. Saatlerde oynama yapmak önceden girdiğiniz not yapılandırmalarını bozabilir.
                 </Text>
                 <TouchableOpacity onPress={() => setUnlockModalVisible(true)} className="bg-gray-100 border border-gray-200 px-6 py-2.5 rounded-xl active:bg-gray-200">
                     <Text className="text-gray-700 font-black text-xs">Kilidi Aç ve Düzenle</Text>
                 </TouchableOpacity>
              </View>
-           ) : (
-             <>
-               {isOkul && (
-                  <View className="mb-4 bg-orange-50 border border-orange-200 p-3 rounded-xl flex-row items-center shadow-sm shadow-orange-50/50">
-                    <Text className="text-xl mr-2">⚠️</Text>
-                    <Text className="text-[10px] flex-1 font-bold text-orange-800 leading-4">DİKKAT: Programı kaydettiğinizde bu liste Notlar sayfasıyla eşleşecek ve sonradan kolayca değiştirilememesi için <Text className="font-extrabold text-orange-900 underline">kilitlenecektir</Text>.</Text>
-                  </View>
-               )}
-               {quota.length === 0 ? (
-                 <Text className="text-gray-400 font-semibold italic text-xs py-2">Henüz ders saati yapılandırmadınız.</Text>
-               ) : (
-                 <View className="flex-col">
-                   {quota.map((q: any) => (
-                     <View key={q.id} className="flex-row items-center bg-white mb-2 px-3 py-2 rounded-xl border border-gray-100 shadow-sm shadow-gray-50">
-                        <TouchableOpacity onPress={() => openSubjectPickerForQuota(type, q.id)} className="flex-1 pr-2">
-                           <Text className={`font-bold text-[11px] ${q.name ? 'text-gray-800' : 'text-gray-400'}`} numberOfLines={2}>
-                               {q.name || "Ders Seç (Satıra tıkla)"}
-                           </Text>
-                        </TouchableOpacity>
-                        
-                        <View className="flex-row items-center border border-gray-200 rounded-xl bg-gray-50 h-9 px-1">
-                           <TextInput 
-                              value={q.hours} onChangeText={(v) => handleUpdate(q.id, 'hours', v)}
-                              keyboardType="numeric" maxLength={2} className="w-10 text-center font-black text-indigo-700 h-full text-base"
-                           />
-                           <Text className="text-[10px] text-gray-500 font-extrabold pr-2 pl-1">Saat</Text>
-                        </View>
-                     </View>
-                   ))}
-                 </View>
-               )}
-               
-               <TouchableOpacity onPress={handleAdd} className="mt-2 py-3 border-2 border-dashed border-indigo-200 rounded-xl items-center bg-indigo-50/50 active:bg-indigo-100">
-                  <Text className="text-indigo-600 font-extrabold text-xs">+ Yeni Ders Kotası Ekle</Text>
-               </TouchableOpacity>
-             </>
            )}
            
            <View className="mt-4 pt-4 border-t border-gray-200/60 flex-row justify-between items-center">
