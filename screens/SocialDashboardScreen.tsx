@@ -47,7 +47,32 @@ export function SocialDashboardScreen({ navigation }: any) {
     );
   };
 
-  const handleChangeRelation = (friendId: string, relId: string, relLabel: string) => {
+  const handleChangeRelation = (friendId: string, relId: string, relLabel: string, isRemoval: boolean = false) => {
+    if (isRemoval) {
+      Alert.alert(
+        'Etiketi Kaldır',
+        `Arkadaşından "${relLabel}" etiketini tek taraflı olarak kaldırmak istediğine emin misin?`,
+        [
+          { text: 'Vazgeç', style: 'cancel' },
+          { 
+            text: 'Evet, Kaldır', 
+            style: 'destructive',
+            onPress: () => {
+              setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: null } : f));
+              setSelectedFriend(null);
+              setTimeout(() => {
+                Alert.alert(
+                  'Etiket Kaldırıldı 🗑️', 
+                  `Bağlantı etiketi başarıyla iptal edildi. Karşı tarafa bilgilendirme mesajı gönderildi.`
+                );
+              }, 500);
+            } 
+          }
+        ]
+      );
+      return;
+    }
+
     Alert.alert(
       'Bağlantı İsteği',
       `Arkadaşına "${relLabel}" etiketi isteği göndermek istediğinden emin misin?`,
@@ -56,7 +81,6 @@ export function SocialDashboardScreen({ navigation }: any) {
         { 
           text: 'Evet, Gönder', 
           onPress: () => {
-            // Apply the tag instantly upon user confirmation, then notify them about the pending status
             setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: relId } : f));
             setSelectedFriend(null);
             
@@ -167,16 +191,19 @@ export function SocialDashboardScreen({ navigation }: any) {
              </View>
 
              <View className="mb-6">
-               {RELATION_TYPES.map(rel => (
-                 <TouchableOpacity 
-                   key={rel.id} 
-                   onPress={() => handleChangeRelation(selectedFriend?.id, rel.id, rel.label)}
-                   className={`flex-row items-center p-4 mb-2 rounded-2xl border ${selectedFriend?.relation === rel.id ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}
-                 >
-                    <Text className={`flex-1 font-bold ${selectedFriend?.relation === rel.id ? 'text-indigo-700' : 'text-gray-600'}`}>{rel.label}</Text>
-                    {selectedFriend?.relation === rel.id && <Text>✅</Text>}
-                 </TouchableOpacity>
-               ))}
+               {RELATION_TYPES.map(rel => {
+                 const isSelected = selectedFriend?.relation === rel.id;
+                 return (
+                   <TouchableOpacity 
+                     key={rel.id} 
+                     onPress={() => handleChangeRelation(selectedFriend?.id, rel.id, rel.label, isSelected)}
+                     className={`flex-row items-center p-4 mb-2 rounded-2xl border ${isSelected ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}
+                   >
+                      <Text className={`flex-1 font-bold ${isSelected ? 'text-indigo-700' : 'text-gray-600'}`}>{rel.label}</Text>
+                      {isSelected && <Text>✅</Text>}
+                   </TouchableOpacity>
+                 );
+               })}
              </View>
 
              <View className="border-t border-gray-100 pt-6">
