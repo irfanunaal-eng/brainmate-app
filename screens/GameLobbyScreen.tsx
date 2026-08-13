@@ -65,7 +65,8 @@ export function GameLobbyScreen() {
             <TouchableOpacity 
               key={level.id}
               disabled={!level.unlocked}
-              className={`flex-row items-center border p-5 mb-3 rounded-2xl ${level.unlocked ? 'bg-white border-gray-100 shadow-sm shadow-gray-100' : 'bg-gray-50 border-gray-200 opacity-60'}`}
+              onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, mode: selectedMode })}
+              className={`flex-row items-center border p-5 mb-3 rounded-2xl ${level.unlocked ? 'bg-white border-gray-100 shadow-sm shadow-gray-100 active:bg-gray-50' : 'bg-gray-50 border-gray-200 opacity-60'}`}
             >
               <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${level.unlocked ? 'bg-indigo-100' : 'bg-gray-200'}`}>
                 {level.unlocked ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">🔒</Text>}
@@ -91,24 +92,6 @@ export function GameLobbyScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-
-        {/* Start Game Floating Button */}
-        <View className="absolute bottom-6 left-6 right-6">
-          <TouchableOpacity 
-             onPress={() => {
-                if (selectedMode === 'solo') {
-                  navigation.navigate('EnglishGameScreen');
-                } else {
-                  // Duel logic later
-                }
-             }}
-             className={`w-full py-4 rounded-xl flex-row justify-center items-center shadow-lg ${selectedMode === 'solo' ? 'bg-indigo-600 shadow-indigo-600/30' : 'bg-rose-500 shadow-rose-600/30'}`}
-          >
-             <Text className="text-white font-extrabold text-lg mr-2">
-               {selectedMode === 'solo' ? '▶️ Antrenmana Başla' : '⚔️ Rakip Seç ve Oyna'}
-             </Text>
-          </TouchableOpacity>
-        </View>
 
       </View>
     </SafeAreaView>
