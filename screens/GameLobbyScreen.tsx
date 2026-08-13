@@ -3,11 +3,11 @@ import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Animated } from
 import { useNavigation } from '@react-navigation/native';
 
 const LEVELS = [
-  { id: '200', title: 'İlk 200 Kelime', desc: 'Başlangıç Seviyesi (A1)', unlocked: true, stars: 3 },
-  { id: '500', title: 'İlk 500 Kelime', desc: 'Temel Seviye (A2)', unlocked: true, stars: 1 },
-  { id: '1000', title: 'İlk 1000 Kelime', desc: 'Orta Seviye (B1)', unlocked: false, stars: 0 },
-  { id: '2000', title: 'İlk 2000 Kelime', desc: 'İleri Seviye (B2)', unlocked: false, stars: 0 },
-  { id: '3000', title: 'İlk 3000 Kelime', desc: 'Akıcı (C1)', unlocked: false, stars: 0 },
+  { id: '200', title: 'İlk 200 Kelime', desc: 'Başlangıç Seviyesi (A1)', unlocked: true, stars: 3, stages: 10, words: 20 },
+  { id: '500', title: 'İlk 500 Kelime', desc: 'Temel Seviye (A2)', unlocked: true, stars: 1, stages: 20, words: 25 },
+  { id: '1000', title: 'İlk 1000 Kelime', desc: 'Orta Seviye (B1)', unlocked: true, stars: 0, stages: 20, words: 50 },
+  { id: '2000', title: 'İlk 2000 Kelime', desc: 'İleri Seviye (B2)', unlocked: false, stars: 0, stages: 40, words: 50 },
+  { id: '3000', title: 'İlk 3000 Kelime', desc: 'Akıcı (C1)', unlocked: false, stars: 0, stages: 60, words: 50 },
 ];
 
 export function GameLobbyScreen() {
@@ -97,8 +97,8 @@ export function GameLobbyScreen() {
               {expandedLevel === level.id && (
                 <View className="bg-indigo-50/50 rounded-b-2xl border border-t-0 border-indigo-100 p-2 mx-2">
                    <View className="flex-row flex-wrap justify-between p-2">
-                     {[...Array(10)].map((_, i) => {
-                        const isStageUnlocked = i < 2; // Demo: first two are unlocked
+                     {[...Array(level.stages)].map((_, i) => {
+                        const isStageUnlocked = i < 3; // Demo: first three stages unlocked
                         return (
                           <TouchableOpacity 
                             key={i}
@@ -107,7 +107,7 @@ export function GameLobbyScreen() {
                             className={`w-[48%] py-3 mb-2 rounded-xl items-center border ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
                           >
                              <Text className={`font-bold ${isStageUnlocked ? 'text-indigo-800' : 'text-gray-400'}`}>Aşama {i+1}</Text>
-                             <Text className="text-[10px] text-gray-400 mt-0.5">20 Kelime</Text>
+                             <Text className="text-[10px] text-gray-400 mt-0.5">{level.words} Kelime</Text>
                           </TouchableOpacity>
                         );
                      })}
