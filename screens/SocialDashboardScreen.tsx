@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, Modal } from 'react-native';
 
 const RELATION_TYPES = [
+  { id: 'kalp', label: '💕 Canım / Sevgilim' },
+  { id: 'kanka', label: '🤞 Öz Kardeşim / Kankam' },
   { id: 'rakip', label: '⚔️ Ebedi Rakip' },
-  { id: 'kanka', label: '🤝 Yakın Arkadaş' },
   { id: 'guven', label: '🛡️ Sonsuz Güven' },
   { id: 'yeni', label: '👋 Yeni Tanıştık' },
   { id: 'ehiste', label: '🤷‍♂️ Eh İşte' }
@@ -46,9 +47,19 @@ export function SocialDashboardScreen({ navigation }: any) {
     );
   };
 
-  const handleChangeRelation = (friendId: string, relId: string) => {
-    setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: relId } : f));
-    setSelectedFriend(null);
+  const handleChangeRelation = (friendId: string, relId: string, relLabel: string) => {
+    Alert.alert(
+      'İstek Gönderildi 📩',
+      `"${relLabel}" etiketi için karşı tarafa bildirim gönderildi. Karşı taraf mesaj kutusundan bu isteği onayladığında etiketiniz karşılıklı olarak aktifleşecek!`,
+      [{ 
+        text: 'Tamam', 
+        onPress: () => {
+          // Simulate pending UI status by directly mutating local state immediately for demo purposes
+          setFriends(prev => prev.map(f => f.id === friendId ? { ...f, relation: relId } : f));
+          setSelectedFriend(null);
+        } 
+      }]
+    );
   };
 
   const renderFriendItem = ({ item, index }: any) => {
@@ -149,7 +160,7 @@ export function SocialDashboardScreen({ navigation }: any) {
                {RELATION_TYPES.map(rel => (
                  <TouchableOpacity 
                    key={rel.id} 
-                   onPress={() => handleChangeRelation(selectedFriend?.id, rel.id)}
+                   onPress={() => handleChangeRelation(selectedFriend?.id, rel.id, rel.label)}
                    className={`flex-row items-center p-4 mb-2 rounded-2xl border ${selectedFriend?.relation === rel.id ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}
                  >
                     <Text className={`flex-1 font-bold ${selectedFriend?.relation === rel.id ? 'text-indigo-700' : 'text-gray-600'}`}>{rel.label}</Text>
