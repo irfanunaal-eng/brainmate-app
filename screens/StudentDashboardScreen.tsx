@@ -259,59 +259,92 @@ export function StudentDashboardScreen({ navigation }: any) {
       </ScrollView>
 
       {/* Scrollable Bottom Navigation Bar */}
-      <View className="bg-white border-t border-gray-100 pt-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-6">
+      <View className="bg-white border-t border-gray-100 pt-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-8">
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
-          <TouchableOpacity onPress={() => {}} className="items-center justify-center bg-indigo-50 border-2 border-indigo-200 w-[56px] h-[56px] rounded-2xl mr-4 shadow-sm shadow-indigo-100">
-            <Text className="text-3xl">🏠</Text>
-          </TouchableOpacity>
           
-          <TouchableOpacity onPress={() => setIsCodeModalVisible(true)} className="items-center justify-center bg-gray-50 border-2 border-gray-200 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">🔑</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => {}} className="items-center justify-center bg-indigo-50 border-2 border-indigo-200 w-[56px] h-[56px] rounded-2xl shadow-sm shadow-indigo-100 mb-1">
+              <Text className="text-3xl">🏠</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-indigo-700">Ana Sayfa</Text>
+          </View>
+          
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('NotesScreen')} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">📌</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-fuchsia-700">Notlar/Ödevler</Text>
+          </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">🗓️</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🗓️</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-orange-700">Programım</Text>
+          </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">📝</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">📝</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-teal-700">Notlarım</Text>
+          </View>
           
-          <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">🚦</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🚦</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-cyan-700">Devamsızlık</Text>
+          </View>
+          
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">📚</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-emerald-700">Eğitimler</Text>
+          </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('NotesScreen')} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">📅</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('AcademicDashboard')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">📊</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-amber-700">Akademik</Text>
+          </View>
           
-          <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">📚</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğretmeninle veya koçunla mesajlaş.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">💬</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-blue-700">Mesajlar</Text>
+          </View>
           
-          <TouchableOpacity onPress={() => Alert.alert('Görevlerim', 'Sana atanan görevleri buradan görebileceksin.')} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">🎯</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🎮</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-purple-700">Oyunlar</Text>
+          </View>
+          
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Başarımların ve kazandığın rozetler!')} className="items-center justify-center bg-yellow-50 border-2 border-yellow-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🏆</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-yellow-700">Rozetler</Text>
+          </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('AcademicDashboard')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">📊</Text>
-          </TouchableOpacity>
+          <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => setIsCodeModalVisible(true)} className="items-center justify-center bg-gray-50 border-2 border-gray-200 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🔑</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-gray-600">Kod</Text>
+          </View>
           
-          <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">🎮</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Başarımların ve kazandığın rozetler!')} className="items-center justify-center bg-yellow-50 border-2 border-yellow-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">🏆</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğretmeninle veya koçunla mesajlaş.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mr-4">
-            <Text className="text-3xl">💬</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-red-50 border-2 border-red-100 w-[56px] h-[56px] rounded-2xl">
-            <Text className="text-3xl">🚪</Text>
-          </TouchableOpacity>
+          <View className="items-center">
+            <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-red-50 border-2 border-red-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🚪</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-red-700">Çıkış</Text>
+          </View>
         </ScrollView>
       </View>
 
@@ -326,8 +359,8 @@ export function StudentDashboardScreen({ navigation }: any) {
               </TouchableOpacity>
             </View>
 
-            <Text className="text-gray-500 mb-6 text-base">
-              Öğretmenlerinin veya velinin profilini takip edebilmesi için bu kodu kullanabilirsin. Bir kez bağlandıktan sonra yeni kod üretmene gerek yoktur.
+            <Text className="text-gray-600 mb-6 text-[13px] font-medium leading-5">
+              Öğretmenlerinin veya velinin profilini takip edebilmesi için bu kodu kullanabilirsin. Ayrıca arkadaşlarına kodunu gönder, bağlantı kur ve birlikte oynayarak öğrenin! Bir kez bağlandıktan sonra yeni kod üretmene gerek yoktur.
             </Text>
             
             <View className="bg-gray-50 p-8 rounded-3xl mb-8 w-full items-center border border-gray-200">

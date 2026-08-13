@@ -242,6 +242,10 @@ export function ParentDashboardScreen({ navigation }: any) {
               <Text className="text-4xl">🏠</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity onPress={() => navigation.navigate('LocationTrackingScreen')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mr-4">
+              <Text className="text-4xl">📍</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
               <Text className="text-4xl">🗓️</Text>
             </TouchableOpacity>

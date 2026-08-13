@@ -20,6 +20,8 @@ import { GradesScreen } from './screens/GradesScreen';
 import { AttendanceScreen } from './screens/AttendanceScreen';
 import { NotesScreen } from './screens/NotesScreen';
 
+import LocationTrackingScreen from './screens/LocationTrackingScreen';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -42,6 +44,7 @@ export default function App() {
         <Stack.Screen name="GradesScreen" component={GradesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AttendanceScreen" component={AttendanceScreen} options={{ headerShown: false }} />
         <Stack.Screen name="NotesScreen" component={NotesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="LocationTrackingScreen" component={LocationTrackingScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
