@@ -4,26 +4,37 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-// Mock Vocabulary DB for initial 200 Level (Demo subset)
-const WORD_DB = [
-  { en: 'Time', tr: 'Zaman' },
-  { en: 'Person', tr: 'Kişi' },
-  { en: 'Year', tr: 'Yıl' },
-  { en: 'Way', tr: 'Yol' },
-  { en: 'Day', tr: 'Gün' },
-  { en: 'Thing', tr: 'Şey' },
-  { en: 'Man', tr: 'Adam' },
-  { en: 'World', tr: 'Dünya' },
-  { en: 'Life', tr: 'Hayat' },
-  { en: 'Hand', tr: 'El' },
-  { en: 'Part', tr: 'Parça' },
-  { en: 'Child', tr: 'Çocuk' },
-  { en: 'Eye', tr: 'Göz' },
-  { en: 'Woman', tr: 'Kadın' },
-  { en: 'Place', tr: 'Yer' },
-];
+const ROOT_WORD_DB: Record<string, {en: string, tr: string}[]> = {
+  'A1': [
+    { en: 'Time', tr: 'Zaman' }, { en: 'Person', tr: 'Kişi' }, { en: 'Year', tr: 'Yıl' },
+    { en: 'Way', tr: 'Yol' }, { en: 'Day', tr: 'Gün' }, { en: 'Thing', tr: 'Şey' },
+    { en: 'Man', tr: 'Adam' }, { en: 'World', tr: 'Dünya' }, { en: 'Life', tr: 'Hayat' }
+  ],
+  'A2': [
+    { en: 'Accept', tr: 'Kabul Etmek' }, { en: 'Account', tr: 'Hesap' }, { en: 'Achieve', tr: 'Başarmak' },
+    { en: 'Across', tr: 'Karşısında' }, { en: 'Action', tr: 'Eylem' }, { en: 'Active', tr: 'Aktif' },
+    { en: 'Activity', tr: 'Aktivite' }, { en: 'Actually', tr: 'Aslında' }, { en: 'Address', tr: 'Adres' }
+  ],
+  'B1': [
+    { en: 'Absolute', tr: 'Kesin' }, { en: 'Academic', tr: 'Akademik' }, { en: 'Accident', tr: 'Kaza' },
+    { en: 'Accompany', tr: 'Eşlik Etmek' }, { en: 'Accomplish', tr: 'Gerçekleştirmek' }, { en: 'Accurate', tr: 'Doğru' },
+    { en: 'Accuse', tr: 'Suçlamak' }, { en: 'Acknowledge', tr: 'Kabul Etmek' }, { en: 'Acquire', tr: 'Edinmek' }
+  ],
+  'B2': [
+    { en: 'Consequence', tr: 'Sonuç' }, { en: 'Distinct', tr: 'Belirgin' }, { en: 'Elaborate', tr: 'Ayrıntılı' },
+    { en: 'Fundamental', tr: 'Temel' }, { en: 'Hypothesis', tr: 'Varsayım' }, { en: 'Inevitable', tr: 'Kaçınılmaz' },
+    { en: 'Justify', tr: 'Haklı Çıkarmak' }, { en: 'Notion', tr: 'Kavram' }, { en: 'Profound', tr: 'Derin' }
+  ],
+  'C1': [
+    { en: 'Ubiquitous', tr: 'Her Yerde Olan' }, { en: 'Ephemeral', tr: 'Geçici' }, { en: 'Obfuscate', tr: 'Kafasını Karıştırmak' },
+    { en: 'Mellifluous', tr: 'Kulağa Hoş Gelen' }, { en: 'Sycophant', tr: 'Dalkavuk' }, { en: 'Fastidious', tr: 'Titiz' },
+    { en: 'Recalcitrant', tr: 'İnatçı' }, { en: 'Ennui', tr: 'Can Sıkıntısı' }, { en: 'Panacea', tr: 'Her Derde Deva' }
+  ]
+};
 
 export function EnglishGameScreen({ route }: any) {
+  const { levelId } = route.params || { levelId: 'A1' };
+  const DB = ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1'];
   const navigation = useNavigation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -33,12 +44,12 @@ export function EnglishGameScreen({ route }: any) {
   const [gameHistory, setGameHistory] = useState<{en: string, tr: string, correct: boolean}[]>([]);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
   
-  const currentWord = WORD_DB[currentWordIndex % WORD_DB.length];
+  const currentWord = DB[currentWordIndex % DB.length];
 
   // Generate dynamic options when word changes
   useEffect(() => {
     // Pick 3 random wrong answers
-    const wrongAnswers = WORD_DB
+    const wrongAnswers = DB
       .filter(w => w.en !== currentWord.en)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
@@ -148,7 +159,7 @@ export function EnglishGameScreen({ route }: any) {
             </TouchableOpacity>
             <View>
                <Text className="text-indigo-800 font-extrabold text-xl">{score} XP</Text>
-               <Text className="text-gray-400 text-xs font-bold">İlk 200 Kelime (Solo)</Text>
+               <Text className="text-gray-400 text-xs font-bold">{levelId} Seviyesi</Text>
             </View>
          </View>
 
