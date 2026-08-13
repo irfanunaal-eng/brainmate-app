@@ -170,7 +170,7 @@ export function SocialDashboardScreen({ navigation }: any) {
 
         <TouchableOpacity 
           className="bg-primary w-full py-4 rounded-xl items-center mt-4 shadow-sm"
-          onPress={() => Alert.alert('Yakında', 'Sıra tabanlı oyun lobisi çok yakında açılacak!')}
+          onPress={() => navigation.navigate('GameLobbyScreen')}
         >
           <Text className="text-white font-bold text-lg">🎮 Oyun Lobisine Gir</Text>
         </TouchableOpacity>
