@@ -457,9 +457,20 @@ export function StudentDashboardScreen({ navigation }: any) {
             <TouchableOpacity 
               onPress={handleSaveProfile}
               disabled={loading}
-              className={`w-full py-4 rounded-xl items-center shadow-sm ${loading ? 'bg-primary/50' : 'bg-primary active:bg-indigo-700'}`}
+              className={`w-full py-4 rounded-xl items-center shadow-sm mb-4 ${loading ? 'bg-primary/50' : 'bg-primary active:bg-indigo-700'}`}
             >
               <Text className="text-white font-bold text-lg">{loading ? 'Kaydediliyor...' : 'Kaydet'}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              onPress={() => { setIsProfileModalVisible(false); navigation.navigate('Schedule'); }} 
+              className="bg-indigo-50 border border-indigo-100 px-5 py-3.5 rounded-xl w-full flex-row justify-between items-center active:bg-indigo-100"
+            >
+                <View className="flex-1 pr-4">
+                  <Text className="text-indigo-900 font-extrabold text-sm mb-1">Akademik Profil Tanımlaması</Text>
+                  <Text className="text-indigo-600/80 font-bold text-[10px] leading-3">Sınıfını ve eğitim yılını ders programından belirleyebilirsin.</Text>
+                </View>
+                <Text className="text-3xl">🏫</Text>
             </TouchableOpacity>
           </View>
         </View>
