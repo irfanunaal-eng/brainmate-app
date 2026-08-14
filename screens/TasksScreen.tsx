@@ -248,6 +248,11 @@ export function TasksScreen({ navigation, route }: any) {
     }
   };
 
+  // Filter logic: Parent and Student sees all tasks. Role users see only their OWN tasks.
+  const visibleTasks = (userRole === 'student' || userRole === 'parent')
+    ? tasks
+    : tasks.filter(t => t.assignedByRole === userFullName);
+
   // ----- RENDERS -----
 
   if (viewingTask) {
@@ -418,13 +423,13 @@ export function TasksScreen({ navigation, route }: any) {
              </View>
           ) : (
             <View>
-              {tasks.length === 0 ? (
+              {visibleTasks.length === 0 ? (
                  <View className="items-center justify-center p-10 bg-slate-50 border border-dashed border-slate-200 rounded-3xl mt-4">
                     <Text className="text-4xl mb-4">📭</Text>
                     <Text className="text-slate-500 font-bold text-center">Henüz atanmış bir görev veya belge bulunmuyor.</Text>
                  </View>
               ) : (
-                 tasks.map(task => {
+                 visibleTasks.map(task => {
                     const isCompleted = task.status === 'completed';
                     return (
                       <TouchableOpacity 

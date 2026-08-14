@@ -6,6 +6,7 @@ export function LoginScreen({ route, navigation }: any) {
   const { role } = route.params;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigateToDashboard = () => {
@@ -25,11 +26,16 @@ export function LoginScreen({ route, navigation }: any) {
   };
 
   const handleRegister = async () => {
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      Alert.alert('Eksik Bilgi', 'Kayıt olmak için Ad Soyad, E-posta ve Şifre alanlarının tamamını doldurmalısınız.');
+      return;
+    }
+
     setLoading(true);
     const { data: authData, error } = await supabase.auth.signUp({ 
       email, 
       password,
-      options: { data: { role: role } }
+      options: { data: { role: role, full_name: fullName.trim() } }
     });
     if (error) {
       Alert.alert('Hata', error.message);
@@ -37,7 +43,7 @@ export function LoginScreen({ route, navigation }: any) {
       // Profili upsert yap (Eski hesaplarda veya trigger calismadiginda foreign_key hatasini onlemek icin)
       await supabase
         .from('profiles')
-        .upsert({ id: authData.user.id, role: role, pairing_code: null })
+        .upsert({ id: authData.user.id, role: role, pairing_code: null, full_name: fullName.trim() })
         .select();
 
       // Not: E-posta doğrulaması kapalıysa direkt giriş yapmış sayılır
@@ -114,6 +120,17 @@ export function LoginScreen({ route, navigation }: any) {
               <Text className="text-amber-900 font-extrabold text-lg">Tek Tıkla Giriş (Test Hesabı)</Text>
             </TouchableOpacity>
           )}
+
+          <View className="mb-4" style={{ marginBottom: 16 }}>
+            <Text className="text-gray-700 font-bold mb-2 ml-1">Ad Soyad (Yeni Kayıt İçin)</Text>
+            <TextInput 
+              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 text-base"
+              placeholder="Örn: Ahmet Yılmaz"
+              autoCapitalize="words"
+              value={fullName}
+              onChangeText={setFullName}
+            />
+          </View>
 
           <View className="mb-4" style={{ marginBottom: 16 }}>
             <Text className="text-gray-700 font-bold mb-2 ml-1">E-posta Adresi</Text>

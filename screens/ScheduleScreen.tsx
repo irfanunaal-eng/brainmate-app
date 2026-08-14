@@ -131,7 +131,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
 
   useEffect(() => {
     fetchSchedules();
-  }, []);
+  }, [onboardYear]);
 
   const handleAutoPopulateCurriculum = async () => {
      let mappingKey = onboardGrade;
@@ -158,20 +158,20 @@ export default function ScheduleScreen({ navigation, route }: any) {
         setSchoolQuota(generatedQuota);
         setIsSchoolQuotaLocked(true);
         if (resolvedStudentId) {
-           await AsyncStorage.setItem(`@school_quota_${resolvedStudentId}`, JSON.stringify(generatedQuota));
+           await AsyncStorage.setItem(`@school_quota_${resolvedStudentId}_${onboardYear}`, JSON.stringify(generatedQuota));
         }
      }
 
      setShowOnboardingModal(false);
      if (resolvedStudentId) {
-        await AsyncStorage.setItem(`@onboarded_schedule_${resolvedStudentId}`, 'true');
+        await AsyncStorage.setItem(`@onboarded_schedule_${resolvedStudentId}_${onboardYear}`, 'true');
      }
   };
 
   const checkOnboardingStatus = async (sId: string, role: string) => {
      if (role !== 'student') return; // Only prompt onboarding if user is actual student
      try {
-        const status = await AsyncStorage.getItem(`@onboarded_schedule_${sId}`);
+        const status = await AsyncStorage.getItem(`@onboarded_schedule_${sId}_${onboardYear}`);
         if (!status) setShowOnboardingModal(true);
      } catch (e) {}
   };
@@ -247,19 +247,21 @@ export default function ScheduleScreen({ navigation, route }: any) {
       let schedules: any[] = [];
       try {
         const { data: schedulesData, error } = await supabase
-          .from('schedules').select('*').eq('student_id', targetStudentId);
+          .from('schedules').select('*')
+          .eq('student_id', targetStudentId)
+          .eq('academic_year', onboardYear);
         
         if (error) throw error;
         schedules = schedulesData || [];
         
         // Cache for offline/parent transparent access explicitly
         if (schedules.length > 0) {
-           await AsyncStorage.setItem(`@offline_schedules_${targetStudentId}`, JSON.stringify(schedules));
+           await AsyncStorage.setItem(`@offline_schedules_${targetStudentId}_${onboardYear}`, JSON.stringify(schedules));
         } else {
            throw new Error("Empty remote");
         }
       } catch (err) {
-         const cached = await AsyncStorage.getItem(`@offline_schedules_${targetStudentId}`);
+         const cached = await AsyncStorage.getItem(`@offline_schedules_${targetStudentId}_${onboardYear}`);
          if (cached) {
             schedules = JSON.parse(cached);
          }
@@ -272,7 +274,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
 
       // Load quotas directly from storage preventing override resets
       try {
-         const sq = await AsyncStorage.getItem(`@school_quota_${targetStudentId}`);
+         const sq = await AsyncStorage.getItem(`@school_quota_${targetStudentId}_${onboardYear}`);
          if (sq) {
             const parsed = JSON.parse(sq);
             setSchoolQuota(parsed);
@@ -313,7 +315,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
               allSchedulesToInsert.push({
                 student_id: targetStudentId, creator_id: currentUserId,
                 day_of_week: idx + 1, start_time: startFormat, end_time: endFormat,
-                title: title.trim(), schedule_type: type,
+                title: title.trim(), schedule_type: type, academic_year: onboardYear
               });
             }
           });
@@ -325,21 +327,21 @@ export default function ScheduleScreen({ navigation, route }: any) {
       appendToInsert(ozelDersGrid, 'ozel_ders');
       appendToInsert(etutGrid, 'etut');
 
-      // First delete old ones for this student
-      const { error: deleteError } = await supabase.from('schedules').delete().eq('student_id', targetStudentId);
+      // First delete old ones for this student THIS YEAR
+      const { error: deleteError } = await supabase.from('schedules').delete().eq('student_id', targetStudentId).eq('academic_year', onboardYear);
       if (deleteError) throw deleteError;
 
       // Insert new ones
       if (allSchedulesToInsert.length > 0) {
         // Cache to storage immediately mirroring successful renders structurally
-        await AsyncStorage.setItem(`@offline_schedules_${targetStudentId}`, JSON.stringify(allSchedulesToInsert));
+        await AsyncStorage.setItem(`@offline_schedules_${targetStudentId}_${onboardYear}`, JSON.stringify(allSchedulesToInsert));
         try {
            const { error: insertError } = await supabase.from('schedules').insert(allSchedulesToInsert);
            if (insertError) console.warn("Supabase insert error bypassed by cache", insertError);
         } catch (e) { console.warn("Remote save skipped", e); }
       }
       
-      await AsyncStorage.setItem(`@school_quota_${targetStudentId}`, JSON.stringify(schoolQuota));
+      await AsyncStorage.setItem(`@school_quota_${targetStudentId}_${onboardYear}`, JSON.stringify(schoolQuota));
       setIsSchoolQuotaLocked(true);
 
       Alert.alert('Başarılı', 'Ders programın başarıyla güncellendi!');
@@ -869,7 +871,11 @@ export default function ScheduleScreen({ navigation, route }: any) {
         <Text className="text-lg flex-1 font-extrabold text-gray-800" numberOfLines={1}>Sınıf Listem & Program</Text>
         
         <View className="flex-row items-center">
-          <TouchableOpacity onPress={promptImagePicker} className="items-center justify-center w-10 h-10 bg-gray-100 rounded-full active:bg-gray-200 mr-2">
+          <TouchableOpacity onPress={() => setShowOnboardingModal(true)} className="items-center justify-center h-10 px-3 flex-row bg-gray-100 rounded-xl active:bg-gray-200 mr-2 shadow-sm">
+            <Text className="text-xl mr-1 mb-0.5">⚙️</Text>
+            <Text className="text-[11px] font-black text-gray-700">Yıl/Sınıf</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={promptImagePicker} className="items-center justify-center w-10 h-10 bg-gray-100 rounded-full active:bg-gray-200 mr-2 shadow-sm">
             <Text className="text-xl">🤖</Text>
           </TouchableOpacity>
           <TouchableOpacity 
@@ -1067,10 +1073,15 @@ export default function ScheduleScreen({ navigation, route }: any) {
       <Modal visible={showOnboardingModal} animationType="slide" transparent={true}>
         <View className="flex-1 justify-center items-center bg-black/60 px-4">
           <View className="bg-white rounded-3xl p-6 shadow-2xl w-full max-h-[85%]">
-             <View className="items-center mb-6">
-                <Text className="text-4xl mb-2">🏫</Text>
-                <Text className="text-xl font-black text-indigo-900 text-center mb-2">Okul Programı Sihirbazı</Text>
-                <Text className="text-gray-500 text-xs font-medium text-center">MEB müfredatına uygun ders saatlerinizi otomatik olarak oluşturmak için lütfen sınıf çeşidinizi seçin.</Text>
+             <View className="flex-row justify-between items-start mb-6">
+                 <View className="flex-1 items-center px-4">
+                    <Text className="text-4xl mb-2">🏫</Text>
+                    <Text className="text-xl font-black text-indigo-900 text-center mb-2">Okul Profil Ayarları</Text>
+                    <Text className="text-gray-500 text-xs font-medium text-center">Öğretim yılınızı veya sınıfınızı güncelleyerek farklı yıllara ait ajandalarınızı yönetebilirsiniz.</Text>
+                 </View>
+                 <TouchableOpacity onPress={() => setShowOnboardingModal(false)} className="bg-gray-100 px-3 py-2 rounded-full absolute right-0 top-0">
+                    <Text className="font-extrabold text-gray-500">Kapat</Text>
+                 </TouchableOpacity>
              </View>
 
              <ScrollView showsVerticalScrollIndicator={false} className="w-full">
