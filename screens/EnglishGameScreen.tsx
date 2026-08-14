@@ -4,33 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-const ROOT_WORD_DB: Record<string, {en: string, tr: string}[]> = {
-  'A1': [
-    { en: 'Time', tr: 'Zaman' }, { en: 'Person', tr: 'Kişi' }, { en: 'Year', tr: 'Yıl' },
-    { en: 'Way', tr: 'Yol' }, { en: 'Day', tr: 'Gün' }, { en: 'Thing', tr: 'Şey' },
-    { en: 'Man', tr: 'Adam' }, { en: 'World', tr: 'Dünya' }, { en: 'Life', tr: 'Hayat' }
-  ],
-  'A2': [
-    { en: 'Accept', tr: 'Kabul Etmek' }, { en: 'Account', tr: 'Hesap' }, { en: 'Achieve', tr: 'Başarmak' },
-    { en: 'Across', tr: 'Karşısında' }, { en: 'Action', tr: 'Eylem' }, { en: 'Active', tr: 'Aktif' },
-    { en: 'Activity', tr: 'Aktivite' }, { en: 'Actually', tr: 'Aslında' }, { en: 'Address', tr: 'Adres' }
-  ],
-  'B1': [
-    { en: 'Absolute', tr: 'Kesin' }, { en: 'Academic', tr: 'Akademik' }, { en: 'Accident', tr: 'Kaza' },
-    { en: 'Accompany', tr: 'Eşlik Etmek' }, { en: 'Accomplish', tr: 'Gerçekleştirmek' }, { en: 'Accurate', tr: 'Doğru' },
-    { en: 'Accuse', tr: 'Suçlamak' }, { en: 'Acknowledge', tr: 'Kabul Etmek' }, { en: 'Acquire', tr: 'Edinmek' }
-  ],
-  'B2': [
-    { en: 'Consequence', tr: 'Sonuç' }, { en: 'Distinct', tr: 'Belirgin' }, { en: 'Elaborate', tr: 'Ayrıntılı' },
-    { en: 'Fundamental', tr: 'Temel' }, { en: 'Hypothesis', tr: 'Varsayım' }, { en: 'Inevitable', tr: 'Kaçınılmaz' },
-    { en: 'Justify', tr: 'Haklı Çıkarmak' }, { en: 'Notion', tr: 'Kavram' }, { en: 'Profound', tr: 'Derin' }
-  ],
-  'C1': [
-    { en: 'Ubiquitous', tr: 'Her Yerde Olan' }, { en: 'Ephemeral', tr: 'Geçici' }, { en: 'Obfuscate', tr: 'Kafasını Karıştırmak' },
-    { en: 'Mellifluous', tr: 'Kulağa Hoş Gelen' }, { en: 'Sycophant', tr: 'Dalkavuk' }, { en: 'Fastidious', tr: 'Titiz' },
-    { en: 'Recalcitrant', tr: 'İnatçı' }, { en: 'Ennui', tr: 'Can Sıkıntısı' }, { en: 'Panacea', tr: 'Her Derde Deva' }
-  ]
-};
+import * as Speech from 'expo-speech';
+
+const ROOT_WORD_DB = require('../assets/vocabulary.json');
 
 export function EnglishGameScreen({ route }: any) {
   const { levelId } = route.params || { levelId: 'A1' };
@@ -43,6 +19,7 @@ export function EnglishGameScreen({ route }: any) {
   const [isGameOver, setIsGameOver] = useState(false);
   const [gameHistory, setGameHistory] = useState<{en: string, tr: string, correct: boolean}[]>([]);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
+  const [feedback, setFeedback] = useState<{ visible: boolean; correct: boolean } | null>(null);
   
   const currentWord = DB[currentWordIndex % DB.length];
 
@@ -50,19 +27,26 @@ export function EnglishGameScreen({ route }: any) {
   useEffect(() => {
     // Pick 3 random wrong answers
     const wrongAnswers = DB
-      .filter(w => w.en !== currentWord.en)
+      .filter((w: any) => w.en !== currentWord.en)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
-      .map(w => w.tr);
+      .map((w: any) => w.tr);
     
     // Combine with correct answer and shuffle
     const combined = [...wrongAnswers, currentWord.tr].sort(() => 0.5 - Math.random());
     setCurrentOptions(combined);
   }, [currentWordIndex]);
 
+  // Read word aloud when it appears
+  useEffect(() => {
+    if (!isGameOver && !feedback) {
+      Speech.speak(currentWord.en, { language: 'en' });
+    }
+  }, [currentWordIndex, isGameOver, feedback]);
+
   // Timer simulation
   useEffect(() => {
-    if (isGameOver) return;
+    if (isGameOver || feedback) return;
     
     timerAnimated.setValue(100);
     Animated.timing(timerAnimated, {
@@ -76,17 +60,12 @@ export function EnglishGameScreen({ route }: any) {
     });
 
     return () => timerAnimated.stopAnimation();
-  }, [currentWordIndex, isGameOver]);
+  }, [currentWordIndex, isGameOver, feedback]);
 
   const handleWrongAnswer = (wordObj: any) => {
     setGameHistory(prev => [...prev, { en: wordObj.en, tr: wordObj.tr, correct: false }]);
-    if (lives > 1) {
-      setLives(prev => prev - 1);
-      setCurrentWordIndex(prev => prev + 1);
-    } else {
-      setLives(0);
-      setIsGameOver(true);
-    }
+    setFeedback({ visible: true, correct: false });
+    Speech.speak(wordObj.sentence || 'No example', { language: 'en' });
   };
 
   const handleOptionPress = (selectedOption: string) => {
@@ -95,10 +74,26 @@ export function EnglishGameScreen({ route }: any) {
       // Correct
       setGameHistory(prev => [...prev, { en: currentWord.en, tr: currentWord.tr, correct: true }]);
       setScore(prev => prev + 10);
-      setCurrentWordIndex(prev => prev + 1);
+      setFeedback({ visible: true, correct: true });
+      Speech.speak(currentWord.sentence || 'Great job', { language: 'en' });
     } else {
       // Wrong
       handleWrongAnswer(currentWord);
+    }
+  };
+
+  const handleNextWord = () => {
+    setFeedback(null);
+    if (!feedback?.correct) {
+      if (lives > 1) {
+        setLives(prev => prev - 1);
+        setCurrentWordIndex(prev => prev + 1);
+      } else {
+        setLives(0);
+        setIsGameOver(true);
+      }
+    } else {
+      setCurrentWordIndex(prev => prev + 1);
     }
   };
 
@@ -117,9 +112,9 @@ export function EnglishGameScreen({ route }: any) {
              {gameHistory.map((item, idx) => (
                 <View key={idx} className="flex-row items-center border-b border-gray-50 py-3">
                    <Text className="text-xl mr-3">{item.correct ? '✅' : '❌'}</Text>
-                   <View>
+                   <View className="flex-1">
                      <Text className={`font-bold text-base ${item.correct ? 'text-gray-800' : 'text-red-500'}`}>{item.en}</Text>
-                     <Text className="text-xs text-gray-400">Doğrusu: {item.tr}</Text>
+                     <Text className="text-xs text-gray-500 font-medium">Anlamı: {item.tr}</Text>
                    </View>
                 </View>
              ))}
@@ -147,6 +142,34 @@ export function EnglishGameScreen({ route }: any) {
         </TouchableOpacity>
       </SafeAreaView>
     );
+  }
+
+  if (feedback) {
+     return (
+        <SafeAreaView className="flex-1 justify-center p-6 bg-surface">
+           <View className={`items-center p-8 rounded-3xl border-4 ${feedback.correct ? 'bg-emerald-50 border-emerald-500 shadow-emerald-200' : 'bg-rose-50 border-rose-500 shadow-rose-200'} shadow-lg mb-8`}>
+              <Text className="text-7xl mb-4">{feedback.correct ? '🎯' : '❌'}</Text>
+              <Text className={`text-4xl font-black mb-2 ${feedback.correct ? 'text-emerald-700' : 'text-rose-700'}`}>{currentWord.en}</Text>
+              <Text className="text-lg font-bold text-gray-500 uppercase tracking-widest mb-6">{currentWord.tr}</Text>
+
+              {currentWord.sentence ? (
+                 <View className="bg-white/60 p-4 rounded-2xl w-full">
+                    <Text className="text-center font-bold text-gray-800 italic mb-2">"{currentWord.sentence.split('(')[0].trim()}"</Text>
+                    {currentWord.sentence.includes('(') && (
+                      <Text className="text-center text-xs font-medium text-gray-500">{currentWord.sentence.split('(')[1].replace(')', '').trim()}</Text>
+                    )}
+                 </View>
+              ) : null}
+           </View>
+
+           <TouchableOpacity 
+              onPress={handleNextWord}
+              className={`w-full py-5 rounded-2xl items-center shadow-lg ${feedback.correct ? 'bg-emerald-600 shadow-emerald-500/30' : 'bg-rose-600 shadow-rose-500/30'}`}
+           >
+              <Text className="text-white font-extrabold text-xl">Devam Et {feedback.correct ? '👍' : '💔'}</Text>
+           </TouchableOpacity>
+        </SafeAreaView>
+     );
   }
 
   return (
