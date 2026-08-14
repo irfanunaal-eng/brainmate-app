@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { scanScheduleImage } from '../lib/ai-scanner';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Modal, Keyboard } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
   ACADEMIC_YEARS, GRADES, TRACKS_ANADOLU, TRACKS_MESLEK, 
@@ -1020,47 +1021,54 @@ export default function ScheduleScreen({ navigation, route }: any) {
              </View>
 
              <ScrollView showsVerticalScrollIndicator={false} className="w-full">
-                <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide">Öğretim Yılı</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
-                   {ACADEMIC_YEARS.map(y => (
-                      <TouchableOpacity key={y} onPress={() => setOnboardYear(y)} className={`mr-2 px-4 py-2 rounded-xl border ${onboardYear === y ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}>
-                         <Text className={`font-bold ${onboardYear === y ? 'text-indigo-700' : 'text-gray-500'}`}>{y}</Text>
-                      </TouchableOpacity>
-                   ))}
-                </ScrollView>
+                <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+                   <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Öğretim Yılı</Text>
+                   <Picker
+                      selectedValue={onboardYear}
+                      onValueChange={(itemValue) => setOnboardYear(itemValue)}
+                      style={{ marginHorizontal: -10 }}
+                   >
+                      {ACADEMIC_YEARS.map(y => <Picker.Item key={y} label={y} value={y} color="#4f46e5" />)}
+                   </Picker>
+                </View>
 
-                <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide">Kaçıncı Sınıfsın?</Text>
-                <View className="flex-row flex-wrap mb-4">
-                   {GRADES.map(g => (
-                      <TouchableOpacity key={g.id} onPress={() => setOnboardGrade(g.id)} className={`mr-2 mb-2 px-3 py-2 rounded-xl border ${onboardGrade === g.id ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}>
-                         <Text className={`font-bold ${onboardGrade === g.id ? 'text-indigo-700' : 'text-gray-500'}`}>{g.id}. Sınıf</Text>
-                      </TouchableOpacity>
-                   ))}
+                <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+                   <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Kaçıncı Sınıfsın?</Text>
+                   <Picker
+                      selectedValue={onboardGrade}
+                      onValueChange={(itemValue) => setOnboardGrade(itemValue)}
+                      style={{ marginHorizontal: -10 }}
+                   >
+                      {GRADES.map(g => <Picker.Item key={g.id} label={g.label} value={g.id} color="#4f46e5" />)}
+                   </Picker>
                 </View>
 
                 {(onboardGrade === '11' || onboardGrade === '12') && (
                    <>
-                      <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide mt-2">Okul Türün Nedir?</Text>
-                      <View className="flex-row space-x-2 mb-4 w-full">
-                         <TouchableOpacity onPress={() => setIsAnadoluTrack(true)} className={`flex-1 py-3 rounded-xl border items-center ${isAnadoluTrack ? 'bg-emerald-50 border-emerald-500' : 'bg-gray-50 border-gray-200'}`}>
-                            <Text className={`font-bold text-xs ${isAnadoluTrack ? 'text-emerald-700' : 'text-gray-500'}`}>Anadolu / Genel Lise</Text>
-                         </TouchableOpacity>
-                         <TouchableOpacity onPress={() => setIsAnadoluTrack(false)} className={`flex-1 py-3 rounded-xl border items-center ${!isAnadoluTrack ? 'bg-emerald-50 border-emerald-500' : 'bg-gray-50 border-gray-200'}`}>
-                            <Text className={`font-bold text-xs ${!isAnadoluTrack ? 'text-emerald-700' : 'text-gray-500'}`}>Mesleki / Teknik Lise</Text>
-                         </TouchableOpacity>
+                      <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+                         <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Okul Türün Nedir?</Text>
+                         <Picker
+                            selectedValue={isAnadoluTrack ? 'anadolu' : 'meslek'}
+                            onValueChange={(itemValue) => setIsAnadoluTrack(itemValue === 'anadolu')}
+                            style={{ marginHorizontal: -10 }}
+                         >
+                            <Picker.Item label="Anadolu / Genel Lise" value="anadolu" color="#10b981" />
+                            <Picker.Item label="Mesleki / Teknik Lise" value="meslek" color="#10b981" />
+                         </Picker>
                       </View>
 
                       {isAnadoluTrack ? (
-                         <>
-                            <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide mt-1">Hangi Alandasın?</Text>
-                            <View className="flex-row flex-wrap mb-4">
-                               {TRACKS_ANADOLU.map(t => (
-                                  <TouchableOpacity key={t.id} onPress={() => setOnboardTrack(t.id)} className={`mr-2 mb-2 px-3 py-2 rounded-xl border ${onboardTrack === t.id ? 'bg-blue-50 border-blue-500' : 'bg-gray-50 border-gray-200'}`}>
-                                     <Text className={`font-bold text-xs ${onboardTrack === t.id ? 'text-blue-700' : 'text-gray-500'}`}>{t.label}</Text>
-                                  </TouchableOpacity>
-                               ))}
-                            </View>
-                         </>
+                         <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+                            <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Hangi Alandasın?</Text>
+                            <Picker
+                               selectedValue={onboardTrack}
+                               onValueChange={(itemValue) => setOnboardTrack(itemValue)}
+                               style={{ marginHorizontal: -10 }}
+                            >
+                               <Picker.Item label="- Alan Seçiniz -" value="" color="#9ca3af" />
+                               {TRACKS_ANADOLU.map(t => <Picker.Item key={t.id} label={t.label} value={t.id} color="#3b82f6" />)}
+                            </Picker>
+                         </View>
                       ) : (
                          <View className="mb-4 bg-orange-50 border border-orange-100 p-3 rounded-xl">
                             <Text className="text-orange-800 text-xs font-bold mb-1">Meslek Lisesi Bilgisi</Text>
