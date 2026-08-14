@@ -388,7 +388,7 @@ export function TasksScreen({ navigation, route }: any) {
           <Text className="text-lg">🔙</Text>
         </TouchableOpacity>
         
-        {__DEV__ && (
+        {(__DEV__ && canWrite) && (
            <TouchableOpacity onPress={handleDevWipeTasks} className="w-10 h-10 ml-2 items-center justify-center bg-red-100 rounded-full shadow-sm">
              <Text className="text-lg">🧹</Text>
            </TouchableOpacity>
