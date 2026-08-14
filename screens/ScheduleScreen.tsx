@@ -6,13 +6,18 @@ import { scanScheduleImage } from '../lib/ai-scanner';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Modal, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { 
+  ACADEMIC_YEARS, GRADES, TRACKS_ANADOLU, TRACKS_MESLEK, 
+  MEB_MANDATORY_COURSES, MEB_MANDATORY_MESLEK_GENERIC, MEB_ELECTIVES 
+} from '../constants/MebCurriculum';
 
 const DAYS = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
-const SUBJECTS = [
+const SUBJECTS = Array.from(new Set([
   'Türk Dili ve Edebiyatı', 'Matematik', 'Geometri', 'Fizik', 'Kimya', 'Biyoloji',
   'Tarih', 'Coğrafya', 'Felsefe', 'Din Kültürü', 'İngilizce', 'İkinci Yabancı Dil',
-  'Beden Eğitimi', 'Görsel Sanatlar', 'Müzik', 'Rehberlik', 'Etüt / Bireysel'
-];
+  'Beden Eğitimi', 'Görsel Sanatlar', 'Müzik', 'Rehberlik', 'Etüt / Bireysel',
+  ...MEB_ELECTIVES
+]));
 
 type GridRow = {
   id: string;
@@ -37,6 +42,8 @@ export default function ScheduleScreen({ navigation, route }: any) {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   
+  const [isAnadoluTrack, setIsAnadoluTrack] = useState(true);
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [pickerMeta, setPickerMeta] = useState<{type: string, rowIndex: number, field: 'start'|'end', date: Date} | null>(null);
 
@@ -81,9 +88,58 @@ export default function ScheduleScreen({ navigation, route }: any) {
 
   const passedStudentId = route.params?.studentId;
 
+  // Onboarding Hooks
+  const [showOnboardingModal, setShowOnboardingModal] = useState(false);
+  const [onboardYear, setOnboardYear] = useState(ACADEMIC_YEARS[3]);
+  const [onboardGrade, setOnboardGrade] = useState('9');
+  const [onboardTrack, setOnboardTrack] = useState('');
+
   useEffect(() => {
     fetchSchedules();
   }, []);
+
+  const handleAutoPopulateCurriculum = async () => {
+     let mappingKey = onboardGrade;
+     if (onboardGrade === '11' || onboardGrade === '12') {
+         if (isAnadoluTrack) {
+            mappingKey = onboardTrack ? `${onboardGrade}_${onboardTrack}` : `${onboardGrade}_sayisal`;
+         } else {
+            mappingKey = 'meslek_generic';
+         }
+     }
+
+     let mandatoryList = MEB_MANDATORY_COURSES[mappingKey];
+     if (!mandatoryList && !isAnadoluTrack) {
+        mandatoryList = MEB_MANDATORY_MESLEK_GENERIC;
+     }
+
+     const resolvedStudentId = passedStudentId || currentUserId;
+     if (mandatoryList) {
+        const generatedQuota = mandatoryList.map(item => ({
+           id: Math.random().toString(36).substr(2, 9),
+           name: item.name,
+           hours: item.hours.toString()
+        }));
+        setSchoolQuota(generatedQuota);
+        setIsSchoolQuotaLocked(true);
+        if (resolvedStudentId) {
+           await AsyncStorage.setItem(`@school_quota_${resolvedStudentId}`, JSON.stringify(generatedQuota));
+        }
+     }
+
+     setShowOnboardingModal(false);
+     if (resolvedStudentId) {
+        await AsyncStorage.setItem(`@onboarded_schedule_${resolvedStudentId}`, 'true');
+     }
+  };
+
+  const checkOnboardingStatus = async (sId: string, role: string) => {
+     if (role !== 'student') return; // Only prompt onboarding if user is actual student
+     try {
+        const status = await AsyncStorage.getItem(`@onboarded_schedule_${sId}`);
+        if (!status) setShowOnboardingModal(true);
+     } catch (e) {}
+  };
 
   const populateGrid = (allSchedules: any[], types: string[], rowCount: number, setGrid: any) => {
     const filtered = allSchedules.filter(s => types.includes(s.schedule_type));
@@ -173,6 +229,8 @@ export default function ScheduleScreen({ navigation, route }: any) {
             if (parsed && parsed.length > 0) setIsSchoolQuotaLocked(true);
          } else hydrateQuotasFromSchedules(schedules); // fallback
       } catch(e) { hydrateQuotasFromSchedules(schedules); }
+
+      checkOnboardingStatus(targetStudentId, role);
 
     } catch (error: any) {
       console.error('Error fetching schedules:', error.message);
@@ -947,6 +1005,78 @@ export default function ScheduleScreen({ navigation, route }: any) {
                  <Text className="text-white font-black text-center text-sm">Kilidi Aç</Text>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Onboarding Curriculum Automation Modal */}
+      <Modal visible={showOnboardingModal} animationType="slide" transparent={true}>
+        <View className="flex-1 justify-center items-center bg-black/60 px-4">
+          <View className="bg-white rounded-3xl p-6 shadow-2xl w-full max-h-[85%]">
+             <View className="items-center mb-6">
+                <Text className="text-4xl mb-2">🏫</Text>
+                <Text className="text-xl font-black text-indigo-900 text-center mb-2">Okul Programı Sihirbazı</Text>
+                <Text className="text-gray-500 text-xs font-medium text-center">MEB müfredatına uygun ders saatlerinizi otomatik olarak oluşturmak için lütfen sınıf çeşidinizi seçin.</Text>
+             </View>
+
+             <ScrollView showsVerticalScrollIndicator={false} className="w-full">
+                <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide">Öğretim Yılı</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+                   {ACADEMIC_YEARS.map(y => (
+                      <TouchableOpacity key={y} onPress={() => setOnboardYear(y)} className={`mr-2 px-4 py-2 rounded-xl border ${onboardYear === y ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}>
+                         <Text className={`font-bold ${onboardYear === y ? 'text-indigo-700' : 'text-gray-500'}`}>{y}</Text>
+                      </TouchableOpacity>
+                   ))}
+                </ScrollView>
+
+                <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide">Kaçıncı Sınıfsın?</Text>
+                <View className="flex-row flex-wrap mb-4">
+                   {GRADES.map(g => (
+                      <TouchableOpacity key={g.id} onPress={() => setOnboardGrade(g.id)} className={`mr-2 mb-2 px-3 py-2 rounded-xl border ${onboardGrade === g.id ? 'bg-indigo-50 border-indigo-500' : 'bg-gray-50 border-gray-200'}`}>
+                         <Text className={`font-bold ${onboardGrade === g.id ? 'text-indigo-700' : 'text-gray-500'}`}>{g.id}. Sınıf</Text>
+                      </TouchableOpacity>
+                   ))}
+                </View>
+
+                {(onboardGrade === '11' || onboardGrade === '12') && (
+                   <>
+                      <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide mt-2">Okul Türün Nedir?</Text>
+                      <View className="flex-row space-x-2 mb-4 w-full">
+                         <TouchableOpacity onPress={() => setIsAnadoluTrack(true)} className={`flex-1 py-3 rounded-xl border items-center ${isAnadoluTrack ? 'bg-emerald-50 border-emerald-500' : 'bg-gray-50 border-gray-200'}`}>
+                            <Text className={`font-bold text-xs ${isAnadoluTrack ? 'text-emerald-700' : 'text-gray-500'}`}>Anadolu / Genel Lise</Text>
+                         </TouchableOpacity>
+                         <TouchableOpacity onPress={() => setIsAnadoluTrack(false)} className={`flex-1 py-3 rounded-xl border items-center ${!isAnadoluTrack ? 'bg-emerald-50 border-emerald-500' : 'bg-gray-50 border-gray-200'}`}>
+                            <Text className={`font-bold text-xs ${!isAnadoluTrack ? 'text-emerald-700' : 'text-gray-500'}`}>Mesleki / Teknik Lise</Text>
+                         </TouchableOpacity>
+                      </View>
+
+                      {isAnadoluTrack ? (
+                         <>
+                            <Text className="text-xs font-extrabold text-gray-400 mb-2 uppercase tracking-wide mt-1">Hangi Alandasın?</Text>
+                            <View className="flex-row flex-wrap mb-4">
+                               {TRACKS_ANADOLU.map(t => (
+                                  <TouchableOpacity key={t.id} onPress={() => setOnboardTrack(t.id)} className={`mr-2 mb-2 px-3 py-2 rounded-xl border ${onboardTrack === t.id ? 'bg-blue-50 border-blue-500' : 'bg-gray-50 border-gray-200'}`}>
+                                     <Text className={`font-bold text-xs ${onboardTrack === t.id ? 'text-blue-700' : 'text-gray-500'}`}>{t.label}</Text>
+                                  </TouchableOpacity>
+                               ))}
+                            </View>
+                         </>
+                      ) : (
+                         <View className="mb-4 bg-orange-50 border border-orange-100 p-3 rounded-xl">
+                            <Text className="text-orange-800 text-xs font-bold mb-1">Meslek Lisesi Bilgisi</Text>
+                            <Text className="text-orange-600 text-[10px] leading-4">Meslek liselerinde MEB ortak zorunlu dersleri otomatik atanacaktır. Kendi meslek alanına (Bilişim, Sağlık, Elektrik vb.) ait "Mesleki Uygulama" saatlerini programı oluşturduktan sonra Düzenle menüsünden ekleyebilirsin.</Text>
+                         </View>
+                      )}
+                   </>
+                )}
+             </ScrollView>
+
+             <TouchableOpacity onPress={handleAutoPopulateCurriculum} className="w-full bg-indigo-600 py-4 rounded-xl items-center shadow-lg shadow-indigo-200 mt-4">
+                <Text className="text-white font-black text-base">Zorunlu MEB Saatlerimi Yükle</Text>
+             </TouchableOpacity>
+             <TouchableOpacity onPress={() => setShowOnboardingModal(false)} className="w-full py-3 mt-2 rounded-xl items-center">
+                <Text className="text-gray-400 font-bold text-sm">İptal Et (Ben Kendim Yazacağım)</Text>
+             </TouchableOpacity>
           </View>
         </View>
       </Modal>
