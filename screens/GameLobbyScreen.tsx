@@ -14,7 +14,7 @@ export function GameLobbyScreen() {
   const navigation = useNavigation<any>();
   const [selectedMode, setSelectedMode] = useState<'solo' | 'duel'>('solo');
   const [expandedLevel, setExpandedLevel] = useState<string | null>(null);
-  const [adminOverride, setAdminOverride] = useState(true);
+  const [adminOverride, setAdminOverride] = useState(false);
 
   const toggleLevel = (id: string, isUnlocked: boolean) => {
     if (!isUnlocked) return;
