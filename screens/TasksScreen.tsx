@@ -5,6 +5,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
+import { WebView } from 'react-native-webview';
+import { Modal } from 'react-native';
 import { supabase } from '../lib/supabase';
 
 type TaskDoc = {
@@ -40,6 +42,9 @@ export function TasksScreen({ navigation, route }: any) {
   // Student View State
   const [viewingTask, setViewingTask] = useState<TaskDoc | null>(null);
   const [viewMode, setViewMode] = useState<'full' | 'bullets'>('full');
+  
+  // Immersive PDF Viewer State (primarily iOS or external fallbacks)
+  const [pdfViewerUri, setPdfViewerUri] = useState<string | null>(null);
 
   const canWrite = userRole !== 'student';
 
@@ -196,28 +201,38 @@ export function TasksScreen({ navigation, route }: any) {
        Alert.alert('Hata', 'İndirilecek fiziksel dosya bulunamadı.');
        return;
     }
+    
+    // For iOS, natively render the local PDF inside our invisible WebView Modal fullscreen!
+    if (Platform.OS === 'ios') {
+       if (name?.toLowerCase().endsWith('.pdf')) {
+          setPdfViewerUri(uri);
+          return;
+       } else {
+          // If it's not a PDF, fallback to iOS Quick Look via Share
+          await Sharing.shareAsync(uri, { UTI: 'public.document' });
+          return;
+       }
+    }
+
+    // For Android, try to push to the local OS PDF Viewer (Google Drive PDF Viewer etc.)
     try {
-      if (Platform.OS === 'android') {
-        try {
-           const cUri = await (FileSystem as any).getContentUriAsync(uri);
-           await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-             data: cUri,
-             flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
-             type: name?.toLowerCase().endsWith('.pdf') ? 'application/pdf' : '*/*'
-           });
-        } catch(intentErr) {
-           await Sharing.shareAsync(uri, { dialogTitle: 'Görüntüle: ' + name });
-        }
-      } else {
-         const isAvailable = await Sharing.isAvailableAsync();
-         if (isAvailable) {
-           await Sharing.shareAsync(uri, { UTI: name?.toLowerCase().endsWith('.pdf') ? 'com.adobe.pdf' : 'public.document' });
-         } else {
-           Alert.alert('Hata', 'Görüntüleme/Paylaşma cihazda desteklenmiyor.');
-         }
-      }
-    } catch (err) {
-      Alert.alert('Hata', 'Dosya açılamadı, geçici bellekten silinmiş olabilir.');
+       const cUri = await (FileSystem as any).getContentUriAsync(uri);
+       await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+         data: cUri,
+         flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
+         type: name?.toLowerCase().endsWith('.pdf') ? 'application/pdf' : '*/*'
+       });
+    } catch(intentErr: any) {
+       console.log('Intent Error:', intentErr);
+       // If no PDF viewer is installed (common in emulators), alert them cleanly.
+       Alert.alert(
+         'PDF Okuyucu Bulunamadı', 
+         'Cihazınızda (veya simülatörünüzde) bu dosyayı açacak bir PDF/Belge okuyucu uygulama yüklü değil. Dosyayı paylaş menüsüyle dışarı aktarabilirsiniz.',
+         [
+           { text: 'İptal', style: 'cancel' },
+           { text: 'Paylaş', onPress: () => Sharing.shareAsync(uri, { dialogTitle: 'Belgeyi Paylaş: ' + name }) }
+         ]
+       );
     }
   };
 
@@ -302,6 +317,27 @@ export function TasksScreen({ navigation, route }: any) {
            )}
 
         </ScrollView>
+
+        {/* Built-in iOS Native PDF Viewer Modal */}
+        <Modal visible={!!pdfViewerUri} animationType="slide" presentationStyle="pageSheet">
+           <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+              <View className="flex-row justify-between items-center p-4 bg-gray-900">
+                 <Text className="font-bold text-white text-lg ml-2">PDF Görüntüleyici</Text>
+                 <TouchableOpacity onPress={() => setPdfViewerUri(null)} className="bg-gray-800 px-4 py-2 rounded-full">
+                    <Text className="font-bold text-white">Kapat</Text>
+                 </TouchableOpacity>
+              </View>
+              {pdfViewerUri && (
+                 <WebView 
+                    source={{ uri: pdfViewerUri }} 
+                    style={{ flex: 1 }} 
+                    originWhitelist={['*']}
+                    allowFileAccess={true}
+                 />
+              )}
+           </SafeAreaView>
+        </Modal>
+
       </SafeAreaView>
     );
   }
