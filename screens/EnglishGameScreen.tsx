@@ -23,10 +23,24 @@ export function EnglishGameScreen({ route }: any) {
   
   const currentWord = DB[currentWordIndex % DB.length];
 
-  const playVoice = (text: string) => {
+  const playVoice = async (text: string) => {
     if (!text) return;
     try {
-      Speech.speak(text, { language: 'en-US' });
+      Speech.stop();
+      const voices = await Speech.getAvailableVoicesAsync();
+      
+      // Attempt to resolve universally known friendly female iOS English voices
+      const preferredFemaleNames = ['Samantha', 'Karen', 'Moira', 'Tessa', 'Nicky', 'Victoria'];
+      let selectedVoice = voices.find(v => v.language.startsWith('en') && preferredFemaleNames.some(name => v.name.includes(name)));
+      
+      const voiceId = selectedVoice ? selectedVoice.identifier : undefined;
+
+      Speech.speak(text, { 
+        language: 'en-US', 
+        voice: voiceId,
+        rate: 0.9, 
+        pitch: 1.2 
+      });
     } catch (e) {
       console.log('Speech error:', e);
     }
