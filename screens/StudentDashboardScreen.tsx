@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ActivityIndicator, Share, Alert, ScrollView, Modal, TextInput } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { supabase } from '../lib/supabase';
-import { ACADEMIC_YEARS, GRADES } from '../constants/MebCurriculum';
+import { ACADEMIC_YEARS, GRADES, TRACKS_ANADOLU } from '../constants/MebCurriculum';
 
 const InlineDropdown = ({ label, value, options, onSelect }: any) => {
   const [open, setOpen] = useState(false);
@@ -61,6 +61,8 @@ export function StudentDashboardScreen({ navigation }: any) {
   const [editName, setEditName] = useState('');
   const [editYear, setEditYear] = useState(ACADEMIC_YEARS[3]);
   const [editGrade, setEditGrade] = useState('9');
+  const [editTrack, setEditTrack] = useState('');
+  const [editIsAnadolu, setEditIsAnadolu] = useState(true);
 
   useEffect(() => {
     fetchDashboardData();
@@ -90,6 +92,8 @@ export function StudentDashboardScreen({ navigation }: any) {
         // Ensure supabase 'profiles' has academic_year and grade initialized properly in real DB
         if ((profile as any).academic_year) setEditYear((profile as any).academic_year);
         if ((profile as any).grade) setEditGrade((profile as any).grade);
+        if ((profile as any).school_track) setEditTrack((profile as any).school_track);
+        if ((profile as any).school_type) setEditIsAnadolu((profile as any).school_type === 'anadolu');
       }
 
       // 2. Fetch Today's Schedule
@@ -203,7 +207,9 @@ export function StudentDashboardScreen({ navigation }: any) {
         .update({ 
            full_name: editName.trim(),
            academic_year: editYear,
-           grade: editGrade
+           grade: editGrade,
+           school_track: editTrack,
+           school_type: editIsAnadolu ? 'anadolu' : 'meslek'
         // Error bypassed locally if academic_year missing in test env
         } as any)
         .eq('id', user.id);
@@ -519,6 +525,37 @@ export function StudentDashboardScreen({ navigation }: any) {
                   options={GRADES.map(g => ({ label: g.label, value: g.id }))}
                   onSelect={setEditGrade}
                />
+               
+               {(editGrade === '11' || editGrade === '12') && (
+                  <>
+                     <InlineDropdown 
+                        label="Okul Türün Nedir?"
+                        value={editIsAnadolu ? 'anadolu' : 'meslek'}
+                        options={[
+                           { label: 'Anadolu / Genel Lise', value: 'anadolu' },
+                           { label: 'Mesleki / Teknik Lise', value: 'meslek' }
+                        ]}
+                        onSelect={(v: string) => setEditIsAnadolu(v === 'anadolu')}
+                     />
+
+                     {editIsAnadolu ? (
+                        <InlineDropdown 
+                           label="Hangi Alandasın?"
+                           value={editTrack}
+                           options={[
+                              { label: '- Alan Seçiniz -', value: '' },
+                              ...TRACKS_ANADOLU.map(t => ({ label: t.label, value: t.id }))
+                           ]}
+                           onSelect={setEditTrack}
+                        />
+                     ) : (
+                        <View className="mb-4 bg-orange-50 border border-orange-100 p-3 rounded-xl">
+                           <Text className="text-orange-800 text-xs font-bold mb-1">Meslek Lisesi Bilgisi</Text>
+                           <Text className="text-orange-600 text-[10px] leading-4">Zorunlu derslerin atanırken alan bazlı teknik derslerini manuel olarak ders programından ekleyebilirsin.</Text>
+                        </View>
+                     )}
+                  </>
+               )}
             </View>
 
             <TouchableOpacity 
