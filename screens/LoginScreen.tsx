@@ -97,16 +97,20 @@ export function LoginScreen({ route, navigation }: any) {
     <SafeAreaView className="flex-1 bg-surface">
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1 px-6 justify-center relative"
+        className="flex-1 px-6 justify-center"
       >
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()} 
-          className="absolute top-12 left-6 z-10 w-10 h-10 items-center justify-center bg-gray-100 rounded-full"
-        >
-          <Text className="text-xl">🔙</Text>
-        </TouchableOpacity>
-
-        <Text className="text-4xl font-extrabold text-gray-800 mb-2 mt-16">{roleText} Girişi</Text>
+        <View className="flex-row items-start mb-2 mt-4">
+           <TouchableOpacity 
+             onPress={() => navigation.goBack()} 
+             className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full mr-4 mt-1"
+           >
+             <Text className="text-xl">🔙</Text>
+           </TouchableOpacity>
+           <View className="flex-1">
+              <Text className="text-4xl font-extrabold text-gray-800" numberOfLines={2}>{roleText} Girişi</Text>
+           </View>
+        </View>
+        
         <Text className="text-gray-500 mb-10 text-base">Eğitim asistanına hoş geldin. Hemen giriş yap veya yeni bir hesap oluştur.</Text>
 
         <View>
