@@ -132,8 +132,8 @@ export function TasksScreen({ navigation, route }: any) {
         hasAttachment: pickedDoc !== null,
         fileName: pickedDoc ? pickedDoc.name : undefined,
         fileUri: pickedDoc ? pickedDoc.uri : undefined,
-        fullText: formContent.trim() || 'Bu görev sadece PDF/Word dosyası içeriyor.',
-        bulletPoints: bullets.length > 0 ? bullets : ['Bu görev için yapay zeka özeti bulunamadı, ekteki belgeyi inceleyiniz.'],
+        fullText: formContent.trim() || '',
+        bulletPoints: bullets.length > 0 && formContent.trim() ? bullets : [],
         status: 'pending',
         assignedByRole: userRole === 'parent' ? 'Veli' : 'Öğretmen', // Simplified label
         date: Date.now()
@@ -236,21 +236,23 @@ export function TasksScreen({ navigation, route }: any) {
           </View>
         </View>
 
-        <View className="flex-row bg-white border-b border-gray-100">
-           <TouchableOpacity 
-             onPress={() => setViewMode('full')}
-             className={`flex-1 items-center justify-center py-4 border-b-2 ${viewMode === 'full' ? 'border-indigo-600' : 'border-transparent'}`}>
-              <Text className={`font-black ${viewMode === 'full' ? 'text-indigo-600' : 'text-slate-400'}`}>📄 Tam Metin Göster</Text>
-           </TouchableOpacity>
-           <TouchableOpacity 
-             onPress={() => setViewMode('bullets')}
-             className={`flex-1 items-center justify-center py-4 border-b-2 ${viewMode === 'bullets' ? 'border-amber-500' : 'border-transparent'}`}>
-              <View className="flex-row items-center">
-                 <Text className="mr-2">✨</Text>
-                 <Text className={`font-black ${viewMode === 'bullets' ? 'text-amber-500' : 'text-slate-400'}`}>AI Özet Maddeleri</Text>
-              </View>
-           </TouchableOpacity>
-        </View>
+        {viewingTask.fullText ? (
+          <View className="flex-row bg-white border-b border-gray-100">
+             <TouchableOpacity 
+               onPress={() => setViewMode('full')}
+               className={`flex-1 items-center justify-center py-4 border-b-2 ${viewMode === 'full' ? 'border-indigo-600' : 'border-transparent'}`}>
+                <Text className={`font-black ${viewMode === 'full' ? 'text-indigo-600' : 'text-slate-400'}`}>📄 Eğitim Notu</Text>
+             </TouchableOpacity>
+             <TouchableOpacity 
+               onPress={() => setViewMode('bullets')}
+               className={`flex-1 items-center justify-center py-4 border-b-2 ${viewMode === 'bullets' ? 'border-amber-500' : 'border-transparent'}`}>
+                <View className="flex-row items-center">
+                   <Text className="mr-2">✨</Text>
+                   <Text className={`font-black ${viewMode === 'bullets' ? 'text-amber-500' : 'text-slate-400'}`}>AI Özet</Text>
+                </View>
+             </TouchableOpacity>
+          </View>
+        ) : null}
 
         <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }}>
            
@@ -258,8 +260,8 @@ export function TasksScreen({ navigation, route }: any) {
               <View className="flex-row items-center bg-rose-50 p-4 rounded-2xl mb-6 border border-rose-100 shadow-sm">
                  <Text className="text-3xl mr-3">📎</Text>
                  <View className="flex-1">
-                    <Text className="font-bold text-rose-800 text-sm">Orjinal Döküman (PDF)</Text>
-                    <Text className="font-bold text-rose-500/70 text-xs mt-0.5">{viewingTask.fileName}</Text>
+                    <Text className="font-bold text-rose-800 text-sm">Fiziksel Döküman</Text>
+                    <Text className="font-bold text-rose-500/70 text-xs mt-0.5" numberOfLines={1}>{viewingTask.fileName}</Text>
                  </View>
                  <TouchableOpacity onPress={() => handleDownloadDocument(viewingTask.fileUri, viewingTask.fileName)} className="bg-rose-600 px-4 py-2 rounded-xl scale-95 shadow-sm shadow-rose-600/30">
                     <Text className="font-black text-white text-xs">Görüntüle / Aç</Text>
@@ -267,21 +269,29 @@ export function TasksScreen({ navigation, route }: any) {
               </View>
            )}
 
-           {viewMode === 'full' ? (
-              <View className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 min-h-[300px]">
-                 <Text className="text-base text-slate-700 leading-7 font-medium text-justify">{viewingTask.fullText}</Text>
-              </View>
+           {viewingTask.fullText ? (
+             viewMode === 'full' ? (
+                <View className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 min-h-[150px]">
+                   <Text className="text-base text-slate-700 leading-7 font-medium text-justify">{viewingTask.fullText}</Text>
+                </View>
+             ) : (
+                <View className="bg-amber-50/50 p-6 rounded-3xl border-2 border-amber-100/50 min-h-[150px]">
+                   <Text className="font-bold text-amber-500 mb-6 text-center text-xs tracking-widest uppercase">Sistem Tarafından Maddelendirildi</Text>
+                   {viewingTask.bulletPoints.map((b, i) => (
+                      <View key={i} className="flex-row mb-5 items-start px-2">
+                         <View className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center mt-0.5 mr-3 shadow-sm shadow-amber-500/30">
+                            <Text className="font-black text-white text-[10px]">{i+1}</Text>
+                         </View>
+                         <Text className="flex-1 text-slate-700 font-bold leading-6 text-sm">{b}</Text>
+                      </View>
+                   ))}
+                </View>
+             )
            ) : (
-              <View className="bg-amber-50/50 p-6 rounded-3xl border-2 border-amber-100/50 min-h-[300px]">
-                 <Text className="font-bold text-amber-500 mb-6 text-center text-xs tracking-widest uppercase">Sistem Tarafından Maddelendirildi</Text>
-                 {viewingTask.bulletPoints.map((b, i) => (
-                    <View key={i} className="flex-row mb-5 items-start px-2">
-                       <View className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center mt-0.5 mr-3 shadow-sm shadow-amber-500/30">
-                          <Text className="font-black text-white text-[10px]">{i+1}</Text>
-                       </View>
-                       <Text className="flex-1 text-slate-700 font-bold leading-6 text-sm">{b}</Text>
-                    </View>
-                 ))}
+              <View className="items-center justify-center p-10 bg-indigo-50/50 rounded-3xl border border-dashed border-indigo-200 mt-4">
+                 <Text className="text-4xl mb-4">📋</Text>
+                 <Text className="text-indigo-800 font-bold text-center text-sm mb-2">Bu görev için ek bir çalışma notu eklenmemiş.</Text>
+                 <Text className="text-indigo-500 font-medium text-center text-xs px-4">Sadece yukarıdaki dosyayı incelemeniz ve açıp okumanız yeterlidir.</Text>
               </View>
            )}
 
@@ -346,10 +356,10 @@ export function TasksScreen({ navigation, route }: any) {
                    </TouchableOpacity>
                 </View>
 
-                <Text className="font-black text-xs text-slate-400 uppercase tracking-widest mb-1.5 ml-1">İçerik (Sistem Maddelendirecektir)</Text>
+                <Text className="font-black text-xs text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kısa Çalışma Notu (Opsiyonel)</Text>
                 <TextInput 
                   value={formContent} onChangeText={setFormContent} 
-                  placeholder="Eğer belge taratamıyorsanız manuel içeriği buraya yapıştırın. Yapay zeka bu metni öğrenci için akıllı maddelere bölecektir..." 
+                  placeholder="Kopyala/yapıştır zor geliyorsa boş bırak! Ama kısa bir metin eklersen onu AI ile maddelendirebiliriz." 
                   className="font-medium text-sm text-gray-700 p-4 bg-slate-50 rounded-2xl min-h-[140px] mb-6 border border-slate-200" 
                   multiline textAlignVertical="top" 
                 />
