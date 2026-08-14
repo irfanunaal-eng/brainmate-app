@@ -298,6 +298,13 @@ export function StudentDashboardScreen({ navigation }: any) {
           </View>
           
           <View className="items-center mr-4">
+            <TouchableOpacity onPress={() => navigation.navigate('TasksScreen')} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <Text className="text-3xl">🎯</Text>
+            </TouchableOpacity>
+            <Text className="text-[10px] font-bold text-rose-700">Görevlerim</Text>
+          </View>
+
+          <View className="items-center mr-4">
             <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mb-1">
               <Text className="text-3xl">📚</Text>
             </TouchableOpacity>

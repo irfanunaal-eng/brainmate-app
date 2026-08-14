@@ -12,11 +12,7 @@ export function ParentDashboardScreen({ navigation }: any) {
   const [panelTitle, setPanelTitle] = useState('Eğitimci Paneli');
   const [userRole, setUserRole] = useState<string>('');
   
-  // Task assignment state
-  const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
-  const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [newTaskMinutes, setNewTaskMinutes] = useState('50');
-  const [assigningTask, setAssigningTask] = useState(false);
+  // Navigation strictly resolving into universal TasksScreen
 
   useEffect(() => {
     checkExistingPairing();
@@ -110,38 +106,6 @@ export function ParentDashboardScreen({ navigation }: any) {
     Alert.alert('Premium Satın Al', 'Burada RevenueCat ile Apple/Google Pay ekranı açılacaktır.');
   };
 
-  const handleAssignTask = async () => {
-    if (!newTaskTitle.trim()) {
-      return Alert.alert('Hata', 'Lütfen ders veya konu adı girin.');
-    }
-    const minutes = parseInt(newTaskMinutes);
-    if (isNaN(minutes) || minutes <= 0) {
-      return Alert.alert('Hata', 'Geçerli bir süre girin.');
-    }
-
-    setAssigningTask(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (user && studentId) {
-      const { error } = await supabase.from('tasks').insert([{
-        student_id: studentId,
-        creator_id: user.id,
-        title: newTaskTitle.trim(),
-        planned_minutes: minutes,
-        status: 'bekliyor'
-      }]);
-
-      if (error) {
-        Alert.alert('Hata', 'Görev atanamadı: ' + error.message);
-      } else {
-        Alert.alert('Başarılı! 🎯', `${studentName} isimli öğrenciye görev atandı!`);
-        setNewTaskTitle('');
-        setNewTaskMinutes('50');
-        setIsTaskModalVisible(false);
-      }
-    }
-    setAssigningTask(false);
-  };
 
   const handleLogout = async () => {
     try {
@@ -310,7 +274,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             )}
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => setIsTaskModalVisible(true)} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('TasksScreen', { studentId })} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">🎯</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-rose-700">Görev Ata</Text>
@@ -375,53 +339,6 @@ export function ParentDashboardScreen({ navigation }: any) {
         </View>
         </View>
       )}
-
-      {/* Görev Atama Modalı */}
-      <Modal
-        visible={isTaskModalVisible}
-        transparent={true}
-        animationType="slide"
-      >
-        <View className="flex-1 bg-black/60 justify-end">
-          <View className="bg-white p-6 rounded-t-3xl">
-            <View className="flex-row justify-between items-center mb-6">
-              <Text className="text-2xl font-extrabold text-text">Yeni Görev Ata</Text>
-              <TouchableOpacity onPress={() => setIsTaskModalVisible(false)} className="bg-gray-100 p-2 rounded-full">
-                <Text className="text-gray-500 font-bold">Kapat</Text>
-              </TouchableOpacity>
-            </View>
-
-            <Text className="text-gray-700 font-bold ml-1 mb-2">Ders veya Konu Adı</Text>
-            <TextInput
-              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 font-bold text-text mb-4"
-              placeholder="Örn: Fizik - Elektrik Devreleri"
-              value={newTaskTitle}
-              onChangeText={setNewTaskTitle}
-            />
-
-            <Text className="text-gray-700 font-bold ml-1 mb-2">Hedeflenen Süre (Dakika)</Text>
-            <TextInput
-              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 font-bold text-text mb-8"
-              placeholder="50"
-              keyboardType="number-pad"
-              value={newTaskMinutes}
-              onChangeText={setNewTaskMinutes}
-            />
-
-            <TouchableOpacity
-              onPress={handleAssignTask}
-              disabled={assigningTask}
-              className={`w-full py-4 rounded-xl items-center shadow-sm mb-4 ${assigningTask ? 'bg-gray-400' : 'bg-secondary'}`}
-            >
-              {assigningTask ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text className="text-white font-bold text-lg">Öğrenciye Gönder</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </SafeAreaView>
   );
 }
