@@ -23,6 +23,8 @@ type TaskDoc = {
   assignedByRole: string;
   assignedByName?: string;
   date: number;
+  durationSpent?: number;
+  accumulatedSeconds?: number;
 };
 const DEFAULT_SUBJECTS = ['Matematik', 'Fizik', 'Kimya', 'Biyoloji', 'Türk Dili ve Edebiyatı', 'Tarih', 'İngilizce'];
 
@@ -47,6 +49,9 @@ export function TasksScreen({ navigation, route }: any) {
   
   // Immersive PDF Viewer State (primarily iOS or external fallbacks)
   const [pdfViewerUri, setPdfViewerUri] = useState<string | null>(null);
+
+  // Auto Duration Logging State
+  const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
 
   const canWrite = userRole !== 'student' && userRole !== 'parent';
 
@@ -183,13 +188,43 @@ export function TasksScreen({ navigation, route }: any) {
     }
   };
 
-  const updateTaskStatus = async (taskId: string, newStatus: 'in_progress' | 'completed') => {
-      const updated = tasks.map(t => t.id === taskId ? { ...t, status: newStatus } : t);
+  const openTaskView = (task: TaskDoc) => {
+      setViewingTask(task);
+      setViewMode('bullets');
+      setSessionStartTime(Date.now());
+  };
+
+  const closeTaskView = () => {
+      if (sessionStartTime && viewingTask) {
+          const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+          const accumulatedSeconds = (viewingTask.accumulatedSeconds || 0) + elapsed;
+          
+          const updated = tasks.map(t => t.id === viewingTask.id ? { ...t, accumulatedSeconds } : t);
+          setTasks(updated);
+          try { AsyncStorage.setItem(`@tasks_logs_${resolvedStudentId}`, JSON.stringify(updated)); } catch(e){}
+      }
+      setViewingTask(null);
+      setSessionStartTime(null);
+  };
+
+  const handleAutoCompleteTask = async () => {
+      if (!viewingTask) return;
+      let accumulatedSeconds = viewingTask.accumulatedSeconds || 0;
+      if (sessionStartTime) {
+          accumulatedSeconds += Math.floor((Date.now() - sessionStartTime) / 1000);
+      }
+      const finalMinutes = Math.max(1, Math.ceil(accumulatedSeconds / 60)); // Round up to nearest minute, min 1
+      
+      const updated = tasks.map(t => t.id === viewingTask.id ? { ...t, accumulatedSeconds, durationSpent: finalMinutes, status: 'completed' as 'completed' } : t);
       setTasks(updated);
-      setViewingTask(u => u && u.id === taskId ? { ...u, status: newStatus } : u);
+      setViewingTask(null);
+      setSessionStartTime(null);
+      
       try {
         await AsyncStorage.setItem(`@tasks_logs_${resolvedStudentId}`, JSON.stringify(updated));
       } catch(e) {}
+      
+      Alert.alert('Görevi Tamamladın! 🎉', `Sistem bu belgeyi incelerken toplam ${finalMinutes} dakika geçirdiğini kaydetti. Süren eğitimcilerine bildirildi!`);
   };
 
   const handleDownloadDocument = async (uri?: string, name?: string) => {
@@ -280,7 +315,7 @@ export function TasksScreen({ navigation, route }: any) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#f8fafc' }}>
         <View className="flex-row items-center px-6 py-4 bg-white border-b border-gray-100 z-10 shadow-sm">
-          <TouchableOpacity onPress={() => setViewingTask(null)} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
+          <TouchableOpacity onPress={closeTaskView} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
             <Text className="text-lg">🔙</Text>
           </TouchableOpacity>
           <View className="flex-1 ml-4 py-1">
@@ -348,8 +383,15 @@ export function TasksScreen({ navigation, route }: any) {
               </View>
            )}
 
+           {viewingTask.status === 'completed' && viewingTask.durationSpent && (
+              <View className="mt-8 bg-emerald-50/50 border border-emerald-100 p-4 rounded-2xl items-center flex-row justify-center">
+                 <Text className="text-2xl mr-2">⏱️</Text>
+                 <Text className="text-emerald-700 font-extrabold text-sm">Görevi {viewingTask.durationSpent} dakikada bitirdin!</Text>
+              </View>
+           )}
+
            {!canWrite && viewingTask.status !== 'completed' && (
-              <TouchableOpacity onPress={() => updateTaskStatus(viewingTask.id, 'completed')} className="mt-8 bg-emerald-500 py-5 rounded-2xl items-center shadow-lg shadow-emerald-500/30">
+              <TouchableOpacity onPress={handleAutoCompleteTask} className="mt-8 bg-emerald-500 py-5 rounded-2xl items-center shadow-lg shadow-emerald-500/30">
                  <Text className="text-white font-extrabold text-lg">✅ Görevi Tamamladım</Text>
               </TouchableOpacity>
            )}
@@ -462,7 +504,7 @@ export function TasksScreen({ navigation, route }: any) {
                     return (
                       <TouchableOpacity 
                         key={task.id} 
-                        onPress={() => { setViewingTask(task); setViewMode('bullets'); }}
+                        onPress={() => openTaskView(task)}
                         className={`bg-white rounded-3xl p-5 mb-4 border ${isCompleted ? 'border-emerald-200 bg-emerald-50/20' : 'border-gray-100'} shadow-sm`}
                       >
                          <View className="flex-row justify-between items-start mb-3">
@@ -479,7 +521,7 @@ export function TasksScreen({ navigation, route }: any) {
                             </View>
                             <View className={`px-3 py-1.5 rounded-xl ${isCompleted ? 'bg-emerald-100' : 'bg-amber-100'}`}>
                                <Text className={`font-extrabold text-[10px] uppercase ${isCompleted ? 'text-emerald-700' : 'text-amber-700'}`}>
-                                  {isCompleted ? 'Tamamlandı' : 'Bekliyor'}
+                                  {isCompleted ? (task.durationSpent ? `⏱️ ${task.durationSpent} DK` : 'TAMAMLANDI') : 'BEKLİYOR'}
                                </Text>
                             </View>
                          </View>
