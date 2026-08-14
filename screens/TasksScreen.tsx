@@ -264,6 +264,19 @@ export function TasksScreen({ navigation, route }: any) {
     ]);
   };
 
+  const handleDevWipeTasks = async () => {
+     Alert.alert('Sistemi Temizle', 'Öğrencinin TÜM görev geçmişi (eski sürümler ve saklanmış olanlar dahil) kalıcı olarak silinecek. Onaylıyor musun?', [
+        { text: 'Vazgeç', style: 'cancel' },
+        { text: 'Temizle', style: 'destructive', onPress: async () => {
+            setTasks([]);
+            try {
+               await AsyncStorage.removeItem(`@tasks_logs_${resolvedStudentId}`);
+               Alert.alert('Temizlendi', 'Öğrencinin tüm görev kayıtları sıfırlandı.');
+            } catch(e) {}
+        }}
+     ]);
+  };
+
   // Filter logic: Parent and Student sees all tasks. Role users see only their OWN tasks.
   const visibleTasks = (userRole === 'student' || userRole === 'parent')
     ? tasks
@@ -392,6 +405,13 @@ export function TasksScreen({ navigation, route }: any) {
         <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
           <Text className="text-lg">🔙</Text>
         </TouchableOpacity>
+        
+        {__DEV__ && (
+           <TouchableOpacity onPress={handleDevWipeTasks} className="w-10 h-10 ml-2 items-center justify-center bg-red-100 rounded-full shadow-sm">
+             <Text className="text-lg">🧹</Text>
+           </TouchableOpacity>
+        )}
+        
         <Text className="flex-1 ml-4 text-xl font-black text-slate-800">{canWrite ? 'Görev Atamaları' : 'Görevlerim & Belgeler'}</Text>
         {canWrite && (
            <TouchableOpacity onPress={() => setIsAdding(!isAdding)} className="bg-indigo-600 px-4 py-2 rounded-xl shadow-sm shadow-indigo-600/30">
