@@ -60,12 +60,7 @@ export function EnglishGameScreen({ route }: any) {
     setCurrentOptions(combined);
   }, [currentWordIndex]);
 
-  // Read word aloud when it appears
-  useEffect(() => {
-    if (!isGameOver && !feedback) {
-      playVoice(currentWord.en);
-    }
-  }, [currentWordIndex, isGameOver, feedback]);
+  // Read word aloud only when explicitly pressed (Automatic playback disabled)
 
   // Timer simulation
   useEffect(() => {
@@ -88,7 +83,6 @@ export function EnglishGameScreen({ route }: any) {
   const handleWrongAnswer = (wordObj: any) => {
     setGameHistory(prev => [...prev, { en: wordObj.en, tr: wordObj.tr, correct: false }]);
     setFeedback({ visible: true, correct: false });
-    playVoice(wordObj.sentence || wordObj.en);
   };
 
   const handleOptionPress = (selectedOption: string) => {
@@ -98,7 +92,6 @@ export function EnglishGameScreen({ route }: any) {
       setGameHistory(prev => [...prev, { en: currentWord.en, tr: currentWord.tr, correct: true }]);
       setScore(prev => prev + 10);
       setFeedback({ visible: true, correct: true });
-      playVoice(currentWord.sentence || currentWord.en);
     } else {
       // Wrong
       handleWrongAnswer(currentWord);
