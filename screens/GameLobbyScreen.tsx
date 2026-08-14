@@ -137,15 +137,51 @@ export function GameLobbyScreen({ route }: any) {
                    <View className="flex-row flex-wrap justify-between p-2">
                      {[...Array(level.stages)].map((_, i) => {
                         const isStageUnlocked = adminOverride || i < 3; // Demo: first three stages unlocked natively
+                        
+                        // Pseudo-metrics for completion parity:
+                        let completionPct = 0;
+                        let successScore: number | null = null;
+                        if (isStageUnlocked) {
+                          if (i === 0) { completionPct = 100; successScore = 95; }
+                          else if (i === 1) { completionPct = 100; successScore = 70; }
+                          else if (i === 2) { completionPct = 40; }
+                        }
+
                         return (
                           <TouchableOpacity 
                             key={i}
                             disabled={!isStageUnlocked || isParentView}
                             onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, stage: i + 1, mode: selectedMode })}
-                            className={`w-[48%] py-3 mb-2 rounded-xl items-center border ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
+                            className={`w-[48%] py-3 mb-2 rounded-xl items-center border relative overflow-hidden ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
                           >
-                             <Text className={`font-bold ${isStageUnlocked ? 'text-indigo-800' : 'text-gray-400'}`}>Aşama {i+1}</Text>
-                             <Text className="text-[10px] text-gray-400 mt-0.5">{level.words} Kelime</Text>
+                             {/* Embedded Visual Progress Bar Background */}
+                             {isStageUnlocked && completionPct > 0 && (
+                                <View className={`absolute left-0 top-0 bottom-0 ${completionPct === 100 ? 'bg-emerald-100/40' : 'bg-amber-100/40'}`} style={{ width: `${completionPct}%` }} />
+                             )}
+                             
+                             <View className="z-10 w-full px-3">
+                               <View className="flex-row justify-between w-full items-center mb-0.5">
+                                 <Text className={`font-black ${isStageUnlocked ? (completionPct === 100 ? 'text-emerald-700' : 'text-indigo-800') : 'text-gray-400'}`}>
+                                   Aşama {i+1}
+                                 </Text>
+                                 {isStageUnlocked && completionPct > 0 && (
+                                   <Text className={`text-[10px] font-black ${completionPct === 100 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                     %{completionPct}
+                                   </Text>
+                                 )}
+                               </View>
+
+                               <View className="flex-row justify-between w-full items-center">
+                                 <Text className={`text-[10px] font-bold ${isStageUnlocked ? 'text-gray-500' : 'text-gray-400'}`}>{level.words} Kelime</Text>
+                                 
+                                 {isStageUnlocked && completionPct === 100 && successScore !== null && (
+                                   <Text className="text-[10px] font-black text-emerald-700">Başarı: {successScore}</Text>
+                                 )}
+                                 {isStageUnlocked && completionPct > 0 && completionPct < 100 && (
+                                   <Text className="text-[10px] font-bold text-amber-600">Oynanıyor</Text>
+                                 )}
+                               </View>
+                             </View>
                           </TouchableOpacity>
                         );
                      })}
