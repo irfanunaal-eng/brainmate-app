@@ -253,7 +253,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('NotesScreen')} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('NotesScreen', { studentId })} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">📌</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-fuchsia-700">Notlar/Ödev</Text>
@@ -267,14 +267,14 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('GradesScreen', { studentId })} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">📝</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-teal-700">Sınav Notları</Text>
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen', { studentId })} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">🚦</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-cyan-700">Devamsızlık</Text>
@@ -288,14 +288,14 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard', { studentId })} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">📚</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-emerald-700">Eğitimler</Text>
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('AcademicDashboard')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('AcademicDashboard', { studentId })} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">📊</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-amber-700">Akademik</Text>
@@ -309,14 +309,14 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
 
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard', { isParentView: true })} className="items-center justify-center bg-pink-50 border-2 border-pink-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard', { isParentView: true, studentId })} className="items-center justify-center bg-pink-50 border-2 border-pink-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">🫂</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-pink-700">Sosyal Ağ</Text>
             </View>
 
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('GameLobbyScreen', { isParentView: true })} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('GameLobbyScreen', { isParentView: true, studentId })} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">👾</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-purple-700">Oyunlar</Text>
