@@ -10,8 +10,9 @@ const LEVELS = [
   { id: 'C1', title: 'C1 Efsanesi', desc: 'Akademik ve akıcı (C1) seviye son kelimeler.', unlocked: false, stars: 0, stages: 40, words: 50 },
 ];
 
-export function GameLobbyScreen() {
+export function GameLobbyScreen({ route }: any) {
   const navigation = useNavigation<any>();
+  const isParentView = route?.params?.isParentView || false;
   const [selectedMode, setSelectedMode] = useState<'solo' | 'duel'>('solo');
   const [expandedLevel, setExpandedLevel] = useState<string | null>(null);
   const [adminOverride, setAdminOverride] = useState(false);
@@ -40,51 +41,62 @@ export function GameLobbyScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Mode Selection */}
-        <View className="bg-gray-100 p-1 rounded-2xl flex-row mb-6">
-          <TouchableOpacity 
-            onPress={() => setSelectedMode('solo')}
-            className={`flex-1 py-3 items-center justify-center rounded-xl transition-all ${selectedMode === 'solo' ? 'bg-white shadow-sm' : 'bg-transparent'}`}
-          >
-            <Text className={`font-bold ${selectedMode === 'solo' ? 'text-indigo-600 text-base' : 'text-gray-500'}`}>🧍‍♂️ Bireysel Çalış</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            onPress={() => setSelectedMode('duel')}
-            className={`flex-1 py-3 items-center justify-center rounded-xl transition-all ${selectedMode === 'duel' ? 'bg-rose-500 shadow-sm shadow-rose-300' : 'bg-transparent'}`}
-          >
-            <Text className={`font-bold ${selectedMode === 'duel' ? 'text-white text-base' : 'text-gray-500'}`}>⚔️ Arkadaşla Düello</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View className={`p-5 rounded-3xl mb-6 shadow-sm ${selectedMode === 'solo' ? 'bg-indigo-50 border-indigo-100' : 'bg-rose-50 border-rose-100'} border`}>
-           <Text className={`text-lg font-black mb-1 ${selectedMode === 'solo' ? 'text-indigo-800' : 'text-rose-800'}`}>
-             {selectedMode === 'solo' ? 'Kelime Hazneni Genişlet' : 'Meydan Okuma Zamanı!'}
-           </Text>
-           <Text className={`text-sm font-medium ${selectedMode === 'solo' ? 'text-indigo-600/80' : 'text-rose-600/80'}`}>
-             {selectedMode === 'solo' 
-                ? 'İngilizcede en sık kullanılan hayati kelimeleri sırayla aç. Hızlı olan kazanır, can (❤️) puanlarına dikkat et!' 
-                : 'Sosyal ağından bir "Ebedi Rakip" veya "Kanka" seç. Aynı kelimeleri kim daha hızlı bilecek?'}
-           </Text>
-        </View>
-
-        {selectedMode === 'duel' && (
-           <View className="mb-6">
-              <Text className="font-extrabold text-gray-800 mb-2 text-sm uppercase tracking-widest pl-1">Meydan Okunacak Rakibi Seç:</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-1">
-                 {['Ahmet Y. (Rakip)', 'Ayşe K. (Kanka)', 'Mehmet D.'].map((f, i) => (
-                    <TouchableOpacity 
-                       key={i} 
-                       onPress={() => setDuelOpponent(f)}
-                       className={`mr-3 px-5 py-3 rounded-2xl border ${duelOpponent === f ? 'bg-rose-500 border-rose-600 shadow-sm shadow-rose-200' : 'bg-white border-gray-200 shadow-sm shadow-gray-100'}`}
-                    >
-                       <Text className={`font-bold ${duelOpponent === f ? 'text-white' : 'text-gray-700'}`}>{duelOpponent === f ? '🎯 ' : ''}{f}</Text>
-                    </TouchableOpacity>
-                 ))}
-                 <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
-                    <Text className="text-gray-600 font-extrabold">+ Sosyal Ağdan Ekle</Text>
-                 </TouchableOpacity>
-              </ScrollView>
+        {isParentView ? (
+           <View className="p-5 rounded-3xl mb-6 shadow-sm bg-purple-50 border border-purple-100">
+              <Text className="text-lg font-black mb-1 text-purple-800">Oyun Takip Modu 🕵️‍♂️</Text>
+              <Text className="text-sm font-medium text-purple-600/80">
+                Bu alanda sadece öğrencinizin oyun seviyelerindeki ilerleyişini, aşamalarını ve kelime hakimiyetini izleyebilirsiniz. Eğitsel oyunları bizzat tecrübe etme ve düello yetkisi tamamen öğrencinize aittir.
+              </Text>
            </View>
+        ) : (
+           <>
+             {/* Mode Selection */}
+             <View className="bg-gray-100 p-1 rounded-2xl flex-row mb-6">
+               <TouchableOpacity 
+                 onPress={() => setSelectedMode('solo')}
+                 className={`flex-1 py-3 items-center justify-center rounded-xl transition-all ${selectedMode === 'solo' ? 'bg-white shadow-sm' : 'bg-transparent'}`}
+               >
+                 <Text className={`font-bold ${selectedMode === 'solo' ? 'text-indigo-600 text-base' : 'text-gray-500'}`}>🧍‍♂️ Bireysel Çalış</Text>
+               </TouchableOpacity>
+               <TouchableOpacity 
+                 onPress={() => setSelectedMode('duel')}
+                 className={`flex-1 py-3 items-center justify-center rounded-xl transition-all ${selectedMode === 'duel' ? 'bg-rose-500 shadow-sm shadow-rose-300' : 'bg-transparent'}`}
+               >
+                 <Text className={`font-bold ${selectedMode === 'duel' ? 'text-white text-base' : 'text-gray-500'}`}>⚔️ Arkadaşla Düello</Text>
+               </TouchableOpacity>
+             </View>
+
+             <View className={`p-5 rounded-3xl mb-6 shadow-sm ${selectedMode === 'solo' ? 'bg-indigo-50 border-indigo-100' : 'bg-rose-50 border-rose-100'} border`}>
+                <Text className={`text-lg font-black mb-1 ${selectedMode === 'solo' ? 'text-indigo-800' : 'text-rose-800'}`}>
+                  {selectedMode === 'solo' ? 'Kelime Hazneni Genişlet' : 'Meydan Okuma Zamanı!'}
+                </Text>
+                <Text className={`text-sm font-medium ${selectedMode === 'solo' ? 'text-indigo-600/80' : 'text-rose-600/80'}`}>
+                  {selectedMode === 'solo' 
+                     ? 'İngilizcede en sık kullanılan hayati kelimeleri sırayla aç. Hızlı olan kazanır, can (❤️) puanlarına dikkat et!' 
+                     : 'Sosyal ağından bir "Ebedi Rakip" veya "Kanka" seç. Aynı kelimeleri kim daha hızlı bilecek?'}
+                </Text>
+             </View>
+
+             {selectedMode === 'duel' && (
+                <View className="mb-6">
+                   <Text className="font-extrabold text-gray-800 mb-2 text-sm uppercase tracking-widest pl-1">Meydan Okunacak Rakibi Seç:</Text>
+                   <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-1">
+                      {['Ahmet Y. (Rakip)', 'Ayşe K. (Kanka)', 'Mehmet D.'].map((f, i) => (
+                         <TouchableOpacity 
+                            key={i} 
+                            onPress={() => setDuelOpponent(f)}
+                            className={`mr-3 px-5 py-3 rounded-2xl border ${duelOpponent === f ? 'bg-rose-500 border-rose-600 shadow-sm shadow-rose-200' : 'bg-white border-gray-200 shadow-sm shadow-gray-100'}`}
+                         >
+                            <Text className={`font-bold ${duelOpponent === f ? 'text-white' : 'text-gray-700'}`}>{duelOpponent === f ? '🎯 ' : ''}{f}</Text>
+                         </TouchableOpacity>
+                      ))}
+                      <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
+                         <Text className="text-gray-600 font-extrabold">+ Sosyal Ağdan Ekle</Text>
+                      </TouchableOpacity>
+                   </ScrollView>
+                </View>
+             )}
+           </>
         )}
 
         <Text className="text-xl font-extrabold text-gray-800 mb-4">Seviyeler</Text>
@@ -128,7 +140,7 @@ export function GameLobbyScreen() {
                         return (
                           <TouchableOpacity 
                             key={i}
-                            disabled={!isStageUnlocked}
+                            disabled={!isStageUnlocked || isParentView}
                             onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, stage: i + 1, mode: selectedMode })}
                             className={`w-[48%] py-3 mb-2 rounded-xl items-center border ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
                           >
