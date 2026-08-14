@@ -250,6 +250,20 @@ export function TasksScreen({ navigation, route }: any) {
     }
   };
 
+  const handleDeleteTask = (id: string, title: string) => {
+    Alert.alert('Görevi Sil', `'${title}' isimli görevi iptal edip tamamen silmek istediğinize emin misiniz? Öğrencinin panelinden de anında kalkacaktır.`, [
+       { text: 'İptal', style: 'cancel' },
+       { text: 'Sil', style: 'destructive', onPress: async () => {
+           const updated = tasks.filter(t => t.id !== id);
+           setTasks(updated);
+           if (viewingTask?.id === id) setViewingTask(null);
+           try {
+              await AsyncStorage.setItem(`@tasks_logs_${resolvedStudentId}`, JSON.stringify(updated));
+           } catch(e) {}
+       }}
+    ]);
+  };
+
   // Filter logic: Parent and Student sees all tasks. Role users see only their OWN tasks.
   const visibleTasks = (userRole === 'student' || userRole === 'parent')
     ? tasks
@@ -469,9 +483,18 @@ export function TasksScreen({ navigation, route }: any) {
                          </View>
                          <View className="flex-row justify-between items-end border-t border-gray-50 pt-3">
                             <Text className="font-bold text-slate-400 text-xs">Atayan: {task.assignedByRole}</Text>
-                            <View className="flex-row items-center bg-slate-100 p-1.5 px-3 rounded-full">
-                               <Text className="text-xs mr-2">✨</Text>
-                               <Text className="font-black text-slate-500 text-[10px] uppercase">AI Özeti Hazır</Text>
+                            <View className="flex-row items-center space-x-2">
+                               {canWrite && (
+                                  <TouchableOpacity 
+                                     onPress={(e) => { e.stopPropagation(); handleDeleteTask(task.id, task.title); }} 
+                                     className="bg-red-50 p-1.5 px-3 rounded-full mr-2 flex-row items-center"
+                                  >
+                                     <Text className="text-[10px] uppercase font-black text-red-500">🗑️ Sil</Text>
+                                  </TouchableOpacity>
+                               )}
+                               <View className="flex-row items-center bg-slate-100 p-1.5 px-3 rounded-full">
+                                  <Text className="font-black text-slate-500 text-[10px] uppercase">✨ AI Analizi Hazır</Text>
+                               </View>
                             </View>
                          </View>
                       </TouchableOpacity>
