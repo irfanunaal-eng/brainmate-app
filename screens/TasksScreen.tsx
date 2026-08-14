@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as DocumentPicker from 'expo-document-picker';
 import { supabase } from '../lib/supabase';
 
 type TaskDoc = {
@@ -16,20 +17,20 @@ type TaskDoc = {
   assignedByRole: string;
   date: number;
 };
-
-const SUBJECTS = ['Matematik', 'Fizik', 'Kimya', 'Biyoloji', 'Türkçe', 'Tarih', 'İngilizce'];
+const DEFAULT_SUBJECTS = ['Matematik', 'Fizik', 'Kimya', 'Biyoloji', 'Türk Dili ve Edebiyatı', 'Tarih', 'İngilizce'];
 
 export function TasksScreen({ navigation, route }: any) {
   const [tasks, setTasks] = useState<TaskDoc[]>([]);
+  const [dynamicSubjects, setDynamicSubjects] = useState<string[]>(DEFAULT_SUBJECTS);
   const [isAdding, setIsAdding] = useState(false);
   const [userRole, setUserRole] = useState<string>('student');
   const [resolvedStudentId, setResolvedStudentId] = useState<string>('default');
 
   // Form State
   const [formTitle, setFormTitle] = useState('');
-  const [formSubject, setFormSubject] = useState(SUBJECTS[0]);
+  const [formSubject, setFormSubject] = useState(DEFAULT_SUBJECTS[0]);
   const [formTopic, setFormTopic] = useState('');
-  const [formDocsMock, setFormDocsMock] = useState(false);
+  const [pickedDoc, setPickedDoc] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
   const [formContent, setFormContent] = useState('');
 
   // Student View State
@@ -59,6 +60,27 @@ export function TasksScreen({ navigation, route }: any) {
       }
       
       setResolvedStudentId(sId);
+
+      // Load dynamic subjects from Student's schedule
+      try {
+        const schedRaw = await AsyncStorage.getItem(`@schedules_${sId}`);
+        if (schedRaw) {
+           const parsedSched = JSON.parse(schedRaw);
+           let extractedSubjects = new Set<string>();
+           if (parsedSched.schoolGrid) {
+              parsedSched.schoolGrid.forEach((row: any) => {
+                 row.days.forEach((daySubj: string) => {
+                    if (daySubj && daySubj.trim() !== '') extractedSubjects.add(daySubj.trim());
+                 });
+              });
+           }
+           if (extractedSubjects.size > 0) {
+              const dynArr = Array.from(extractedSubjects);
+              setDynamicSubjects(dynArr);
+              setFormSubject(dynArr[0]);
+           }
+        }
+      } catch (e) {}
 
       const stored = await AsyncStorage.getItem(`@tasks_logs_${sId}`);
       if (stored) {
@@ -90,8 +112,8 @@ export function TasksScreen({ navigation, route }: any) {
   };
 
   const handleSaveTask = async () => {
-    if (!formTitle.trim() || !formContent.trim()) {
-      Alert.alert('Eksik Bilgi', 'Görev başlığı ve içeriği boş olamaz.');
+    if (!formTitle.trim() && !pickedDoc) {
+      Alert.alert('Eksik Bilgi', 'Görev başlığı girmeli veya en az bir belge yüklemelisiniz.');
       return;
     }
 
@@ -103,10 +125,10 @@ export function TasksScreen({ navigation, route }: any) {
         title: formTitle,
         subject: formSubject,
         topic: formTopic || 'Genel Konu',
-        hasAttachment: formDocsMock,
-        fileName: formDocsMock ? `${formSubject.toLowerCase()}_notlar_${Date.now().toString().slice(-4)}.pdf` : undefined,
-        fullText: formContent.trim(),
-        bulletPoints: bullets.length > 0 ? bullets : [formContent.trim()],
+        hasAttachment: pickedDoc !== null,
+        fileName: pickedDoc ? pickedDoc.name : undefined,
+        fullText: formContent.trim() || 'Bu görev sadece PDF/Word dosyası içeriyor.',
+        bulletPoints: bullets.length > 0 ? bullets : ['Bu görev için yapay zeka özeti bulunamadı, ekteki belgeyi inceleyiniz.'],
         status: 'pending',
         assignedByRole: userRole === 'parent' ? 'Veli' : 'Öğretmen', // Simplified label
         date: Date.now()
@@ -122,10 +144,26 @@ export function TasksScreen({ navigation, route }: any) {
     setFormTitle('');
     setFormTopic('');
     setFormContent('');
-    setFormDocsMock(false);
+    setPickedDoc(null);
     setIsAdding(false);
     Keyboard.dismiss();
-    Alert.alert('Görev Atandı', 'Öğrencinin görev paneline yeni döküman eklendi. AI sistemi tarafından maddeler çıkarıldı!');
+    Alert.alert('Görev Atandı', 'Öğrencinin görev paneline yeni döküman eklendi. AI sistemi tarafından metin analizi tamamlandı!');
+  };
+
+  const handlePickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: '*/*',
+        copyToCacheDirectory: true,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setPickedDoc(result.assets[0]);
+      }
+    } catch(err) {
+      console.log('Error picking doc', err);
+      Alert.alert('Hata', 'Dosya seçilirken bir sorun oluştu.');
+    }
   };
 
   const updateTaskStatus = async (taskId: string, newStatus: 'in_progress' | 'completed') => {
@@ -177,7 +215,7 @@ export function TasksScreen({ navigation, route }: any) {
                     <Text className="font-bold text-rose-800 text-sm">Orjinal Döküman (PDF)</Text>
                     <Text className="font-bold text-rose-500/70 text-xs mt-0.5">{viewingTask.fileName}</Text>
                  </View>
-                 <TouchableOpacity className="bg-rose-600 px-4 py-2 rounded-xl">
+                 <TouchableOpacity onPress={() => Alert.alert('İndiriliyor...', `Dosya cihazınıza yükleniyor:\n\n${viewingTask.fileName}`)} className="bg-rose-600 px-4 py-2 rounded-xl">
                     <Text className="font-black text-white text-xs">İndir</Text>
                  </TouchableOpacity>
               </View>
@@ -237,9 +275,9 @@ export function TasksScreen({ navigation, route }: any) {
                 <Text className="font-black text-xs text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Görev / Belge Başlığı</Text>
                 <TextInput value={formTitle} onChangeText={setFormTitle} placeholder="Örn: Hafta Sonu Deneme Çözümleri" className="bg-slate-50 p-4 rounded-xl font-bold text-slate-700 mb-4 border border-slate-200" />
                 
-                <Text className="font-black text-xs text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Ders Seçimi</Text>
+                <Text className="font-black text-xs text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Ders Seçimi (Öğrenci Programından)</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
-                  {SUBJECTS.map(sub => (
+                  {dynamicSubjects.map(sub => (
                     <TouchableOpacity key={sub} onPress={() => setFormSubject(sub)} className={`px-4 py-2 rounded-xl mr-2 ${formSubject === sub ? 'bg-indigo-600' : 'bg-slate-100'}`}>
                       <Text className={`font-bold ${formSubject === sub ? 'text-white' : 'text-slate-600'}`}>{sub}</Text>
                     </TouchableOpacity>
@@ -249,16 +287,16 @@ export function TasksScreen({ navigation, route }: any) {
                 <Text className="font-black text-xs text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Konu Adı (Opsiyonel)</Text>
                 <TextInput value={formTopic} onChangeText={setFormTopic} placeholder="Örn: Newton Hareket Yasaları" className="bg-slate-50 p-4 rounded-xl font-bold text-slate-700 mb-5 border border-slate-200" />
                 
-                <View className="bg-rose-50 border border-rose-200 p-4 rounded-2xl mb-4 flex-row items-center justify-between">
-                   <View className="flex-row items-center">
+                <View className={`bg-rose-50 border ${pickedDoc ? 'border-rose-400' : 'border-rose-200'} p-4 rounded-2xl mb-4 flex-row items-center justify-between`}>
+                   <View className="flex-row items-center flex-1">
                      <Text className="text-2xl mr-3">📎</Text>
-                     <View>
-                        <Text className="font-extrabold text-rose-800">PDF / Word Eki (Mock)</Text>
-                        <Text className="font-bold text-rose-600/70 text-xs">Belge iliştirmek ister misiniz?</Text>
+                     <View className="flex-1 pr-2">
+                        <Text className="font-extrabold text-rose-800">{pickedDoc ? 'Belge Hazır' : 'PDF / Word Eki (Opsiyonel)'}</Text>
+                        <Text className="font-bold text-rose-600/70 text-xs mt-0.5" numberOfLines={1}>{pickedDoc ? pickedDoc.name : 'Cihazınızdan bir belge yükleyin'}</Text>
                      </View>
                    </View>
-                   <TouchableOpacity onPress={() => setFormDocsMock(!formDocsMock)} className={`w-12 h-6 rounded-full p-1 justify-center ${formDocsMock ? 'bg-rose-500' : 'bg-rose-200'}`}>
-                      <View className={`w-4 h-4 bg-white rounded-full ${formDocsMock ? 'self-end' : 'self-start'}`} />
+                   <TouchableOpacity onPress={pickedDoc ? () => setPickedDoc(null) : handlePickDocument} className={`px-4 py-2 rounded-xl ${pickedDoc ? 'bg-rose-100' : 'bg-rose-500'}`}>
+                      <Text className={`font-black text-xs ${pickedDoc ? 'text-rose-600' : 'text-white'}`}>{pickedDoc ? 'Kaldır' : 'Yükle'}</Text>
                    </TouchableOpacity>
                 </View>
 
