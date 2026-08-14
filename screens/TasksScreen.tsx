@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Keyb
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
 import { supabase } from '../lib/supabase';
 
 type TaskDoc = {
@@ -161,7 +163,18 @@ export function TasksScreen({ navigation, route }: any) {
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        setPickedDoc(result.assets[0]);
+        const asset = result.assets[0];
+        try {
+          const safeName = asset.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+          const finalUri = (FileSystem as any).documentDirectory + `task_${Date.now()}_${safeName}`;
+          await (FileSystem as any).copyAsync({ from: asset.uri, to: finalUri });
+          
+          setPickedDoc({ ...asset, uri: finalUri, name: asset.name });
+        } catch (copyErr) {
+          console.log('Copy Error:', copyErr);
+          // Fallback to cache URI if copy fails
+          setPickedDoc(asset);
+        }
       }
     } catch(err) {
       console.log('Error picking doc', err);
@@ -184,11 +197,24 @@ export function TasksScreen({ navigation, route }: any) {
        return;
     }
     try {
-      const isAvailable = await Sharing.isAvailableAsync();
-      if (isAvailable) {
-        await Sharing.shareAsync(uri, { dialogTitle: 'Belgeyi indir veya aç: ' + name });
+      if (Platform.OS === 'android') {
+        try {
+           const cUri = await (FileSystem as any).getContentUriAsync(uri);
+           await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+             data: cUri,
+             flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
+             type: name?.toLowerCase().endsWith('.pdf') ? 'application/pdf' : '*/*'
+           });
+        } catch(intentErr) {
+           await Sharing.shareAsync(uri, { dialogTitle: 'Görüntüle: ' + name });
+        }
       } else {
-        Alert.alert('Hata', 'Paylaşım/İndirme özelliği cihazda kapalı.');
+         const isAvailable = await Sharing.isAvailableAsync();
+         if (isAvailable) {
+           await Sharing.shareAsync(uri, { UTI: name?.toLowerCase().endsWith('.pdf') ? 'com.adobe.pdf' : 'public.document' });
+         } else {
+           Alert.alert('Hata', 'Görüntüleme/Paylaşma cihazda desteklenmiyor.');
+         }
       }
     } catch (err) {
       Alert.alert('Hata', 'Dosya açılamadı, geçici bellekten silinmiş olabilir.');
