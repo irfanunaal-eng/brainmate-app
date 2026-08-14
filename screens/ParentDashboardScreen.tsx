@@ -291,7 +291,7 @@ export function ParentDashboardScreen({ navigation }: any) {
               <Text className="text-[10px] font-bold text-teal-700">Sınav Notları</Text>
             </View>
 
-            {['parent', 'teacher', 'student_coach'].includes(userRole) && (
+            {['parent', 'teacher', 'student_coach', 'class_teacher'].includes(userRole) && (
               <View className="items-center mr-4">
                 <TouchableOpacity onPress={() => navigation.navigate('EvaluationsScreen', { studentId })} className="items-center justify-center bg-lime-50 border-2 border-lime-100 w-[56px] h-[56px] rounded-2xl mb-1">
                   <Text className="text-3xl">📋</Text>

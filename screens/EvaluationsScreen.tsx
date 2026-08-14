@@ -19,7 +19,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
   const [userName, setUserName] = useState<string>('Eğitimci');
   const [resolvedStudentId, setResolvedStudentId] = useState<string>('default');
 
-  const canWrite = userRole === 'teacher' || userRole === 'student_coach';
+  const canWrite = userRole === 'teacher' || userRole === 'student_coach' || userRole === 'class_teacher';
 
   useEffect(() => {
     loadEvaluations();
@@ -66,6 +66,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
     
     let authorLabel = 'Okul Rehber Öğretmeni';
     if (userRole === 'student_coach') authorLabel = 'Öğrenci Koçu';
+    else if (userRole === 'class_teacher') authorLabel = 'Sınıf Rehber Öğretmeni';
 
     const newEval: Evaluation = {
         id: Date.now().toString(),
@@ -90,6 +91,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
   const deleteEval = (id: string, authorLabel: string) => {
     let currentRoleLabel = 'Okul Rehber Öğretmeni';
     if (userRole === 'student_coach') currentRoleLabel = 'Öğrenci Koçu';
+    else if (userRole === 'class_teacher') currentRoleLabel = 'Sınıf Rehber Öğretmeni';
 
     // Only the exact role type who wrote it can delete it (e.g. Coach can't delete Counselor's note)
     if (authorLabel !== currentRoleLabel) {
@@ -111,6 +113,14 @@ export function EvaluationsScreen({ navigation, route }: any) {
     const d = new Date(ts);
     return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
   };
+
+  const visibleEvaluations = evaluations.filter(item => {
+     if (userRole === 'parent') return true;
+     let expectedLabel = 'Okul Rehber Öğretmeni';
+     if (userRole === 'student_coach') expectedLabel = 'Öğrenci Koçu';
+     else if (userRole === 'class_teacher') expectedLabel = 'Sınıf Rehber Öğretmeni';
+     return item.authorRole === expectedLabel;
+  });
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f8fafc' }}>
@@ -155,19 +165,31 @@ export function EvaluationsScreen({ navigation, route }: any) {
           )}
 
           {/* Evaluations List */}
-          {evaluations.length === 0 && !isAdding ? (
+          {visibleEvaluations.length === 0 && !isAdding ? (
             <View className="items-center justify-center mt-20">
               <Text className="text-6xl mb-4 text-center">📋</Text>
               <Text className="text-slate-400 font-bold text-lg text-center mb-2">Henüz herhangi bir eğitimci görüşü bulunmuyor.</Text>
-              <Text className="text-slate-400 text-xs text-center px-10">Okul rehber öğretmeni veya öğrenci koçu tarafından öğrencinin durumunu analiz eden raporlar buraya eklenecektir.</Text>
+              <Text className="text-slate-400 text-xs text-center px-10">Eğitim kadrosu tarafından öğrencinin durumunu analiz eden raporlar buraya eklenecektir.</Text>
             </View>
           ) : (
             <View className="flex-col">
-              {evaluations.map(item => {
+              {visibleEvaluations.map(item => {
                  const isCoach = item.authorRole === 'Öğrenci Koçu';
-                 const colorClass = isCoach ? 'bg-amber-50 border-amber-200' : 'bg-blue-50 border-blue-200';
-                 const headerClass = isCoach ? 'bg-amber-500' : 'bg-blue-500';
-                 const icon = isCoach ? '🎯' : '🧠';
+                 const isClassTeacher = item.authorRole === 'Sınıf Rehber Öğretmeni';
+                 
+                 let colorClass = 'bg-blue-50 border-blue-200';
+                 let headerClass = 'bg-blue-500';
+                 let icon = '🧠';
+                 
+                 if (isCoach) {
+                    colorClass = 'bg-amber-50 border-amber-200';
+                    headerClass = 'bg-amber-500';
+                    icon = '🎯';
+                 } else if (isClassTeacher) {
+                    colorClass = 'bg-emerald-50 border-emerald-200';
+                    headerClass = 'bg-emerald-500';
+                    icon = '🏫';
+                 }
 
                  return (
                     <View key={item.id} className={`${colorClass} w-full rounded-3xl mb-4 shadow-sm border overflow-hidden`}>
