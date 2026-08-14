@@ -10,7 +10,8 @@ const RELATION_TYPES = [
   { id: 'ehiste', label: '🤷‍♂️ Eh İşte' }
 ];
 
-export function SocialDashboardScreen({ navigation }: any) {
+export function SocialDashboardScreen({ navigation, route }: any) {
+  const isParentView = route?.params?.isParentView || false;
   const [friends, setFriends] = useState([
     { id: '1', name: 'Ahmet Y.', score: 1250, relation: 'rakip' },
     { id: '2', name: 'Ayşe K.', score: 980, relation: 'kanka' },
@@ -102,15 +103,15 @@ export function SocialDashboardScreen({ navigation }: any) {
 
     return (
       <TouchableOpacity 
-        activeOpacity={isMe ? 1 : 0.7}
-        onPress={() => !isMe && setSelectedFriend(item)}
+        activeOpacity={isParentView || isMe ? 1 : 0.7}
+        onPress={() => !isParentView && !isMe && setSelectedFriend(item)}
         className={`flex-row justify-between items-center p-4 mb-3 rounded-2xl border ${isMe ? 'bg-indigo-50 border-indigo-200 shadow-none' : 'bg-white border-gray-100 shadow-sm shadow-gray-100'}`}
       >
         <View className="flex-row items-center flex-1">
           <Text className={`text-xl font-bold w-10 ${isMe ? 'text-indigo-500' : 'text-gray-400'}`}>{index + 1}.</Text>
           <View className="flex-1">
             <Text className={`text-base font-extrabold mb-1 ${isMe ? 'text-indigo-800' : 'text-gray-800'}`} numberOfLines={1}>{item.name}</Text>
-            {!isMe && relObj && (
+            {!isMe && relObj && !isParentView && (
               <View className="bg-gray-50 self-start px-2 py-1 rounded-md border border-gray-100 mt-0.5">
                 <Text className="text-[10px] text-gray-500 font-bold">{relObj.label}</Text>
               </View>
@@ -137,26 +138,28 @@ export function SocialDashboardScreen({ navigation }: any) {
           <View className="w-10" />
         </View>
 
-        <View className="bg-gray-50 p-5 rounded-2xl mb-8 border border-gray-200">
-          <Text className="text-gray-700 font-bold mb-3 text-base">Arkadaş Ekle</Text>
-          <View className="flex-row">
-            <TextInput 
-              className="flex-1 bg-white px-4 py-3 rounded-xl border border-gray-200 text-lg uppercase tracking-widest font-bold mr-3"
-              placeholder="KODGİR"
-              maxLength={6}
-              autoCapitalize="characters"
-              value={friendCode}
-              onChangeText={setFriendCode}
-            />
-            <TouchableOpacity 
-              onPress={handleAddFriend}
-              className="bg-secondary px-6 rounded-xl justify-center items-center shadow-sm"
-            >
-              <Text className="text-white font-bold">Ekle</Text>
-            </TouchableOpacity>
+        {!isParentView && (
+          <View className="bg-gray-50 p-5 rounded-2xl mb-8 border border-gray-200">
+            <Text className="text-gray-700 font-bold mb-3 text-base">Arkadaş Ekle</Text>
+            <View className="flex-row">
+              <TextInput 
+                className="flex-1 bg-white px-4 py-3 rounded-xl border border-gray-200 text-lg uppercase tracking-widest font-bold mr-3"
+                placeholder="KODGİR"
+                maxLength={6}
+                autoCapitalize="characters"
+                value={friendCode}
+                onChangeText={setFriendCode}
+              />
+              <TouchableOpacity 
+                onPress={handleAddFriend}
+                className="bg-secondary px-6 rounded-xl justify-center items-center shadow-sm"
+              >
+                <Text className="text-white font-bold">Ekle</Text>
+              </TouchableOpacity>
+            </View>
+            <Text className="text-gray-400 text-xs mt-2">Güvenlik için sadece 6 haneli özel kodu olanları ekleyebilirsin.</Text>
           </View>
-          <Text className="text-gray-400 text-xs mt-2">Güvenlik için sadece 6 haneli özel kodu olanları ekleyebilirsin.</Text>
-        </View>
+        )}
 
         <Text className="text-xl font-extrabold text-text mb-4">Liderlik Tablosu 🏆</Text>
         
