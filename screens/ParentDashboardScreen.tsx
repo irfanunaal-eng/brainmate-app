@@ -302,7 +302,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => Alert.alert('Mesajlar (Yakında)', 'Buradan sadece kendi öğrencinizle mesajlaşabilirsiniz. Sistem gereği öğrencinizin öğretmenleri/arkadaşları ile olan mesajlarını göremezsiniz ancak doğrudan kendiniz onunla burada iletişime geçebilirsiniz.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => navigation.navigate('MessagesScreen', { isParentView: true, studentId: studentId })} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">💬</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-blue-700">Mesajlar</Text>
