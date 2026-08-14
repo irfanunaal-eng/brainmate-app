@@ -9,7 +9,7 @@ import * as Speech from 'expo-speech';
 const ROOT_WORD_DB = require('../assets/vocabulary.json');
 
 export function EnglishGameScreen({ route }: any) {
-  const { levelId } = route.params || { levelId: 'A1' };
+  const { levelId, mode } = route.params || { levelId: 'A1', mode: 'solo' };
   const DB = ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1'];
   const navigation = useNavigation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -21,7 +21,25 @@ export function EnglishGameScreen({ route }: any) {
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<{ visible: boolean; correct: boolean } | null>(null);
   
+  const [showCannedMenu, setShowCannedMenu] = useState(false);
+  const [floatingMsg, setFloatingMsg] = useState<{sender: string, text: string} | null>(null);
+
   const currentWord = DB[currentWordIndex % DB.length];
+
+  const cannedMessages = ["👑 Harikasın!", "🔥 Çok Hızlısın!", "😈 Pes Etmek Yok!", "🚀 Süpersin!"];
+
+  const sendCannedMsg = (text: string) => {
+    setShowCannedMenu(false);
+    setFloatingMsg({ sender: 'Sen', text });
+    setTimeout(() => setFloatingMsg(null), 3000);
+
+    // Simulate opponent replying
+    setTimeout(() => {
+       const reply = cannedMessages[Math.floor(Math.random() * cannedMessages.length)];
+       setFloatingMsg({ sender: 'Rakip', text: reply });
+       setTimeout(() => setFloatingMsg(null), 3000);
+    }, 4500);
+  };
 
   const playVoice = async (text: string) => {
     if (!text) return;
@@ -201,6 +219,16 @@ export function EnglishGameScreen({ route }: any) {
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
+      {/* Floating Chat Message Overlay */}
+      {floatingMsg && (
+        <View className="absolute top-24 left-0 right-0 z-50 items-center">
+           <View className={`px-6 py-3 rounded-full flex-row shadow-xl border ${floatingMsg.sender === 'Sen' ? 'bg-indigo-600 border-indigo-500 shadow-indigo-300' : 'bg-rose-500 border-rose-400 shadow-rose-300'}`}>
+              <Text className="text-white font-extrabold mr-2">{floatingMsg.sender}:</Text>
+              <Text className="text-white font-medium">{floatingMsg.text}</Text>
+           </View>
+        </View>
+      )}
+
       {/* Header Info */}
       <View className="flex-row justify-between items-center p-5">
          <View className="flex-row items-center">
@@ -213,12 +241,35 @@ export function EnglishGameScreen({ route }: any) {
             </View>
          </View>
 
-         <View className="flex-row bg-rose-50 px-3 py-2 rounded-full border border-rose-100">
-           {[...Array(3)].map((_, i) => (
-             <Text key={i} className={`text-sm ${i < lives ? 'opacity-100' : 'opacity-20 grayscale'}`}>❤️</Text>
-           ))}
+         <View className="flex-row items-center">
+           <View className="flex-row bg-rose-50 px-3 py-2 rounded-full border border-rose-100">
+             {[...Array(3)].map((_, i) => (
+               <Text key={i} className={`text-sm ${i < lives ? 'opacity-100' : 'opacity-20 grayscale'}`}>❤️</Text>
+             ))}
+           </View>
+           
+           {mode === 'duel' && (
+             <TouchableOpacity 
+               onPress={() => setShowCannedMenu(!showCannedMenu)} 
+               className="ml-3 bg-fuchsia-100 w-10 h-10 items-center justify-center rounded-full border border-fuchsia-200"
+             >
+               <Text className="text-xl">💬</Text>
+             </TouchableOpacity>
+           )}
          </View>
       </View>
+
+      {/* Canned Messages Dropdown */}
+      {showCannedMenu && mode === 'duel' && (
+        <View className="absolute top-24 right-6 z-50 bg-white border border-gray-100 shadow-xl shadow-gray-200/50 rounded-2xl w-48 py-2">
+           <Text className="px-4 py-2 text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Hızlı Mesaj</Text>
+           {cannedMessages.map((msg, i) => (
+             <TouchableOpacity key={i} onPress={() => sendCannedMsg(msg)} className="px-4 py-3 border-b border-gray-50 active:bg-gray-50 flex-row items-center">
+                <Text className="font-bold text-gray-700">{msg}</Text>
+             </TouchableOpacity>
+           ))}
+        </View>
+      )}
 
       {/* Timer Bar */}
       <View className="w-full h-2 bg-gray-100">
