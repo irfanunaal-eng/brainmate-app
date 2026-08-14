@@ -15,6 +15,7 @@ export function GameLobbyScreen() {
   const [selectedMode, setSelectedMode] = useState<'solo' | 'duel'>('solo');
   const [expandedLevel, setExpandedLevel] = useState<string | null>(null);
   const [adminOverride, setAdminOverride] = useState(false);
+  const [duelOpponent, setDuelOpponent] = useState<string | null>(null);
 
   const toggleLevel = (id: string, isUnlocked: boolean) => {
     if (!isUnlocked) return;
@@ -55,7 +56,6 @@ export function GameLobbyScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Info Box */}
         <View className={`p-5 rounded-3xl mb-6 shadow-sm ${selectedMode === 'solo' ? 'bg-indigo-50 border-indigo-100' : 'bg-rose-50 border-rose-100'} border`}>
            <Text className={`text-lg font-black mb-1 ${selectedMode === 'solo' ? 'text-indigo-800' : 'text-rose-800'}`}>
              {selectedMode === 'solo' ? 'Kelime Hazneni Genişlet' : 'Meydan Okuma Zamanı!'}
@@ -66,6 +66,26 @@ export function GameLobbyScreen() {
                 : 'Sosyal ağından bir "Ebedi Rakip" veya "Kanka" seç. Aynı kelimeleri kim daha hızlı bilecek?'}
            </Text>
         </View>
+
+        {selectedMode === 'duel' && (
+           <View className="mb-6">
+              <Text className="font-extrabold text-gray-800 mb-2 text-sm uppercase tracking-widest pl-1">Meydan Okunacak Rakibi Seç:</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-1">
+                 {['Ahmet Y. (Rakip)', 'Ayşe K. (Kanka)', 'Mehmet D.'].map((f, i) => (
+                    <TouchableOpacity 
+                       key={i} 
+                       onPress={() => setDuelOpponent(f)}
+                       className={`mr-3 px-5 py-3 rounded-2xl border ${duelOpponent === f ? 'bg-rose-500 border-rose-600 shadow-sm shadow-rose-200' : 'bg-white border-gray-200 shadow-sm shadow-gray-100'}`}
+                    >
+                       <Text className={`font-bold ${duelOpponent === f ? 'text-white' : 'text-gray-700'}`}>{duelOpponent === f ? '🎯 ' : ''}{f}</Text>
+                    </TouchableOpacity>
+                 ))}
+                 <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
+                    <Text className="text-gray-600 font-extrabold">+ Sosyal Ağdan Ekle</Text>
+                 </TouchableOpacity>
+              </ScrollView>
+           </View>
+        )}
 
         <Text className="text-xl font-extrabold text-gray-800 mb-4">Seviyeler</Text>
 

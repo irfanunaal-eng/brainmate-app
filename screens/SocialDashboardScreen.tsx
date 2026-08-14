@@ -168,12 +168,6 @@ export function SocialDashboardScreen({ navigation }: any) {
           contentContainerStyle={{ paddingBottom: 20 }}
         />
 
-        <TouchableOpacity 
-          className="bg-primary w-full py-4 rounded-xl items-center mt-4 shadow-sm"
-          onPress={() => navigation.navigate('GameLobbyScreen')}
-        >
-          <Text className="text-white font-bold text-lg">🎮 Oyun Lobisine Gir</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Friend Detail / Relation Modal */}
