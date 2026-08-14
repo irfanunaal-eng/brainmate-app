@@ -52,8 +52,10 @@ export function TasksScreen({ navigation, route }: any) {
 
   // Compute the standardized display name for the role to use as horizontal isolation key
   const userFullName = userRole === 'parent' ? 'Veli' : 
-                       userRole === 'coach' ? 'Öğrenci Koçu' : 
-                       userRole === 'class_teacher' ? 'Sınıf Öğretmeni' : 
+                       userRole === 'student_coach' ? 'Öğrenci Koçu' : 
+                       userRole === 'private_tutor' ? 'Özel Ders Öğretmeni' : 
+                       userRole === 'class_teacher' ? 'Sınıf Rehber Öğretmeni' : 
+                       userRole === 'teacher' ? 'Okul Rehber Öğretmeni' : 
                        'Rehber Öğretmen';
 
   useEffect(() => {

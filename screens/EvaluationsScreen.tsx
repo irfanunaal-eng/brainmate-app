@@ -67,6 +67,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
     let authorLabel = 'Okul Rehber Öğretmeni';
     if (userRole === 'student_coach') authorLabel = 'Öğrenci Koçu';
     else if (userRole === 'class_teacher') authorLabel = 'Sınıf Rehber Öğretmeni';
+    else if (userRole === 'private_tutor') authorLabel = 'Özel Ders Öğretmeni';
 
     const newEval: Evaluation = {
         id: Date.now().toString(),
@@ -92,6 +93,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
     let currentRoleLabel = 'Okul Rehber Öğretmeni';
     if (userRole === 'student_coach') currentRoleLabel = 'Öğrenci Koçu';
     else if (userRole === 'class_teacher') currentRoleLabel = 'Sınıf Rehber Öğretmeni';
+    else if (userRole === 'private_tutor') currentRoleLabel = 'Özel Ders Öğretmeni';
 
     // Only the exact role type who wrote it can delete it (e.g. Coach can't delete Counselor's note)
     if (authorLabel !== currentRoleLabel) {
@@ -119,6 +121,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
      let expectedLabel = 'Okul Rehber Öğretmeni';
      if (userRole === 'student_coach') expectedLabel = 'Öğrenci Koçu';
      else if (userRole === 'class_teacher') expectedLabel = 'Sınıf Rehber Öğretmeni';
+     else if (userRole === 'private_tutor') expectedLabel = 'Özel Ders Öğretmeni';
      return item.authorRole === expectedLabel;
   });
 
