@@ -46,7 +46,13 @@ export function TasksScreen({ navigation, route }: any) {
   // Immersive PDF Viewer State (primarily iOS or external fallbacks)
   const [pdfViewerUri, setPdfViewerUri] = useState<string | null>(null);
 
-  const canWrite = userRole !== 'student';
+  const canWrite = userRole !== 'student' && userRole !== 'parent';
+
+  // Compute the standardized display name for the role to use as horizontal isolation key
+  const userFullName = userRole === 'parent' ? 'Veli' : 
+                       userRole === 'coach' ? 'Öğrenci Koçu' : 
+                       userRole === 'class_teacher' ? 'Sınıf Öğretmeni' : 
+                       'Rehber Öğretmen';
 
   useEffect(() => {
     loadTasks();
@@ -140,7 +146,7 @@ export function TasksScreen({ navigation, route }: any) {
         fullText: formContent.trim() || '',
         bulletPoints: bullets.length > 0 && formContent.trim() ? bullets : [],
         status: 'pending',
-        assignedByRole: userRole === 'parent' ? 'Veli' : 'Öğretmen', // Simplified label
+        assignedByRole: userFullName,
         date: Date.now()
     };
 
@@ -399,7 +405,7 @@ export function TasksScreen({ navigation, route }: any) {
                   className="font-medium text-sm text-gray-700 p-4 bg-slate-50 rounded-2xl min-h-[140px] mb-6 border border-slate-200" 
                   multiline textAlignVertical="top" 
                 />
-
+                
                 <TouchableOpacity onPress={handleSaveTask} className="py-4 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-600/40 items-center">
                    <Text className="font-black text-white text-lg">Öğrenciye Ata & Çeviriyi Başlat</Text>
                 </TouchableOpacity>
