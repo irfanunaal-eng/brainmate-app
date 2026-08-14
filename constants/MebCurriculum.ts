@@ -123,7 +123,11 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'İleri Matematik (Alan Zorunlu)', hours: 6 },
+    { name: 'İleri Fizik (Alan Zorunlu)', hours: 4 },
+    { name: 'İleri Kimya (Alan Zorunlu)', hours: 4 },
+    { name: 'İleri Biyoloji (Alan Zorunlu)', hours: 4 }
   ],
   // 11 ESIT AGIRLIK
   '11_ea': [
@@ -134,7 +138,11 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'İleri Matematik (Alan Zorunlu)', hours: 6 },
+    { name: 'Türk Dİli Edebiyatı (Alan Zorunlu)', hours: 3 },
+    { name: 'Coğrafya (Alan Zorunlu)', hours: 4 },
+    { name: 'Psikoloji / Sosyoloji (Alan)', hours: 2 }
   ],
   // 11 SÖZEL
   '11_sozel': [
@@ -145,7 +153,11 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'Türk Dili Edebiyatı (Alan Zorunlu)', hours: 5 },
+    { name: 'Coğrafya (Alan Zorunlu)', hours: 4 },
+    { name: 'Tarih (Alan Zorunlu)', hours: 4 },
+    { name: 'Psikoloji / Mantık (Alan)', hours: 2 }
   ],
   // 11 YABANCI DIl
   '11_dil': [
@@ -156,7 +168,10 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'Yabancı Dil Edebiyatı (Alan Zorunlu)', hours: 10 },
+    { name: 'Coğrafya / Sosyoloji (Alan)', hours: 4 },
+    { name: 'Temel Matematik (Alan Zorunlu)', hours: 2 }
   ],
 
   // 12 SAYISAL
@@ -167,7 +182,11 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'İleri Matematik (Alan Zorunlu)', hours: 6 },
+    { name: 'İleri Fizik (Alan Zorunlu)', hours: 4 },
+    { name: 'İleri Kimya (Alan Zorunlu)', hours: 4 },
+    { name: 'İleri Biyoloji (Alan Zorunlu)', hours: 4 }
   ],
   // 12 ESIT AGIRLIK
   '12_ea': [
@@ -177,7 +196,11 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'İleri Matematik (Alan Zorunlu)', hours: 6 },
+    { name: 'Çağdaş Türk Dünya Tarihi (Alan)', hours: 4 },
+    { name: 'Coğrafya (Alan Zorunlu)', hours: 4 },
+    { name: 'Mantık / Sosyoloji (Alan)', hours: 2 }
   ],
   // 12 SÖZEL
   '12_sozel': [
@@ -187,7 +210,11 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'Türk Dili Edebiyatı (Alan Zorunlu)', hours: 5 },
+    { name: 'Çağdaş Türk Dünya Tarihi (Alan)', hours: 4 },
+    { name: 'Coğrafya (Alan Zorunlu)', hours: 4 },
+    { name: 'Mantık / Sosyoloji (Alan)', hours: 2 }
   ],
   // 12 YABANCI DIL
   '12_dil': [
@@ -197,7 +224,10 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
+    { name: 'Yabancı Dil Edebiyatı (Alan Zorunlu)', hours: 10 },
+    { name: 'Yabancı Dil Okuma / Konuşma', hours: 4 },
+    { name: 'Temel Matematik (Alan Zorunlu)', hours: 2 }
   ]
 };
 
