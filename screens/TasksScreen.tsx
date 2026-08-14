@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as DocumentPicker from 'expo-document-picker';
+import * as Sharing from 'expo-sharing';
 import { supabase } from '../lib/supabase';
 
 type TaskDoc = {
@@ -11,6 +12,7 @@ type TaskDoc = {
   topic: string;
   hasAttachment: boolean;
   fileName?: string;
+  fileUri?: string;
   fullText: string;
   bulletPoints: string[];
   status: 'pending' | 'in_progress' | 'completed';
@@ -127,6 +129,7 @@ export function TasksScreen({ navigation, route }: any) {
         topic: formTopic || 'Genel Konu',
         hasAttachment: pickedDoc !== null,
         fileName: pickedDoc ? pickedDoc.name : undefined,
+        fileUri: pickedDoc ? pickedDoc.uri : undefined,
         fullText: formContent.trim() || 'Bu görev sadece PDF/Word dosyası içeriyor.',
         bulletPoints: bullets.length > 0 ? bullets : ['Bu görev için yapay zeka özeti bulunamadı, ekteki belgeyi inceleyiniz.'],
         status: 'pending',
@@ -175,6 +178,23 @@ export function TasksScreen({ navigation, route }: any) {
       } catch(e) {}
   };
 
+  const handleDownloadDocument = async (uri?: string, name?: string) => {
+    if (!uri) {
+       Alert.alert('Hata', 'İndirilecek fiziksel dosya bulunamadı.');
+       return;
+    }
+    try {
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (isAvailable) {
+        await Sharing.shareAsync(uri, { dialogTitle: 'Belgeyi indir veya aç: ' + name });
+      } else {
+        Alert.alert('Hata', 'Paylaşım/İndirme özelliği cihazda kapalı.');
+      }
+    } catch (err) {
+      Alert.alert('Hata', 'Dosya açılamadı, geçici bellekten silinmiş olabilir.');
+    }
+  };
+
   // ----- RENDERS -----
 
   if (viewingTask) {
@@ -215,8 +235,8 @@ export function TasksScreen({ navigation, route }: any) {
                     <Text className="font-bold text-rose-800 text-sm">Orjinal Döküman (PDF)</Text>
                     <Text className="font-bold text-rose-500/70 text-xs mt-0.5">{viewingTask.fileName}</Text>
                  </View>
-                 <TouchableOpacity onPress={() => Alert.alert('İndiriliyor...', `Dosya cihazınıza yükleniyor:\n\n${viewingTask.fileName}`)} className="bg-rose-600 px-4 py-2 rounded-xl">
-                    <Text className="font-black text-white text-xs">İndir</Text>
+                 <TouchableOpacity onPress={() => handleDownloadDocument(viewingTask.fileUri, viewingTask.fileName)} className="bg-rose-600 px-4 py-2 rounded-xl scale-95 shadow-sm shadow-rose-600/30">
+                    <Text className="font-black text-white text-xs">Görüntüle / Aç</Text>
                  </TouchableOpacity>
               </View>
            )}
