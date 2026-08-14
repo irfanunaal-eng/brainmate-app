@@ -290,6 +290,15 @@ export function ParentDashboardScreen({ navigation }: any) {
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-teal-700">Sınav Notları</Text>
             </View>
+
+            {['parent', 'teacher', 'student_coach'].includes(userRole) && (
+              <View className="items-center mr-4">
+                <TouchableOpacity onPress={() => navigation.navigate('EvaluationsScreen', { studentId })} className="items-center justify-center bg-lime-50 border-2 border-lime-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                  <Text className="text-3xl">📋</Text>
+                </TouchableOpacity>
+                <Text className="text-[10px] font-bold text-lime-700">Değerlendirme</Text>
+              </View>
+            )}
             
             {userRole !== 'private_tutor' && (
               <View className="items-center mr-4">
