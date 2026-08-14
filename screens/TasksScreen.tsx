@@ -253,7 +253,17 @@ export function TasksScreen({ navigation, route }: any) {
   // Filter logic: Parent and Student sees all tasks. Role users see only their OWN tasks.
   const visibleTasks = (userRole === 'student' || userRole === 'parent')
     ? tasks
-    : tasks.filter(t => t.assignedByRole === userFullName);
+    : tasks.filter(t => {
+        if (t.assignedByRole === userFullName) return true;
+        
+        // Legacy Data Fallback (from earlier label versions)
+        if (userRole === 'teacher' && t.assignedByRole === 'Rehber Öğretmen') return true;
+        if (userRole === 'student_coach' && (t.assignedByRole === 'Öğrenci Koçu' || t.assignedByRole === 'Rehber Öğretmen')) return true;
+        if (userRole === 'private_tutor' && (t.assignedByRole === 'Özel Ders Öğretmeni' || t.assignedByRole === 'Rehber Öğretmen')) return true;
+        if (userRole === 'class_teacher' && (t.assignedByRole === 'Sınıf Öğretmeni' || t.assignedByRole === 'Sınıf Rehber Öğretmeni')) return true;
+        
+        return false;
+    });
 
   // ----- RENDERS -----
 

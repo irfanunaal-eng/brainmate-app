@@ -117,12 +117,20 @@ export function EvaluationsScreen({ navigation, route }: any) {
   };
 
   const visibleEvaluations = evaluations.filter(item => {
-     if (userRole === 'parent') return true;
+     if (userRole === 'parent' || userRole === 'student') return true;
+     
      let expectedLabel = 'Okul Rehber Öğretmeni';
      if (userRole === 'student_coach') expectedLabel = 'Öğrenci Koçu';
      else if (userRole === 'class_teacher') expectedLabel = 'Sınıf Rehber Öğretmeni';
      else if (userRole === 'private_tutor') expectedLabel = 'Özel Ders Öğretmeni';
-     return item.authorRole === expectedLabel;
+     
+     if (item.authorRole === expectedLabel) return true;
+     
+     // Legacy Fallbacks
+     if (userRole === 'student_coach' && item.authorRole === 'Okul Rehber Öğretmeni') return true;
+     if (userRole === 'private_tutor' && item.authorRole === 'Okul Rehber Öğretmeni') return true;
+     
+     return false;
   });
 
   return (
