@@ -32,20 +32,33 @@ export function ParentDashboardScreen({ navigation }: any) {
         else if (profile.role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
       }
 
-      const { data, error } = await supabase
+      let linkData: any = null;
+
+      // Check traditional parent links first
+      const { data: parentLinks } = await supabase
         .from('parent_student_links')
-        .select(`
-          student_id,
-          profiles:student_id ( full_name, role )
-        `)
+        .select(`student_id, profiles:student_id ( full_name, role )`)
         .eq('parent_id', user.id)
         .limit(1);
       
-      if (data && data.length > 0) {
+      if (parentLinks && parentLinks.length > 0) {
+        linkData = parentLinks[0];
+      } else {
+        // Fallback to broader educator-student relationship links
+        const { data: teacherLinks } = await supabase
+          .from('student_teachers')
+          .select(`student_id, profiles:student_id ( full_name, role )`)
+          .eq('teacher_id', user.id)
+          .limit(1);
+        if (teacherLinks && teacherLinks.length > 0) {
+           linkData = teacherLinks[0];
+        }
+      }
+
+      if (linkData) {
         setIsPaired(true);
-        setStudentId(data[0].student_id);
-        // Fallback for full_name if null, use email or generic
-        setStudentName((data[0].profiles as any)?.full_name || 'Öğrenci');
+        setStudentId(linkData.student_id);
+        setStudentName((linkData.profiles as any)?.full_name || 'Öğrenci');
       }
     }
     setLoading(false);
