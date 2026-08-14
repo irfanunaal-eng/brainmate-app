@@ -23,14 +23,11 @@ export function EnglishGameScreen({ route }: any) {
   
   const currentWord = DB[currentWordIndex % DB.length];
 
-  const playVoice = async (text: string) => {
+  const playVoice = (text: string) => {
     if (!text) return;
     try {
-      const isSpeaking = await Speech.isSpeakingAsync();
-      if (isSpeaking) {
-        await Speech.stop();
-      }
-      Speech.speak(text, { language: 'en-US' });
+      Speech.stop();
+      Speech.speak(text, { language: 'en-GB' });
     } catch (e) {
       console.log('Speech error:', e);
     }
