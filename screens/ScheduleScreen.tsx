@@ -773,7 +773,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
                 <Text className="text-white font-extrabold text-xs">✨ Dağıt</Text>
               </TouchableOpacity>
            </View>
-           {isOkul && <Text className="text-gray-500 font-medium mb-4 text-xs leading-5">MEB kurallarına göre hafta içi 5 gün, günlük max 8 saate (Toplam 40 saat) dağıtılır.</Text>}
+           {isOkul && <Text className="text-gray-500 font-medium mb-4 text-[11px] leading-5">Bilgi: Program tablosu hafta içi 5 gün üzerinden maksimum 40 saatlik (5gün x 8saat) boş hücre destekler. Oluşturduğunuz kota listesi hücrelere sırasıyla yerleştirilir.</Text>}
            
            {/* IF UNLOCKED, show warning */}
            {(isOkul && !isSchoolQuotaLocked) && (

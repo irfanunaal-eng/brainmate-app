@@ -123,11 +123,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'İleri Matematik (Seçmeli)', hours: 6 },
-    { name: 'İleri Fizik (Seçmeli)', hours: 4 },
-    { name: 'İleri Kimya (Seçmeli)', hours: 4 },
-    { name: 'İleri Biyoloji (Seçmeli)', hours: 4 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
   // 11 ESIT AGIRLIK
   '11_ea': [
@@ -138,11 +134,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'İleri Matematik (Seçmeli)', hours: 6 },
-    { name: 'Türk Dili ve Edebiyatı (Seçmeli)', hours: 3 },
-    { name: 'Coğrafya (Seçmeli)', hours: 4 },
-    { name: 'Psikoloji / Sosyoloji', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
   // 11 SÖZEL
   '11_sozel': [
@@ -153,11 +145,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'Türk Dili ve Edebiyatı (Seçmeli)', hours: 5 },
-    { name: 'Coğrafya (Seçmeli)', hours: 4 },
-    { name: 'Tarih (Seçmeli)', hours: 4 },
-    { name: 'Psikoloji / Mantık', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
   // 11 YABANCI DIl
   '11_dil': [
@@ -168,10 +156,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'Yabancı Dil Edebiyatı (Seç.)', hours: 10 },
-    { name: 'Coğrafya / Sosyoloji', hours: 4 },
-    { name: 'Temel Matematik (Seçmeli)', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
 
   // 12 SAYISAL
@@ -182,11 +167,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'İleri Matematik (Seçmeli)', hours: 6 },
-    { name: 'İleri Fizik (Seçmeli)', hours: 4 },
-    { name: 'İleri Kimya (Seçmeli)', hours: 4 },
-    { name: 'İleri Biyoloji (Seçmeli)', hours: 4 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
   // 12 ESIT AGIRLIK
   '12_ea': [
@@ -196,11 +177,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'İleri Matematik (Seçmeli)', hours: 6 },
-    { name: 'Çağdaş Türk ve Dünya Tarihi', hours: 4 },
-    { name: 'Coğrafya (Seçmeli)', hours: 4 },
-    { name: 'Mantık / Sosyoloji', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
   // 12 SÖZEL
   '12_sozel': [
@@ -210,11 +187,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'Türk Dili ve Edebiyatı (Seçmeli)', hours: 5 },
-    { name: 'Çağdaş Türk ve Dünya Tarihi', hours: 4 },
-    { name: 'Coğrafya (Seçmeli)', hours: 4 },
-    { name: 'Mantık / Sosyoloji', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ],
   // 12 YABANCI DIL
   '12_dil': [
@@ -224,10 +197,7 @@ export const MEB_MANDATORY_COURSES: Record<string, {name: string, hours: number}
     { name: 'Birinci Yabancı Dil', hours: 4 },
     { name: 'İkinci Yabancı Dil', hours: 2 },
     { name: 'Beden Eğitimi', hours: 2 },
-    { name: 'Görsel Sanatlar / Müzik', hours: 2 },
-    { name: 'Yabancı Dil Edebiyatı (Seç.)', hours: 10 },
-    { name: 'Yabancı Dil Okuma / Konuşma', hours: 4 },
-    { name: 'Temel Matematik (Seçmeli)', hours: 2 }
+    { name: 'Görsel Sanatlar / Müzik', hours: 2 }
   ]
 };
 
@@ -236,13 +206,26 @@ export const MEB_MANDATORY_MESLEK_GENERIC = [
     { name: 'Türk Dili ve Edebiyatı', hours: 5 },
     { name: 'Din Kültürü', hours: 2 },
     { name: 'Tarih / İnkılap', hours: 2 },
-    { name: 'Mesleki Alan/Dal Eğitimleri', hours: 14 },
-    { name: 'Atölye ve Meslek Uygulamaları', hours: 10 },
     { name: 'Yabancı Dil', hours: 2 },
     { name: 'Matematik', hours: 3 }
 ];
 
 export const MEB_ELECTIVES = [
+  'İleri Matematik (Seçmeli)',
+  'İleri Fizik (Seçmeli)',
+  'İleri Kimya (Seçmeli)',
+  'İleri Biyoloji (Seçmeli)',
+  'Türk Dili ve Edebiyatı (Seçmeli)',
+  'Coğrafya (Seçmeli)',
+  'Tarih (Seçmeli)',
+  'Çağdaş Türk ve Dünya Tarihi',
+  'Psikoloji / Sosyoloji',
+  'Mantık / Sosyoloji',
+  'Yabancı Dil Edebiyatı (Seç.)',
+  'Yabancı Dil Okuma / Konuşma',
+  'Temel Matematik (Seçmeli)',
+  'Mesleki Alan/Dal Eğitimleri',
+  'Atölye ve Meslek Uygulamaları',
   'Diksiyon ve Hitabet',
   'Girişimcilik',
   'Astronomi ve Uzay Bilimleri',
