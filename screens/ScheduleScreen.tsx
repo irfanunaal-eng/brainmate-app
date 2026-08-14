@@ -36,6 +36,40 @@ const createEmptyGrid = (rowCount: number): GridRow[] => {
   }));
 };
 
+const InlineDropdown = ({ label, value, options, onSelect }: any) => {
+  const [open, setOpen] = useState(false);
+  const selectedLabel = options.find((o:any) => o.value === value)?.label || '- Seçiniz -';
+  
+  return (
+    <View className="mb-4 bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm shadow-black/5">
+      <TouchableOpacity activeOpacity={0.7} onPress={() => setOpen(!open)}>
+         <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-50 px-4 py-2 border-b border-gray-100 uppercase tracking-widest">{label}</Text>
+         <View className="px-4 py-4 flex-row justify-between items-center bg-white">
+            <Text className="font-extrabold text-indigo-700 text-base">{selectedLabel}</Text>
+            <Text className="text-gray-400 text-xs">{open ? '▲' : '▼'}</Text>
+         </View>
+      </TouchableOpacity>
+      
+      {open && (
+         <View className="max-h-48 bg-gray-50 border-t border-gray-100">
+            <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={true}>
+               {options.map((opt:any) => (
+                  <TouchableOpacity 
+                     key={opt.value} 
+                     onPress={() => { onSelect(opt.value); setOpen(false); }}
+                     className={`px-4 py-4 border-b border-gray-200 flex-row justify-between items-center ${value === opt.value ? 'bg-indigo-50' : 'bg-transparent'}`}
+                  >
+                     <Text className={`font-bold ${value === opt.value ? 'text-indigo-700' : 'text-gray-700'}`}>{opt.label}</Text>
+                     {value === opt.value && <Text className="text-indigo-600">✓</Text>}
+                  </TouchableOpacity>
+               ))}
+            </ScrollView>
+         </View>
+      )}
+    </View>
+  );
+};
+
 export default function ScheduleScreen({ navigation, route }: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -1021,58 +1055,46 @@ export default function ScheduleScreen({ navigation, route }: any) {
              </View>
 
              <ScrollView showsVerticalScrollIndicator={false} className="w-full">
-                <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
-                   <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Öğretim Yılı</Text>
-                   <Picker
-                      selectedValue={onboardYear}
-                      onValueChange={(itemValue) => setOnboardYear(itemValue)}
-                      style={{ marginHorizontal: -10 }}
-                   >
-                      {ACADEMIC_YEARS.map(y => <Picker.Item key={y} label={y} value={y} color="#4f46e5" />)}
-                   </Picker>
-                </View>
+                <InlineDropdown 
+                   label="Öğretim Yılı"
+                   value={onboardYear}
+                   options={ACADEMIC_YEARS.map(y => ({ label: y, value: y }))}
+                   onSelect={setOnboardYear}
+                />
 
-                <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
-                   <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Kaçıncı Sınıfsın?</Text>
-                   <Picker
-                      selectedValue={onboardGrade}
-                      onValueChange={(itemValue) => setOnboardGrade(itemValue)}
-                      style={{ marginHorizontal: -10 }}
-                   >
-                      {GRADES.map(g => <Picker.Item key={g.id} label={g.label} value={g.id} color="#4f46e5" />)}
-                   </Picker>
-                </View>
+                <InlineDropdown 
+                   label="Kaçıncı Sınıfsın?"
+                   value={onboardGrade}
+                   options={GRADES.map(g => ({ label: g.label, value: g.id }))}
+                   onSelect={setOnboardGrade}
+                />
 
                 {(onboardGrade === '11' || onboardGrade === '12') && (
                    <>
-                      <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
-                         <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Okul Türün Nedir?</Text>
-                         <Picker
-                            selectedValue={isAnadoluTrack ? 'anadolu' : 'meslek'}
-                            onValueChange={(itemValue) => setIsAnadoluTrack(itemValue === 'anadolu')}
-                            style={{ marginHorizontal: -10 }}
-                         >
-                            <Picker.Item label="Anadolu / Genel Lise" value="anadolu" color="#10b981" />
-                            <Picker.Item label="Mesleki / Teknik Lise" value="meslek" color="#10b981" />
-                         </Picker>
-                      </View>
+                      <InlineDropdown 
+                         label="Okul Türün Nedir?"
+                         value={isAnadoluTrack ? 'anadolu' : 'meslek'}
+                         options={[
+                           { label: 'Anadolu / Genel Lise', value: 'anadolu' },
+                           { label: 'Mesleki / Teknik Lise', value: 'meslek' }
+                         ]}
+                         onSelect={(v: string) => setIsAnadoluTrack(v === 'anadolu')}
+                      />
 
                       {isAnadoluTrack ? (
-                         <View className="mb-4 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
-                            <Text className="text-[10px] font-extrabold text-gray-500 bg-gray-100 px-4 py-2 border-b border-gray-200 uppercase tracking-widest">Hangi Alandasın?</Text>
-                            <Picker
-                               selectedValue={onboardTrack}
-                               onValueChange={(itemValue) => setOnboardTrack(itemValue)}
-                               style={{ marginHorizontal: -10 }}
-                            >
-                               <Picker.Item label="- Alan Seçiniz -" value="" color="#9ca3af" />
-                               {TRACKS_ANADOLU.map(t => <Picker.Item key={t.id} label={t.label} value={t.id} color="#3b82f6" />)}
-                            </Picker>
-                         </View>
+                         <InlineDropdown 
+                            label="Hangi Alandasın?"
+                            value={onboardTrack}
+                            options={[
+                               { label: '- Alan Seçiniz -', value: '' },
+                               ...TRACKS_ANADOLU.map(t => ({ label: t.label, value: t.id }))
+                            ]}
+                            onSelect={setOnboardTrack}
+                         />
                       ) : (
                          <View className="mb-4 bg-orange-50 border border-orange-100 p-3 rounded-xl">
                             <Text className="text-orange-800 text-xs font-bold mb-1">Meslek Lisesi Bilgisi</Text>
-                            <Text className="text-orange-600 text-[10px] leading-4">Meslek liselerinde MEB ortak zorunlu dersleri otomatik atanacaktır. Kendi meslek alanına (Bilişim, Sağlık, Elektrik vb.) ait "Mesleki Uygulama" saatlerini programı oluşturduktan sonra Düzenle menüsünden ekleyebilirsin.</Text>
+                            <Text className="text-orange-600 text-[10px] leading-4">Meslek liselerinde MEB ortak zorunlu dersleri otomatik atanacaktır. Kendi meslek alanına (Bilişim, Sağlık, vb.) ait "Mesleki Uygulama" saatlerini programı oluşturduktan sonra Düzenle menüsünden ekleyebilirsin.</Text>
                          </View>
                       )}
                    </>
