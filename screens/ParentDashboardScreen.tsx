@@ -238,45 +238,104 @@ export function ParentDashboardScreen({ navigation }: any) {
           style={{ paddingBottom: Platform.OS === 'ios' ? 24 : 16 }}
         >
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
-            <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-indigo-50 border-2 border-indigo-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">🏠</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('ParentDashboard')} className="items-center justify-center bg-indigo-50 border-2 border-indigo-200 w-[56px] h-[56px] rounded-2xl shadow-sm shadow-indigo-100 mb-1">
+                <Text className="text-3xl">🏠</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-indigo-700">Ana Sayfa</Text>
+            </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('LocationTrackingScreen')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📍</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('LocationTrackingScreen')} className="items-center justify-center bg-sky-50 border-2 border-sky-200 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">📍</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-sky-700">Konum</Text>
+            </View>
+            
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('NotesScreen')} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">📌</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-fuchsia-700">Notlar/Ödev</Text>
+            </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">🗓️</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">🗓️</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-orange-700">Program</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📝</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('GradesScreen')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">📝</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-teal-700">Sınav Notları</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📅</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">🚦</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-cyan-700">Devamsızlık</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => setIsTaskModalVisible(true)} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">🎯</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => setIsTaskModalVisible(true)} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">🎯</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-rose-700">Görev Ata</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenci hakkında özel not alma ekranı eklenecek.')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">✍️</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('EducationDashboard')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">📚</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-emerald-700">Eğitimler</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin eğitim ve kronometre performansını görebileceksin.')} className="items-center justify-center bg-emerald-50 border-2 border-emerald-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📚</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('AcademicDashboard')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">📊</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-amber-700">Akademik</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrencinin detaylı raporları eklenecek.')} className="items-center justify-center bg-amber-50 border-2 border-amber-100 w-[56px] h-[56px] rounded-2xl mr-4">
-              <Text className="text-4xl">📊</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => Alert.alert('Mesajlar (Yakında)', 'Buradan sadece kendi öğrencinizle mesajlaşabilirsiniz. Sistem gereği öğrencinizin öğretmenleri/arkadaşları ile olan mesajlarını göremezsiniz ancak doğrudan kendiniz onunla burada iletişime geçebilirsiniz.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">💬</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-blue-700">Mesajlar</Text>
+            </View>
+
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="items-center justify-center bg-pink-50 border-2 border-pink-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">🫂</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-pink-700">Sosyal Ağ</Text>
+            </View>
+
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => navigation.navigate('GameLobbyScreen')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">👾</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-purple-700">Oyunlar</Text>
+            </View>
             
-            <TouchableOpacity onPress={() => Alert.alert('Yakında', 'Öğrenciye mesaj gönder.')} className="items-center justify-center bg-blue-50 border-2 border-blue-100 w-[56px] h-[56px] rounded-2xl">
-              <Text className="text-4xl">💬</Text>
-            </TouchableOpacity>
+            <View className="items-center mr-4">
+              <TouchableOpacity onPress={() => Alert.alert('Rozetler', 'Yakında öğrencinizin kazandığı başarımları buradan görebileceksiniz.')} className="items-center justify-center bg-yellow-50 border-2 border-yellow-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">🏆</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-yellow-700">Rozetler</Text>
+            </View>
+
+            <View className="items-center">
+              <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-red-50 border-2 border-red-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <Text className="text-3xl">🚪</Text>
+              </TouchableOpacity>
+              <Text className="text-[10px] font-bold text-red-700">Çıkış</Text>
+            </View>
+
           </ScrollView>
         </View>
         </View>
