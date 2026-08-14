@@ -27,7 +27,7 @@ export function EnglishGameScreen({ route }: any) {
     if (!text) return;
     try {
       Speech.stop();
-      Speech.speak(text, { language: 'en-GB' });
+      Speech.speak(text, { language: 'en' });
     } catch (e) {
       console.log('Speech error:', e);
     }
