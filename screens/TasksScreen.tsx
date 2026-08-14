@@ -21,6 +21,7 @@ type TaskDoc = {
   bulletPoints: string[];
   status: 'pending' | 'in_progress' | 'completed';
   assignedByRole: string;
+  assignedByName?: string;
   date: number;
 };
 const DEFAULT_SUBJECTS = ['Matematik', 'Fizik', 'Kimya', 'Biyoloji', 'Türk Dili ve Edebiyatı', 'Tarih', 'İngilizce'];
@@ -30,6 +31,7 @@ export function TasksScreen({ navigation, route }: any) {
   const [dynamicSubjects, setDynamicSubjects] = useState<string[]>(DEFAULT_SUBJECTS);
   const [isAdding, setIsAdding] = useState(false);
   const [userRole, setUserRole] = useState<string>('student');
+  const [userName, setUserName] = useState<string>('İsimsiz Eğitmen');
   const [resolvedStudentId, setResolvedStudentId] = useState<string>('default');
 
   // Form State
@@ -66,6 +68,9 @@ export function TasksScreen({ navigation, route }: any) {
       if (user) {
          const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
          if (profile) setUserRole(profile.role);
+
+         const { data: details } = await supabase.from('users').select('full_name').eq('id', user.id).single();
+         if (details && details.full_name) setUserName(details.full_name);
       }
 
       if (route.params?.studentId) {
@@ -147,6 +152,7 @@ export function TasksScreen({ navigation, route }: any) {
         bulletPoints: bullets.length > 0 && formContent.trim() ? bullets : [],
         status: 'pending',
         assignedByRole: userFullName,
+        assignedByName: userName,
         date: Date.now()
     };
 
@@ -429,12 +435,14 @@ export function TasksScreen({ navigation, route }: any) {
                          <View className="flex-row justify-between items-start mb-3">
                             <View className="flex-1 pr-4">
                                <View className="flex-row items-center mb-1">
-                                  <View className="bg-indigo-100 px-2 py-1 rounded-md mr-2">
-                                     <Text className="text-[10px] font-black text-indigo-700 uppercase">{task.subject}</Text>
-                                  </View>
-                                  {task.hasAttachment && <Text className="mr-1">📎</Text>}
-                               </View>
-                               <Text className={`font-black text-lg ${isCompleted ? 'text-emerald-900 line-through' : 'text-slate-800'}`}>{task.title}</Text>
+                                   <View className="bg-indigo-100 px-2 py-1 rounded-md mr-2">
+                                      <Text className="text-[10px] font-black text-indigo-700 uppercase">{task.subject}</Text>
+                                   </View>
+                                   <Text className="text-[10px] font-extrabold text-slate-400 capitalize bg-slate-100/50 px-2 py-1 rounded-md">
+                                      {task.assignedByRole} {task.assignedByName ? task.assignedByName : ''}
+                                   </Text>
+                                </View>
+                                <Text className={`font-extrabold text-lg ${isCompleted ? 'text-emerald-900 line-through' : 'text-slate-800'}`}>{task.title}</Text>
                             </View>
                             <View className={`px-3 py-1.5 rounded-xl ${isCompleted ? 'bg-emerald-100' : 'bg-amber-100'}`}>
                                <Text className={`font-extrabold text-[10px] uppercase ${isCompleted ? 'text-emerald-700' : 'text-amber-700'}`}>

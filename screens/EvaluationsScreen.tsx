@@ -209,7 +209,7 @@ export function EvaluationsScreen({ navigation, route }: any) {
                          <Text className="font-medium text-slate-700 leading-6 text-base tracking-wide text-justify italic">"{item.content}"</Text>
                          
                          <View className="flex-row justify-between items-end mt-4 pt-3 border-t border-slate-200/50">
-                            <Text className="text-xs font-black text-slate-500 tracking-wider">👩‍🏫 Eğitmen Raporu</Text>
+                            <Text className="text-xs font-black text-slate-500 tracking-wider">👩‍🏫 {item.authorName || 'Eğitmen Raporu'}</Text>
                             <Text className="text-[10px] font-bold text-slate-400">{formatDate(item.date)}</Text>
                          </View>
                       </View>
