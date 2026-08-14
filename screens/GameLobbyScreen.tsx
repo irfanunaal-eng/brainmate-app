@@ -3,11 +3,11 @@ import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Animated } from
 import { useNavigation } from '@react-navigation/native';
 
 const LEVELS = [
-  { id: 'A1', title: 'A1 Şampiyonu', desc: 'Bu bölümde 200 yeni kelime öğreneceksiniz.', unlocked: true, stars: 3, stages: 10, words: 20 },
-  { id: 'A2', title: 'A2 Kaptanı', desc: 'Bu bölümde 300 yeni kelime öğreneceksiniz.', unlocked: true, stars: 1, stages: 12, words: 25 },
-  { id: 'B1', title: 'B1 Uzmanı', desc: 'Bu bölümde 500 yeni kelime öğreneceksiniz.', unlocked: true, stars: 0, stages: 10, words: 50 },
-  { id: 'B2', title: 'B2 Lideri', desc: 'Bu bölümde 1000 yeni kelime öğreneceksiniz.', unlocked: false, stars: 0, stages: 20, words: 50 },
-  { id: 'C1', title: 'C1 Efsanesi', desc: 'Bu bölümde 1000 yeni kelime öğreneceksiniz.', unlocked: false, stars: 0, stages: 20, words: 50 },
+  { id: 'A1', title: 'A1 Şampiyonu', desc: 'Başlangıç (A1) seviyesindeki tüm kelimeleri kapsar.', unlocked: true, stars: 3, stages: 15, words: 20 },
+  { id: 'A2', title: 'A2 Kaptanı', desc: 'Temel (A2) seviyesindeki yeni kelimeleri içerir.', unlocked: true, stars: 1, stages: 20, words: 25 },
+  { id: 'B1', title: 'B1 Uzmanı', desc: 'Orta (B1) seviyesi kelimelerini kapsar.', unlocked: true, stars: 0, stages: 25, words: 40 },
+  { id: 'B2', title: 'B2 Lideri', desc: 'İleri (B2) seviye zenginleştirilmiş kelime havuzu.', unlocked: false, stars: 0, stages: 30, words: 50 },
+  { id: 'C1', title: 'C1 Efsanesi', desc: 'Akademik ve akıcı (C1) seviye son kelimeler.', unlocked: false, stars: 0, stages: 40, words: 50 },
 ];
 
 export function GameLobbyScreen() {
