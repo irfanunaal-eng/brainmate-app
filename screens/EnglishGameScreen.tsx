@@ -23,6 +23,19 @@ export function EnglishGameScreen({ route }: any) {
   
   const currentWord = DB[currentWordIndex % DB.length];
 
+  const playVoice = async (text: string) => {
+    if (!text) return;
+    try {
+      const isSpeaking = await Speech.isSpeakingAsync();
+      if (isSpeaking) {
+        await Speech.stop();
+      }
+      Speech.speak(text, { language: 'en-US' });
+    } catch (e) {
+      console.log('Speech error:', e);
+    }
+  };
+
   // Generate dynamic options when word changes
   useEffect(() => {
     // Pick 3 random wrong answers
@@ -40,7 +53,7 @@ export function EnglishGameScreen({ route }: any) {
   // Read word aloud when it appears
   useEffect(() => {
     if (!isGameOver && !feedback) {
-      Speech.speak(currentWord.en, { language: 'en' });
+      playVoice(currentWord.en);
     }
   }, [currentWordIndex, isGameOver, feedback]);
 
@@ -65,7 +78,7 @@ export function EnglishGameScreen({ route }: any) {
   const handleWrongAnswer = (wordObj: any) => {
     setGameHistory(prev => [...prev, { en: wordObj.en, tr: wordObj.tr, correct: false }]);
     setFeedback({ visible: true, correct: false });
-    Speech.speak(wordObj.sentence || 'No example', { language: 'en' });
+    playVoice(wordObj.sentence || wordObj.en);
   };
 
   const handleOptionPress = (selectedOption: string) => {
@@ -75,7 +88,7 @@ export function EnglishGameScreen({ route }: any) {
       setGameHistory(prev => [...prev, { en: currentWord.en, tr: currentWord.tr, correct: true }]);
       setScore(prev => prev + 10);
       setFeedback({ visible: true, correct: true });
-      Speech.speak(currentWord.sentence || 'Great job', { language: 'en' });
+      playVoice(currentWord.sentence || currentWord.en);
     } else {
       // Wrong
       handleWrongAnswer(currentWord);
@@ -151,7 +164,7 @@ export function EnglishGameScreen({ route }: any) {
               <Text className="text-7xl mb-4">{feedback.correct ? '🎯' : '❌'}</Text>
               <View className="flex-row items-center justify-center mb-2">
                  <Text className={`text-4xl font-black ${feedback.correct ? 'text-emerald-700' : 'text-rose-700'}`}>{currentWord.en}</Text>
-                 <TouchableOpacity onPress={() => Speech.speak(currentWord.en, { language: 'en' })} className="ml-3 bg-white/50 p-2 rounded-full">
+                 <TouchableOpacity onPress={() => playVoice(currentWord.en)} className="ml-3 bg-white/50 p-2 rounded-full shadow-sm shadow-black/5">
                     <Text className="text-xl">🔊</Text>
                  </TouchableOpacity>
               </View>
@@ -160,10 +173,10 @@ export function EnglishGameScreen({ route }: any) {
               {currentWord.sentence ? (
                  <View className="bg-white/60 p-4 rounded-2xl w-full relative pt-8 mt-2">
                     <TouchableOpacity 
-                       onPress={() => Speech.speak(currentWord.sentence.split('(')[0], { language: 'en' })} 
+                       onPress={() => playVoice(currentWord.sentence.split('(')[0])} 
                        className="absolute -top-5 self-center bg-indigo-500 w-12 h-12 justify-center items-center rounded-full shadow-lg shadow-indigo-200"
                     >
-                       <Text className="text-xl">🔊</Text>
+                       <Text className="text-xl ml-1">🔊</Text>
                     </TouchableOpacity>
                     <Text className="text-center font-bold text-gray-800 italic mb-2 leading-6">"{currentWord.sentence.split('(')[0].trim()}"</Text>
                     {currentWord.sentence.includes('(') && (
@@ -221,10 +234,10 @@ export function EnglishGameScreen({ route }: any) {
          {/* Question Area */}
          <View className="bg-white p-10 rounded-3xl items-center shadow-lg shadow-indigo-100/50 mb-10 border border-gray-100 relative">
             <TouchableOpacity 
-               onPress={() => Speech.speak(currentWord.en, { language: 'en' })} 
-               className="absolute top-4 right-4 bg-indigo-50 p-3 rounded-full"
+               onPress={() => playVoice(currentWord.en)} 
+               className="absolute top-4 right-4 bg-indigo-50 w-12 h-12 justify-center items-center rounded-full"
             >
-               <Text className="text-2xl">🔊</Text>
+               <Text className="text-2xl ml-1">🔊</Text>
             </TouchableOpacity>
             <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase mt-4">Türkçesi Nedir?</Text>
             <Text className="text-6xl font-black text-indigo-900">{currentWord.en}</Text>
