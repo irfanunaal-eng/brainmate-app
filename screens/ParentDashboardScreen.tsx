@@ -10,6 +10,7 @@ export function ParentDashboardScreen({ navigation }: any) {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [panelTitle, setPanelTitle] = useState('Eğitimci Paneli');
+  const [userRole, setUserRole] = useState<string>('');
   
   // Task assignment state
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
@@ -26,7 +27,9 @@ export function ParentDashboardScreen({ navigation }: any) {
     if (user) {
       const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
       if (profile) {
+        setUserRole(profile.role);
         if (profile.role === 'parent') setPanelTitle('Veli Paneli');
+        else if (profile.role === 'teacher') setPanelTitle('Okul Rehber Öğretmeni Paneli');
         else if (profile.role === 'class_teacher') setPanelTitle('Sınıf Rehber Öğretmeni Paneli');
         else if (profile.role === 'private_tutor') setPanelTitle('Özel Ders Öğretmeni Paneli');
         else if (profile.role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
@@ -258,12 +261,14 @@ export function ParentDashboardScreen({ navigation }: any) {
               <Text className="text-[10px] font-bold text-indigo-700">Ana Sayfa</Text>
             </View>
 
-            <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('LocationTrackingScreen')} className="items-center justify-center bg-sky-50 border-2 border-sky-200 w-[56px] h-[56px] rounded-2xl mb-1">
-                <Text className="text-3xl">📍</Text>
-              </TouchableOpacity>
-              <Text className="text-[10px] font-bold text-sky-700">Konum</Text>
-            </View>
+            {userRole === 'parent' && (
+              <View className="items-center mr-4">
+                <TouchableOpacity onPress={() => navigation.navigate('LocationTrackingScreen')} className="items-center justify-center bg-sky-50 border-2 border-sky-200 w-[56px] h-[56px] rounded-2xl mb-1">
+                  <Text className="text-3xl">📍</Text>
+                </TouchableOpacity>
+                <Text className="text-[10px] font-bold text-sky-700">Konum</Text>
+              </View>
+            )}
             
             <View className="items-center mr-4">
               <TouchableOpacity onPress={() => navigation.navigate('NotesScreen', { studentId })} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
@@ -286,12 +291,14 @@ export function ParentDashboardScreen({ navigation }: any) {
               <Text className="text-[10px] font-bold text-teal-700">Sınav Notları</Text>
             </View>
             
-            <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen', { studentId })} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
-                <Text className="text-3xl">🚦</Text>
-              </TouchableOpacity>
-              <Text className="text-[10px] font-bold text-cyan-700">Devamsızlık</Text>
-            </View>
+            {userRole !== 'private_tutor' && (
+              <View className="items-center mr-4">
+                <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen', { studentId })} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                  <Text className="text-3xl">🚦</Text>
+                </TouchableOpacity>
+                <Text className="text-[10px] font-bold text-cyan-700">Devamsızlık</Text>
+              </View>
+            )}
             
             <View className="items-center mr-4">
               <TouchableOpacity onPress={() => setIsTaskModalVisible(true)} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
@@ -321,26 +328,32 @@ export function ParentDashboardScreen({ navigation }: any) {
               <Text className="text-[10px] font-bold text-blue-700">Mesajlar</Text>
             </View>
 
-            <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard', { isParentView: true, studentId })} className="items-center justify-center bg-pink-50 border-2 border-pink-100 w-[56px] h-[56px] rounded-2xl mb-1">
-                <Text className="text-3xl">🫂</Text>
-              </TouchableOpacity>
-              <Text className="text-[10px] font-bold text-pink-700">Sosyal Ağ</Text>
-            </View>
+            {['parent', 'teacher', 'class_teacher'].includes(userRole) && (
+              <View className="items-center mr-4">
+                <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard', { isParentView: true, studentId })} className="items-center justify-center bg-pink-50 border-2 border-pink-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                  <Text className="text-3xl">🫂</Text>
+                </TouchableOpacity>
+                <Text className="text-[10px] font-bold text-pink-700">Sosyal Ağ</Text>
+              </View>
+            )}
 
-            <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('GameLobbyScreen', { isParentView: true, studentId })} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
-                <Text className="text-3xl">👾</Text>
-              </TouchableOpacity>
-              <Text className="text-[10px] font-bold text-purple-700">Oyunlar</Text>
-            </View>
-            
-            <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => Alert.alert('Rozetler', 'Yakında öğrencinizin kazandığı başarımları buradan görebileceksiniz.')} className="items-center justify-center bg-yellow-50 border-2 border-yellow-100 w-[56px] h-[56px] rounded-2xl mb-1">
-                <Text className="text-3xl">🏆</Text>
-              </TouchableOpacity>
-              <Text className="text-[10px] font-bold text-yellow-700">Rozetler</Text>
-            </View>
+            {userRole !== 'private_tutor' && (
+              <>
+                <View className="items-center mr-4">
+                  <TouchableOpacity onPress={() => navigation.navigate('GameLobbyScreen', { isParentView: true, studentId })} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                    <Text className="text-3xl">👾</Text>
+                  </TouchableOpacity>
+                  <Text className="text-[10px] font-bold text-purple-700">Oyunlar</Text>
+                </View>
+                
+                <View className="items-center mr-4">
+                  <TouchableOpacity onPress={() => Alert.alert('Rozetler', 'Yakında öğrencinizin kazandığı başarımları buradan görebileceksiniz.')} className="items-center justify-center bg-yellow-50 border-2 border-yellow-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                    <Text className="text-3xl">🏆</Text>
+                  </TouchableOpacity>
+                  <Text className="text-[10px] font-bold text-yellow-700">Rozetler</Text>
+                </View>
+              </>
+            )}
 
             <View className="items-center">
               <TouchableOpacity onPress={handleLogout} className="items-center justify-center bg-red-50 border-2 border-red-100 w-[56px] h-[56px] rounded-2xl mb-1">

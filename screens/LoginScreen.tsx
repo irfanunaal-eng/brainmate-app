@@ -82,7 +82,7 @@ export function LoginScreen({ route, navigation }: any) {
   let roleText = 'Kullanıcı';
   if (role === 'student') roleText = 'Öğrenci';
   else if (role === 'parent') roleText = 'Veli';
-  else if (role === 'teacher') roleText = 'Rehber Öğretmen';
+  else if (role === 'teacher') roleText = 'Okul Rehber Öğretmeni';
   else if (role === 'class_teacher') roleText = 'Sınıf Rehber Öğretmeni';
   else if (role === 'private_tutor') roleText = 'Özel Ders Öğretmeni';
   else if (role === 'student_coach') roleText = 'Öğrenci Koçu';

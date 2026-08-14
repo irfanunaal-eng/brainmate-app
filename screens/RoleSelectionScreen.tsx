@@ -75,8 +75,8 @@ export function RoleSelectionScreen({ navigation }: any) {
             className="bg-purple-50 px-6 py-4 mb-3 rounded-2xl flex-row items-center justify-between shadow-sm active:bg-purple-100 border border-purple-200"
           >
             <View className="flex-1 pr-4">
-              <Text className="text-xl font-extrabold text-purple-800">Rehber Öğretmen</Text>
-              <Text className="text-purple-600/80 text-xs mt-1 font-medium">Sınıfları yönet, toplu planlar hazırla</Text>
+              <Text className="text-xl font-extrabold text-purple-800">Okul Rehber Öğretmeni</Text>
+              <Text className="text-purple-600/80 text-xs mt-1 font-medium">Sınıfları yönet, toplu psikolojik/akademik planlar hazırla</Text>
             </View>
             <Text className="text-2xl">👨‍🏫</Text>
           </TouchableOpacity>
