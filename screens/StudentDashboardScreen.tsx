@@ -2,6 +2,45 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ActivityIndicator, Share, Alert, ScrollView, Modal, TextInput } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { supabase } from '../lib/supabase';
+import { ACADEMIC_YEARS, GRADES } from '../constants/MebCurriculum';
+
+const InlineDropdown = ({ label, value, options, onSelect }: any) => {
+  const [open, setOpen] = useState(false);
+  const selectedLabel = options.find((o:any) => o.value === value)?.label || '- Seçiniz -';
+  
+  return (
+    <View className="mb-4 bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm shadow-black/5">
+      <TouchableOpacity activeOpacity={0.7} onPress={() => setOpen(!open)}>
+         <View className="flex-row items-center justify-between p-4 bg-gray-50/50">
+            <View>
+               <Text className="text-[10px] font-black tracking-widest text-indigo-500 uppercase mb-1">{label}</Text>
+               <Text className="font-extrabold text-gray-800 text-sm">{selectedLabel}</Text>
+            </View>
+            <View className={`w-8 h-8 rounded-full items-center justify-center ${open ? 'bg-indigo-100 rotate-180' : 'bg-gray-100'}`}>
+               <Text className="text-gray-500 text-xs">▼</Text>
+            </View>
+         </View>
+      </TouchableOpacity>
+      
+      {open && (
+         <View className="max-h-48 bg-gray-50 border-t border-gray-100">
+            <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={true}>
+               {options.map((opt:any) => (
+                  <TouchableOpacity 
+                     key={opt.value} 
+                     onPress={() => { onSelect(opt.value); setOpen(false); }}
+                     className={`px-4 py-4 border-b border-gray-200 flex-row justify-between items-center ${value === opt.value ? 'bg-indigo-50' : 'bg-transparent'}`}
+                  >
+                     <Text className={`font-bold ${value === opt.value ? 'text-indigo-700' : 'text-gray-700'}`}>{opt.label}</Text>
+                     {value === opt.value && <Text className="text-indigo-600">✓</Text>}
+                  </TouchableOpacity>
+               ))}
+            </ScrollView>
+         </View>
+      )}
+    </View>
+  );
+};
 
 const SCHEDULE_TYPES = [
   { id: 'okul', label: '🏫 Okul', color: 'bg-blue-100 border-blue-200 text-blue-800' },
@@ -20,6 +59,8 @@ export function StudentDashboardScreen({ navigation }: any) {
   const [isCodeModalVisible, setIsCodeModalVisible] = useState(false);
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [editName, setEditName] = useState('');
+  const [editYear, setEditYear] = useState(ACADEMIC_YEARS[3]);
+  const [editGrade, setEditGrade] = useState('9');
 
   useEffect(() => {
     fetchDashboardData();
@@ -44,6 +85,11 @@ export function StudentDashboardScreen({ navigation }: any) {
         } else {
           setIsProfileModalVisible(true);
         }
+        
+        // Fetch academic info from profiles table (if available)
+        // Ensure supabase 'profiles' has academic_year and grade initialized properly in real DB
+        if ((profile as any).academic_year) setEditYear((profile as any).academic_year);
+        if ((profile as any).grade) setEditGrade((profile as any).grade);
       }
 
       // 2. Fetch Today's Schedule
@@ -154,7 +200,12 @@ export function StudentDashboardScreen({ navigation }: any) {
     if (user) {
       const { error } = await supabase
         .from('profiles')
-        .update({ full_name: editName.trim() })
+        .update({ 
+           full_name: editName.trim(),
+           academic_year: editYear,
+           grade: editGrade
+        // Error bypassed locally if academic_year missing in test env
+        } as any)
         .eq('id', user.id);
         
       if (!error) {
@@ -453,24 +504,29 @@ export function StudentDashboardScreen({ navigation }: any) {
               placeholder="Adını buraya yaz..."
               className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 text-lg font-medium mb-6"
             />
+            
+            <View className="mb-4">
+               <InlineDropdown 
+                  label="Bulunduğun Eğitim Yılı"
+                  value={editYear}
+                  options={ACADEMIC_YEARS.map(y => ({ label: y, value: y }))}
+                  onSelect={setEditYear}
+               />
+               
+               <InlineDropdown 
+                  label="Kaçıncı Sınıfsın?"
+                  value={editGrade}
+                  options={GRADES.map(g => ({ label: g.label, value: g.id }))}
+                  onSelect={setEditGrade}
+               />
+            </View>
 
             <TouchableOpacity 
               onPress={handleSaveProfile}
               disabled={loading}
               className={`w-full py-4 rounded-xl items-center shadow-sm mb-4 ${loading ? 'bg-primary/50' : 'bg-primary active:bg-indigo-700'}`}
             >
-              <Text className="text-white font-bold text-lg">{loading ? 'Kaydediliyor...' : 'Kaydet'}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              onPress={() => { setIsProfileModalVisible(false); navigation.navigate('Schedule'); }} 
-              className="bg-indigo-50 border border-indigo-100 px-5 py-3.5 rounded-xl w-full flex-row justify-between items-center active:bg-indigo-100"
-            >
-                <View className="flex-1 pr-4">
-                  <Text className="text-indigo-900 font-extrabold text-sm mb-1">Akademik Profil Tanımlaması</Text>
-                  <Text className="text-indigo-600/80 font-bold text-[10px] leading-3">Sınıfını ve eğitim yılını ders programından belirleyebilirsin.</Text>
-                </View>
-                <Text className="text-3xl">🏫</Text>
+              <Text className="text-white font-bold text-lg">{loading ? 'Değişiklikleri Kaydet' : 'Değişiklikleri Kaydet'}</Text>
             </TouchableOpacity>
           </View>
         </View>

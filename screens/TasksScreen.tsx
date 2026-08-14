@@ -110,25 +110,7 @@ export function TasksScreen({ navigation, route }: any) {
         parsed.sort((a: any, b: any) => b.date - a.date);
         setTasks(parsed);
       } else {
-        // Mock default task
-        setTasks([{
-           id: 't-123',
-           title: 'Hücre Bölünmesi Çalışma Notları',
-           subject: 'Biyoloji',
-           topic: 'Mitoz ve Mayoz',
-           hasAttachment: true,
-           fileName: 'hücre_bolunmesi_ozet.pdf',
-           fullText: 'Mitoz hücre bölünmesi, ana hücrenin bölünerek iki yeni yavru hücre oluşturmasıdır. Bu süreç büyüme ve yenilenmeyi sağlar. İnterfaz aşamasında DNA eşlenir. Ardından Profaz, Metafaz, Anafaz ve Telofaz evreleri gelir. Metafazda kromozomlar hücrenin ekvator bölgesine dizilir ve mikroskopta en net görüldükleri evredir.',
-           bulletPoints: [
-             'Mitoz bölünme büyüme ve doku onarımını sağlar.',
-             'Bölünme öncesi İnterfaz (Hazırlık) evresinde DNA kendini eşler.',
-             'Metafaz evresinde kromozomlar merkezde dizilir ve en belirgin haldedirler.',
-             'Sonuçta genetik yapısı birbirinin tamamen aynısı olan 2 hücre oluşur.'
-           ],
-           status: 'pending',
-           assignedByRole: 'Öğrenci Koçu',
-           date: Date.now() - 86400000
-        }]);
+        setTasks([]);
       }
     } catch (e) {}
   };
