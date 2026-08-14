@@ -149,12 +149,23 @@ export function EnglishGameScreen({ route }: any) {
         <SafeAreaView className="flex-1 justify-center p-6 bg-surface">
            <View className={`items-center p-8 rounded-3xl border-4 ${feedback.correct ? 'bg-emerald-50 border-emerald-500 shadow-emerald-200' : 'bg-rose-50 border-rose-500 shadow-rose-200'} shadow-lg mb-8`}>
               <Text className="text-7xl mb-4">{feedback.correct ? '🎯' : '❌'}</Text>
-              <Text className={`text-4xl font-black mb-2 ${feedback.correct ? 'text-emerald-700' : 'text-rose-700'}`}>{currentWord.en}</Text>
+              <View className="flex-row items-center justify-center mb-2">
+                 <Text className={`text-4xl font-black ${feedback.correct ? 'text-emerald-700' : 'text-rose-700'}`}>{currentWord.en}</Text>
+                 <TouchableOpacity onPress={() => Speech.speak(currentWord.en, { language: 'en' })} className="ml-3 bg-white/50 p-2 rounded-full">
+                    <Text className="text-xl">🔊</Text>
+                 </TouchableOpacity>
+              </View>
               <Text className="text-lg font-bold text-gray-500 uppercase tracking-widest mb-6">{currentWord.tr}</Text>
 
               {currentWord.sentence ? (
-                 <View className="bg-white/60 p-4 rounded-2xl w-full">
-                    <Text className="text-center font-bold text-gray-800 italic mb-2">"{currentWord.sentence.split('(')[0].trim()}"</Text>
+                 <View className="bg-white/60 p-4 rounded-2xl w-full relative pt-8 mt-2">
+                    <TouchableOpacity 
+                       onPress={() => Speech.speak(currentWord.sentence.split('(')[0], { language: 'en' })} 
+                       className="absolute -top-5 self-center bg-indigo-500 w-12 h-12 justify-center items-center rounded-full shadow-lg shadow-indigo-200"
+                    >
+                       <Text className="text-xl">🔊</Text>
+                    </TouchableOpacity>
+                    <Text className="text-center font-bold text-gray-800 italic mb-2 leading-6">"{currentWord.sentence.split('(')[0].trim()}"</Text>
                     {currentWord.sentence.includes('(') && (
                       <Text className="text-center text-xs font-medium text-gray-500">{currentWord.sentence.split('(')[1].replace(')', '').trim()}</Text>
                     )}
@@ -208,8 +219,14 @@ export function EnglishGameScreen({ route }: any) {
 
       <View className="flex-1 p-6 justify-center">
          {/* Question Area */}
-         <View className="bg-white p-10 rounded-3xl items-center shadow-lg shadow-indigo-100/50 mb-10 border border-gray-100">
-            <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase">Türkçesi Nedir?</Text>
+         <View className="bg-white p-10 rounded-3xl items-center shadow-lg shadow-indigo-100/50 mb-10 border border-gray-100 relative">
+            <TouchableOpacity 
+               onPress={() => Speech.speak(currentWord.en, { language: 'en' })} 
+               className="absolute top-4 right-4 bg-indigo-50 p-3 rounded-full"
+            >
+               <Text className="text-2xl">🔊</Text>
+            </TouchableOpacity>
+            <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase mt-4">Türkçesi Nedir?</Text>
             <Text className="text-6xl font-black text-indigo-900">{currentWord.en}</Text>
          </View>
 
