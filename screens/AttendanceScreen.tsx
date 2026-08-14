@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { supabase } from '../lib/supabase';
 
 const STATUS_OPTIONS = [
   { id: 'yok', label: '❌ Mazeretsiz (Yok Yazıldı)', type: 'mazeretsiz', color: 'text-rose-700', bg: 'bg-rose-50', border: 'border-rose-200' },
@@ -22,8 +23,7 @@ export function AttendanceScreen({ navigation, route }: any) {
   const [formScope, setFormScope] = useState<'tam_gun'|'yarim_gun'|'belirli'>('tam_gun');
   const [selectedPeriods, setSelectedPeriods] = useState<number[]>([]);
 
-  const passedStudentId = route.params?.studentId || 'default';
-  const STORAGE_KEY = `@att_logs_${passedStudentId}`;
+  const [resolvedUserId, setResolvedUserId] = useState<string>('default');
 
   useEffect(() => {
     loadLogs();
@@ -31,7 +31,12 @@ export function AttendanceScreen({ navigation, route }: any) {
 
   const loadLogs = async () => {
     try {
-      const stored = await AsyncStorage.getItem(STORAGE_KEY);
+      const { data: { user } } = await supabase.auth.getUser();
+      let uId = user?.id || 'default';
+      if (route.params?.studentId) uId = route.params.studentId;
+      setResolvedUserId(uId);
+
+      const stored = await AsyncStorage.getItem(`@att_logs_${uId}`);
       if (stored) {
         const parsed = JSON.parse(stored);
         parsed.sort((a: any, b: any) => b.dateObj - a.dateObj); // newest first
@@ -42,7 +47,7 @@ export function AttendanceScreen({ navigation, route }: any) {
 
   const saveLogs = async (newLogs: any[]) => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newLogs));
+      await AsyncStorage.setItem(`@att_logs_${resolvedUserId}`, JSON.stringify(newLogs));
       setLogs(newLogs);
     } catch (e) {}
   };
