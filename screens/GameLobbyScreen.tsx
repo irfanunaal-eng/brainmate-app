@@ -46,7 +46,8 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
 
 const SUBJECTS = [
   { id: 'english', icon: '🇬🇧', label: 'İngilizce' },
-  { id: 'turkish', icon: '🇹🇷', label: 'Türkçe & Ede.' },
+  { id: 'turkish', icon: '🇹🇷', label: 'Türkçe' },
+  { id: 'literature', icon: '📚', label: 'Edebiyat' },
   { id: 'math', icon: '🧮', label: 'Matematik' },
   { id: 'science', icon: '🧬', label: 'Fen (Fiz/Kim/Biy)' },
   { id: 'history', icon: '🏛️', label: 'Tarih' },
