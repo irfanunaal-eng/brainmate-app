@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Animated, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../lib/supabase';
 
@@ -76,10 +76,28 @@ export function GameLobbyScreen({ route }: any) {
   const [activePath, setActivePath] = useState<'school' | 'global'>('school');
   const [activeGrade, setActiveGrade] = useState<string>('5');
   const [activeSubject, setActiveSubject] = useState<string>('english');
+  const [userProgress, setUserProgress] = useState<any[]>([]);
 
   useEffect(() => {
     loadUserPreferences();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserProgress();
+    }, [])
+  );
+
+  const fetchUserProgress = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase.from('user_game_progress').select('*').eq('user_id', user.id);
+      if (data) setUserProgress(data);
+    } catch (e) {
+      console.log('Error fetching progress', e);
+    }
+  };
 
   const loadUserPreferences = async () => {
     try {
@@ -315,13 +333,22 @@ export function GameLobbyScreen({ route }: any) {
                                   const isStageUnlocked = adminOverride || i < 3; // Demo: first three stages unlocked natively
                                   const stageNameStr = level.stageNames ? `${i+1}. ${level.stageNames[i]}` : `Aşama ${i+1}`;
                                   
-                                  // Pseudo-metrics for completion parity:
+                                  // Fetch real progress from Supabase state
+                                  const stageLogId = `${level.id}_${i + 1}`;
+                                  // Find the best score for this specific stage if they played multiple times
+                                  const stageLogs = userProgress.filter(p => p.unit_id === stageLogId);
+                                  const bestLog = stageLogs.length > 0 ? stageLogs.reduce((prev, current) => (prev.score > current.score) ? prev : current) : null;
+                                  
                                   let completionPct = 0;
                                   let successScore: number | null = null;
-                                  if (isStageUnlocked) {
-                                    if (i === 0) { completionPct = 100; successScore = 95; }
-                                    else if (i === 1) { completionPct = 100; successScore = 70; }
-                                    else if (i === 2) { completionPct = 40; }
+                                  let earnedStars = '🌑🌑🌑';
+
+                                  if (bestLog) {
+                                     completionPct = 100;
+                                     successScore = bestLog.score;
+                                     if (bestLog.stars === 3) earnedStars = '🌟🌟🌟';
+                                     else if (bestLog.stars === 2) earnedStars = '🌟🌟🌑';
+                                     else if (bestLog.stars === 1) earnedStars = '🌟🌑🌑';
                                   }
 
                                   return (
@@ -356,7 +383,10 @@ export function GameLobbyScreen({ route }: any) {
                                           <Text className={`text-[10px] font-bold ${isStageUnlocked ? 'text-gray-500' : 'text-gray-400'}`}>~25 Kelime</Text>
                                           
                                           {isStageUnlocked && completionPct === 100 && successScore !== null && (
-                                            <Text className="text-[10px] font-black text-emerald-700">Başarı: {successScore}</Text>
+                                            <View className="flex-row items-center">
+                                               <Text className="text-[10px] pr-1">{earnedStars}</Text>
+                                               <Text className="text-[10px] font-black text-emerald-700">Skor: {successScore}</Text>
+                                            </View>
                                           )}
                                           {isStageUnlocked && completionPct > 0 && completionPct < 100 && (
                                             <Text className="text-[10px] font-bold text-amber-600">Oynanıyor</Text>
