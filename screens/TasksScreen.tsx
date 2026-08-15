@@ -208,6 +208,10 @@ export function TasksScreen({ navigation, route }: any) {
   };
 
   const handleAutoCompleteTask = async () => {
+      const { requirePremium } = await import('../lib/premium');
+      const isPremium = await requirePremium(navigation, 'Sınırsız Görev Tamamlama');
+      if (!isPremium) return;
+
       if (!viewingTask) return;
       let accumulatedSeconds = viewingTask.accumulatedSeconds || 0;
       if (sessionStartTime) {

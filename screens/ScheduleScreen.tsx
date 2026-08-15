@@ -286,6 +286,10 @@ export default function ScheduleScreen({ navigation, route }: any) {
   };
 
   const handleSave = async () => {
+    const { requirePremium } = await import('../lib/premium');
+    const isPremium = await requirePremium(navigation, 'Ders Programı Hazırlama');
+    if (!isPremium) return;
+
     setIsSaving(true);
     try {
       let targetStudentId = currentUserId;

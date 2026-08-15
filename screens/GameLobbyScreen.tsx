@@ -18,8 +18,12 @@ export function GameLobbyScreen({ route }: any) {
   const [adminOverride, setAdminOverride] = useState(false);
   const [duelOpponent, setDuelOpponent] = useState<string | null>(null);
 
-  const toggleLevel = (id: string, isUnlocked: boolean) => {
-    if (!isUnlocked) return;
+  const toggleLevel = async (id: string, isPremiumOnly: boolean) => {
+    if (isPremiumOnly && !adminOverride) {
+      const { requirePremium } = await import('../lib/premium');
+      const isPremium = await requirePremium(navigation, 'İleri Kur Eğitim Oyunları (B1 ve Üzeri)');
+      if (!isPremium) return;
+    }
     setExpandedLevel(prev => prev === id ? null : id);
   };
 
@@ -90,7 +94,11 @@ export function GameLobbyScreen({ route }: any) {
                             <Text className={`font-bold ${duelOpponent === f ? 'text-white' : 'text-gray-700'}`}>{duelOpponent === f ? '🎯 ' : ''}{f}</Text>
                          </TouchableOpacity>
                       ))}
-                      <TouchableOpacity onPress={() => navigation.navigate('SocialDashboard')} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
+                      <TouchableOpacity onPress={async () => {
+                         const { requirePremium } = await import('../lib/premium');
+                         const isPremium = await requirePremium(navigation, 'Arkadaş Ekleme Sınırı');
+                         if (isPremium) navigation.navigate('SocialDashboard');
+                      }} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
                          <Text className="text-gray-600 font-extrabold">+ Sosyal Ağdan Ekle</Text>
                       </TouchableOpacity>
                    </ScrollView>
@@ -103,30 +111,36 @@ export function GameLobbyScreen({ route }: any) {
 
         {/* Levels List */}
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-          {LEVELS.map((level) => {
-            const levelUnlocked = adminOverride || level.unlocked;
+          {LEVELS.map((level, idx) => {
+            // First 2 modes (A1, A2) are free (idx 0 and 1). Rest are premium.
+            const isPremiumOnly = (idx >= 2);
+            
+            // Visual state indicating if it's considered premium-locked visually
+            const visualUnlockedLevel = adminOverride || !isPremiumOnly;
+
             return (
             <View key={level.id} className="mb-3">
               <TouchableOpacity 
-                disabled={!levelUnlocked}
-                onPress={() => toggleLevel(level.id, levelUnlocked)}
-                className={`flex-row items-center border p-5 rounded-2xl ${levelUnlocked ? (expandedLevel === level.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-100') : 'bg-gray-50 border-gray-200 opacity-60'}`}
+                activeOpacity={0.7}
+                onPress={() => toggleLevel(level.id, isPremiumOnly)}
+                className={`flex-row items-center border p-5 rounded-2xl ${visualUnlockedLevel ? (expandedLevel === level.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100 shadow-sm shadow-gray-100') : 'bg-slate-50 border-slate-200'}`}
               >
-                <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${levelUnlocked ? 'bg-indigo-100' : 'bg-gray-200'}`}>
-                  {levelUnlocked ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">🔒</Text>}
+                <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${visualUnlockedLevel ? 'bg-indigo-100' : 'bg-slate-200'}`}>
+                  {visualUnlockedLevel ? <Text className="text-xl">🏆</Text> : <Text className="text-xl">👑</Text>}
                 </View>
                 
                 <View className="flex-1">
-                  <Text className={`text-lg font-black ${levelUnlocked ? 'text-gray-800' : 'text-gray-500'}`}>{level.title}</Text>
+                  <Text className={`text-lg font-black ${visualUnlockedLevel ? 'text-gray-800' : 'text-slate-600'}`}>
+                     {level.title}
+                  </Text>
                   <Text className="text-gray-400 font-medium text-xs">{level.desc}</Text>
                 </View>
 
                 <View className="items-end">
-                  {levelUnlocked && (
+                  {visualUnlockedLevel ? (
                     <Text className="text-gray-400 font-bold">{expandedLevel === level.id ? '🔼 Kapat' : '🔽 Aç'}</Text>
-                  )}
-                  {!levelUnlocked && (
-                    <Text className="text-xs font-bold text-gray-400 mt-1">Kilitli</Text>
+                  ) : (
+                    <Text className="text-xs font-bold text-amber-500 mt-1 uppercase">Pro Kilit</Text>
                   )}
                 </View>
               </TouchableOpacity>

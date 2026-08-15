@@ -179,6 +179,10 @@ export function GradesScreen({ navigation, route }: any) {
 
 
   const handleSave = async () => {
+    const { requirePremium } = await import('../lib/premium');
+    const isPremium = await requirePremium(navigation, 'Not Hesaplama ve Kaydetme');
+    if (!isPremium) return;
+
     setIsSaving(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();

@@ -109,6 +109,9 @@ export function StudentDashboardScreen({ navigation }: any) {
         .order('start_time', { ascending: true });
 
       setTodaySchedules(schedules || []);
+      
+      // Async refresh premium status
+      import('../lib/premium').then(({ checkPremiumStatus }) => checkPremiumStatus());
     }
     setLoading(false);
   };
