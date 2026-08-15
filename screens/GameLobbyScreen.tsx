@@ -29,6 +29,18 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
   ],
   '8': [
     { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davetler ve LGS Hazırlık.', unlocked: true, stageNames: ['Making Friends', 'Invitations', 'Accepting', 'Refusing / Excuses', 'Personal Traits'], words: 45 },
+  ],
+  '9': [
+    { id: '9_U1', title: 'Unit 1: Studying Abroad', desc: 'Yurtdışında Eğitim ve Yabancı Kültürler.', unlocked: true, stageNames: ['Meeting New People', 'Countries & Nationalities', 'Asking for Directions'], words: 40 },
+  ],
+  '10': [
+    { id: '10_U1', title: 'Unit 1: School Life', desc: 'Okul Yaşamı, Kurallar ve Dersler.', unlocked: true, stageNames: ['School Subjects', 'Obligations (Must/Have to)', 'Extracurricular Activities'], words: 45 },
+  ],
+  '11': [
+    { id: '11_U1', title: 'Unit 1: Future Jobs', desc: 'Gelecekteki Meslekler ve İstihdam.', unlocked: true, stageNames: ['Professions', 'Job Interviews', 'Future Tenses'], words: 50 },
+  ],
+  '12': [
+    { id: '12_U1', title: 'Unit 1: Music', desc: 'Müzik Türleri ve İfade Biçimleri.', unlocked: true, stageNames: ['Genres', 'Expressing Preferences', 'Concerts & Events'], words: 50 },
   ]
 };
 
@@ -56,7 +68,7 @@ export function GameLobbyScreen({ route }: any) {
       if (user) {
         const { data: profile } = await supabase.from('profiles').select('grade').eq('id', user.id).single();
         let initialGrade = profile?.grade?.replace(/[^0-9]/g, '') || '5';
-        if (!['5','6','7','8'].includes(initialGrade)) initialGrade = '5';
+        if (!['5','6','7','8','9','10','11','12'].includes(initialGrade)) initialGrade = '5';
         
         setActivePath((savedPath as any) || 'school');
         setActiveGrade(savedGrade || initialGrade);
@@ -193,7 +205,7 @@ export function GameLobbyScreen({ route }: any) {
               {activePath === 'school' && (
                 <View className="mb-6">
                   <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
-                    {['5', '6', '7', '8'].map(g => (
+                    {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => (
                       <TouchableOpacity
                         key={g}
                         onPress={() => switchGrade(g)}
