@@ -98,7 +98,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '11_U10', title: 'Unit 10: Journalism', desc: 'Gazetecilik, Medya ve Passive Voice.', unlocked: false, stageNames: ['Media Types', 'News/Reporting', 'Press Freedom', 'Bias/Accuracy', 'Interviews'], words: 25 },
   ],
   '12': [
-    { id: '12_U1', title: 'Unit 1: Music', desc: 'Müzik Türleri ve İfade Biçimleri.', unlocked: true, stageNames: ['Genres', 'Expressing Preferences', 'Concerts & Events'], words: 50 },
+    { id: '12_U1', title: 'Unit 1: Music', desc: 'Müzik Türleri, Besteciler ve Konserler.', unlocked: true, stageNames: ['Music Genres', 'Composers/Artists', 'Concerts & Events', 'Instruments', 'Expressing Preferences'], words: 25 },
+    { id: '12_U2', title: 'Unit 2: Equal Rights', desc: 'Eşitlik, Haklar, Adalet ve Toplum.', unlocked: true, stageNames: ['Human Rights', 'Discrimination', 'Democracy', 'Movements', 'Diversity'], words: 25 },
+    { id: '12_U3', title: 'Unit 3: Science', desc: 'Bilimsel Araştırma, Keşifler ve Kanıtlar.', unlocked: true, stageNames: ['Research Methods', 'Discoveries', 'Inventions', 'Lab Work', 'Data/Analysis'], words: 25 },
+    { id: '12_U4', title: 'Unit 4: University', desc: 'Üniversite Hayatı, Başvuru ve Akademi.', unlocked: true, stageNames: ['Academic Life', 'Application', 'Campus Life', 'Degrees', 'Scholarships'], words: 25 },
+    { id: '12_U5', title: 'Unit 5: Health', desc: 'Sağlık, Ruh Hali ve İyi Oluş.', unlocked: true, stageNames: ['Physical Health', 'Mental Health', 'Nutrition', 'Healthcare', 'Well-being'], words: 25 },
+    { id: '12_U6', title: 'Unit 6: Economy', desc: 'Ekonomi, Ticaret ve Küreselleşme.', unlocked: false, stageNames: ['Trade/Commerce', 'Financial Terms', 'Market', 'Poverty/Wealth', 'Globalization'], words: 25 },
+    { id: '12_U7', title: 'Unit 7: Art', desc: 'Sanat, Edebiyat ve Yaratıcı İfade.', unlocked: false, stageNames: ['Visual Arts', 'Literature', 'Music & Performance', 'Styles', 'Exhibitions'], words: 25 },
+    { id: '12_U8', title: 'Unit 8: Relationships', desc: 'İlişkiler, İletişim ve Empati.', unlocked: false, stageNames: ['Trust & Respect', 'Conflict Resolution', 'Family & Friends', 'Empathy', 'Community'], words: 25 },
+    { id: '12_U9', title: 'Unit 9: Global Issues', desc: 'Küresel Sorunlar, Barış ve İşbirliği.', unlocked: false, stageNames: ['International Relations', 'Peace/Conflict', 'Aid & Charity', 'Migration', 'Inequality'], words: 25 },
+    { id: '12_U10', title: 'Unit 10: Looking Ahead', desc: 'Gelecek, Vizyon ve Değişim Yaratmak.', unlocked: false, stageNames: ['Future Goals', 'Potential & Ambition', 'Responsibility', 'Legacy', 'Leadership'], words: 25 },
   ]
 };
 
