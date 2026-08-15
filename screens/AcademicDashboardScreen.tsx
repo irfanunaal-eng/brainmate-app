@@ -7,25 +7,25 @@ import { useIsFocused } from '@react-navigation/native';
 export function AcademicDashboardScreen({ navigation, route }: any) {
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const [absences, setAbsences] = useState({
-    unexcused: 0, 
-    excused: 0,   
-    late: 0       
+    unexcused: 0,
+    excused: 0,
+    late: 0
   });
 
   const [average, setAverage] = useState<string | null>(null);
 
   useEffect(() => {
     if (isFocused) {
-       fetchAcademicData();
+      fetchAcademicData();
     }
   }, [isFocused]);
 
   const getAvg = (arr: string[]) => {
     const valid = arr.map(v => parseFloat(v)).filter(v => !isNaN(v));
-    if(valid.length === 0) return null;
-    return valid.reduce((a,b)=>a+b,0)/valid.length;
+    if (valid.length === 0) return null;
+    return valid.reduce((a, b) => a + b, 0) / valid.length;
   };
 
   const fetchAcademicData = async () => {
@@ -38,93 +38,93 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
 
       // --- DEVAMSIZLIK ÇEKME ---
       try {
-         let logs: any[] = [];
-         
-         // Önce veritabanından çekmeyi dene (farklı cihazdan giren veliler için)
-         try {
-           const { data: dbLogs } = await supabase.from('attendance_logs').select('*').eq('student_id', sId);
-           if (dbLogs && dbLogs.length > 0) logs = dbLogs;
-         } catch(e) {}
+        let logs: any[] = [];
 
-         // Eğer veritabanı boş ise (veya çekemediyse) yerel cache'e bak
-         if (logs.length === 0) {
-            const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
-            if (attLogsData) logs = JSON.parse(attLogsData);
-         }
+        // Önce veritabanından çekmeyi dene (farklı cihazdan giren veliler için)
+        try {
+          const { data: dbLogs } = await supabase.from('attendance_logs').select('*').eq('student_id', sId);
+          if (dbLogs && dbLogs.length > 0) logs = dbLogs;
+        } catch (e) { }
 
-         if (logs && logs.length > 0) {
-             let mazeretsizSaat = 0;
-             let mazeretliSaat = 0;
-             let gecSayisi = 0;
-             const STATUS_OPTS: Record<string, string> = {
-               'yok': 'mazeretsiz', 'gec': 'gec', 'rapor': 'mazeretli', 'izin': 'mazeretli', 'faaliyet': 'present'
-             };
-             
-             logs.forEach((log: any) => {
-                 const tType = STATUS_OPTS[log.statusId] || 'present';
-                 if (tType === 'present') return;
-                 if (tType === 'gec') {
-                    gecSayisi++;
-                 } else {
-                    let hours = 0;
-                    if (log.scope === 'tam_gun') hours = 8;
-                    else if (log.scope === 'yarim_gun') hours = 4;
-                    else if (log.periods && Array.isArray(log.periods)) hours = log.periods.length;
-                    
-                    if (tType === 'mazeretsiz') mazeretsizSaat += hours;
-                    if (tType === 'mazeretli') mazeretliSaat += hours;
-                 }
-             });
-             
-             // 5 geç kalma = 0.5 gün (4 saat) özürsüz devamsızlık
-             const gecDenGelenYarimGunler = Math.floor(gecSayisi / 5);
-             mazeretsizSaat += (gecDenGelenYarimGunler * 4);
+        // Eğer veritabanı boş ise (veya çekemediyse) yerel cache'e bak
+        if (logs.length === 0) {
+          const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
+          if (attLogsData) logs = JSON.parse(attLogsData);
+        }
 
-             setAbsences({
-               unexcused: +(mazeretsizSaat / 8).toFixed(2),
-               excused: +(mazeretliSaat / 8).toFixed(2),
-               late: gecSayisi
-             });
-         }
-      } catch(e) {}
+        if (logs && logs.length > 0) {
+          let mazeretsizSaat = 0;
+          let mazeretliSaat = 0;
+          let gecSayisi = 0;
+          const STATUS_OPTS: Record<string, string> = {
+            'yok': 'mazeretsiz', 'gec': 'gec', 'rapor': 'mazeretli', 'izin': 'mazeretli', 'faaliyet': 'present'
+          };
+
+          logs.forEach((log: any) => {
+            const tType = STATUS_OPTS[log.statusId] || 'present';
+            if (tType === 'present') return;
+            if (tType === 'gec') {
+              gecSayisi++;
+            } else {
+              let hours = 0;
+              if (log.scope === 'tam_gun') hours = 8;
+              else if (log.scope === 'yarim_gun') hours = 4;
+              else if (log.periods && Array.isArray(log.periods)) hours = log.periods.length;
+
+              if (tType === 'mazeretsiz') mazeretsizSaat += hours;
+              if (tType === 'mazeretli') mazeretliSaat += hours;
+            }
+          });
+
+          // 5 geç kalma = 0.5 gün (4 saat) özürsüz devamsızlık
+          const gecDenGelenYarimGunler = Math.floor(gecSayisi / 5);
+          mazeretsizSaat += (gecDenGelenYarimGunler * 4);
+
+          setAbsences({
+            unexcused: +(mazeretsizSaat / 8).toFixed(2),
+            excused: +(mazeretliSaat / 8).toFixed(2),
+            late: gecSayisi
+          });
+        }
+      } catch (e) { }
 
       // --- NOTLARI ÇEKME VE HESAPLAMA ---
       let existingGrades: any[] = [];
       try {
         const { data: dbGrades } = await supabase.from('grades').select('grades_data').eq('student_id', sId).single();
         if (dbGrades && dbGrades.grades_data) existingGrades = dbGrades.grades_data;
-      } catch(e) {}
+      } catch (e) { }
 
       if (existingGrades.length === 0) {
-         const cached = await AsyncStorage.getItem(`@grades_cache_${sId}`);
-         if (cached) existingGrades = JSON.parse(cached);
+        const cached = await AsyncStorage.getItem(`@grades_cache_${sId}`);
+        if (cached) existingGrades = JSON.parse(cached);
       }
 
       const getTermAvgFlat = (tData: any) => {
-         if (tData.muaf) return null;
-         // GradesScreen.tsx'deki getTermAvg ile tam entegre!
-         const nums = [...(tData.yazili || []), ...(tData.perf || []), ...(tData.uyg || []), tData.proje]
-            .map((v: any) => parseFloat(v))
-            .filter((v: number) => !isNaN(v));
-         
-         if (nums.length === 0) return null;
-         return nums.reduce((a, b) => a + b, 0) / nums.length;
+        if (tData.muaf) return null;
+        // GradesScreen.tsx'deki getTermAvg ile tam entegre!
+        const nums = [...(tData.yazili || []), ...(tData.perf || []), ...(tData.uyg || []), tData.proje]
+          .map((v: any) => parseFloat(v))
+          .filter((v: number) => !isNaN(v));
+
+        if (nums.length === 0) return null;
+        return nums.reduce((a, b) => a + b, 0) / nums.length;
       };
 
       let totalScore = 0;
       let totalSaat = 0;
 
       existingGrades.forEach(sub => {
-         const termData = sub['t1']; // 1. Dönem
-         if (!termData || termData.muaf) return;
+        const termData = sub['t1']; // 1. Dönem
+        if (!termData || termData.muaf) return;
 
-         const avg = getTermAvgFlat(termData);
-         const saat = parseFloat(sub.saat);
+        const avg = getTermAvgFlat(termData);
+        const saat = parseFloat(sub.saat);
 
-         if (avg !== null && !isNaN(saat) && saat > 0) {
-            totalScore += avg * saat;
-            totalSaat += saat;
-         }
+        if (avg !== null && !isNaN(saat) && saat > 0) {
+          totalScore += avg * saat;
+          totalSaat += saat;
+        }
       });
 
       if (totalSaat > 0) {
@@ -134,9 +134,9 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
       }
 
     } catch (error) {
-       console.warn(error);
+      console.warn(error);
     } finally {
-       setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -165,7 +165,7 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
         <View className="bg-secondary/10 p-6 rounded-3xl mb-8 border border-secondary/20">
           <Text className="text-secondary-800 font-extrabold text-xl mb-2">Not Ortalaması & Belge</Text>
           <Text className="text-gray-500 mb-4 text-sm">Girilen sınav notlarına göre dönem sonu MEB belge tahmini.</Text>
-          
+
           <View className="flex-row items-center justify-between bg-white p-5 rounded-2xl shadow-sm mb-4">
             <View>
               <Text className="text-gray-400 font-bold mb-1">1. Dönem Ort.</Text>
@@ -175,7 +175,7 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
               <Text className={`${certData.text} font-extrabold text-lg`}>{certData.icon} {certData.name}</Text>
             </View>
           </View>
-          
+
           <TouchableOpacity onPress={() => navigation.navigate('Grades')} className="bg-secondary w-full py-3 rounded-xl items-center shadow-sm">
             <Text className="text-white font-bold">Notları Düzenle</Text>
           </TouchableOpacity>
@@ -217,7 +217,7 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
               <Text className="text-amber-600 font-bold text-xs bg-amber-200 px-2 py-1 rounded-md">3 Hak Kaldı</Text>
             </View>
             <Text className="text-gray-700 font-medium text-sm">
-              <Text className="font-extrabold text-amber-600 text-lg">{absences.late} </Text> 
+              <Text className="font-extrabold text-amber-600 text-lg">{absences.late} </Text>
               kez geç kaldın. 5 olunca 0.5 gün özürsüz yazılacak.
             </Text>
           </View>
