@@ -121,7 +121,7 @@ export function GameLobbyScreen({ route }: any) {
             <Text className="text-xl">🔙</Text>
           </TouchableOpacity>
           <Text className="text-xl font-extrabold text-gray-800 ml-2 flex-1 text-center" adjustsFontSizeToFit numberOfLines={1}>
-            {SUBJECTS.find(s => s.id === activeSubject)?.label} Edu-Pratik
+            {activePath === 'school' ? `${SUBJECTS.find(s => s.id === activeSubject)?.label} Edu-Pratik` : 'Genel Edu-Pratik'}
           </Text>
           <TouchableOpacity 
             onPress={() => setAdminOverride(!adminOverride)}
@@ -132,115 +132,121 @@ export function GameLobbyScreen({ route }: any) {
           </TouchableOpacity>
         </View>
 
-        {isParentView ? (
+        {isParentView && (
            <View className="p-5 rounded-3xl mb-6 shadow-sm bg-purple-50 border border-purple-100">
               <Text className="text-lg font-black mb-1 text-purple-800">Oyun Takip Modu 🕵️‍♂️</Text>
               <Text className="text-sm font-medium text-purple-600/80">
                 Bu alanda sadece öğrencinizin oyun seviyelerindeki ilerleyişini, aşamalarını ve kelime hakimiyetini izleyebilirsiniz. Eğitsel oyunları bizzat tecrübe etme ve düello yetkisi tamamen öğrencinize aittir.
               </Text>
            </View>
+        )}
+
+        {loading ? (
+           <View className="mt-8 items-center"><ActivityIndicator size="large" color="#4f46e5" /></View>
         ) : (
            <>
-             {/* Subject Selector */}
-             <View className="mb-6">
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
-                  {SUBJECTS.map((sub) => (
-                    <TouchableOpacity 
-                      key={sub.id}
-                      onPress={() => {
-                        setActiveSubject(sub.id);
-                        setExpandedLevel(null);
-                      }}
-                      className={`mr-3 flex-row items-center px-4 py-2.5 rounded-full border shadow-sm ${activeSubject === sub.id ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
-                    >
-                      <Text className="mr-2 text-lg">{sub.icon}</Text>
-                      <Text className={`font-black ${activeSubject === sub.id ? 'text-white' : 'text-gray-600'}`}>{sub.label}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-             </View>
-
-             {/* Mode Selection */}
-             <View className="bg-gray-100 p-1 rounded-2xl flex-row mb-6">
-               <TouchableOpacity 
-                 onPress={() => setSelectedMode('solo')}
-                 className={`flex-1 py-3 items-center justify-center rounded-xl transition-all ${selectedMode === 'solo' ? 'bg-white shadow-sm' : 'bg-transparent'}`}
-               >
-                 <Text className={`font-bold ${selectedMode === 'solo' ? 'text-indigo-600 text-base' : 'text-gray-500'}`}>🧍‍♂️ Bireysel Çalış</Text>
-               </TouchableOpacity>
-               <TouchableOpacity 
-                 onPress={() => setSelectedMode('duel')}
-                 className={`flex-1 py-3 items-center justify-center rounded-xl transition-all ${selectedMode === 'duel' ? 'bg-rose-500 shadow-sm shadow-rose-300' : 'bg-transparent'}`}
-               >
-                 <Text className={`font-bold ${selectedMode === 'duel' ? 'text-white text-base' : 'text-gray-500'}`}>⚔️ Arkadaşla Düello</Text>
-               </TouchableOpacity>
-             </View>
-
-
-              {selectedMode === 'duel' && (
-                 <View className="mb-6">
-                    <Text className="font-extrabold text-gray-800 mb-2 text-sm uppercase tracking-widest pl-1">Meydan Okunacak Rakibi Seç:</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-1">
-                       {['Ahmet Y. (Rakip)', 'Ayşe K. (Kanka)', 'Mehmet D.'].map((f, i) => (
-                          <TouchableOpacity 
-                             key={i} 
-                             onPress={() => setDuelOpponent(f)}
-                             className={`mr-3 px-5 py-3 rounded-2xl border ${duelOpponent === f ? 'bg-rose-500 border-rose-600 shadow-sm shadow-rose-200' : 'bg-white border-gray-200 shadow-sm shadow-gray-100'}`}
-                          >
-                             <Text className={`font-bold ${duelOpponent === f ? 'text-white' : 'text-gray-700'}`}>{duelOpponent === f ? '🎯 ' : ''}{f}</Text>
-                          </TouchableOpacity>
-                       ))}
-                       <TouchableOpacity onPress={async () => {
-                          const { requirePremium } = await import('../lib/premium');
-                          const isPremium = await requirePremium(navigation, 'Arkadaş Ekleme Sınırı');
-                          if (isPremium) navigation.navigate('SocialDashboard');
-                       }} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
-                          <Text className="text-gray-600 font-extrabold">+ Sosyal Ağdan Ekle</Text>
-                       </TouchableOpacity>
-                    </ScrollView>
-                 </View>
-              )}
-            </>
-         )}
-
-         {loading ? (
-            <View className="mt-8 items-center"><ActivityIndicator size="large" color="#4f46e5" /></View>
-         ) : (
-            <>
-              {/* Path Tabs */}
-              <View className="flex-row mb-4 bg-gray-100 p-1 rounded-2xl">
+              {/* Path Tabs (Müfredat vs Müfredat Dışı) */}
+              <View className="flex-row mb-6 bg-gray-100 p-1 rounded-2xl">
                 <TouchableOpacity 
                   onPress={() => switchPath('school')}
                   className={`flex-1 py-3 items-center rounded-xl ${activePath === 'school' ? 'bg-white shadow-sm border border-gray-200' : ''}`}
                 >
-                  <Text className={`font-bold ${activePath === 'school' ? 'text-indigo-600' : 'text-gray-500'}`}>📍 Okul (Sınıf Yolculuğu)</Text>
+                  <Text className={`font-bold ${activePath === 'school' ? 'text-indigo-600' : 'text-gray-500'}`}>📍 Müfredat</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   onPress={() => switchPath('global')}
                   className={`flex-1 py-3 items-center rounded-xl ${activePath === 'global' ? 'bg-white shadow-sm border border-gray-200' : ''}`}
                 >
-                  <Text className={`font-bold ${activePath === 'global' ? 'text-rose-600' : 'text-gray-500'}`}>🌍 Global (Tüm Seviyeler)</Text>
+                  <Text className={`font-bold ${activePath === 'global' ? 'text-rose-600' : 'text-gray-500'}`}>🌍 Müfredat Dışı</Text>
                 </TouchableOpacity>
               </View>
 
-              {/* Grade Tabs (Only for School Path) */}
+              {/* School specific selectors */}
               {activePath === 'school' && (
-                <View className="mb-6">
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
-                    {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => (
-                      <TouchableOpacity
-                        key={g}
-                        onPress={() => switchGrade(g)}
-                        className={`mr-3 px-6 py-3 rounded-full border shadow-sm ${activeGrade === g ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
-                      >
-                        <Text className={`font-black ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
+                <>
+                  {/* Grade Tabs */}
+                  <View className="mb-4">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                      {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => (
+                        <TouchableOpacity
+                          key={g}
+                          onPress={() => switchGrade(g)}
+                          className={`mr-3 px-6 py-3 rounded-full border shadow-sm ${activeGrade === g ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
+                        >
+                          <Text className={`font-black ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </View>
+
+                  {/* Subject Selector */}
+                  <View className="mb-6">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                      {SUBJECTS.map((sub) => (
+                        <TouchableOpacity 
+                          key={sub.id}
+                          onPress={() => {
+                            setActiveSubject(sub.id);
+                            setExpandedLevel(null);
+                          }}
+                          className={`mr-3 flex-row items-center px-4 py-2.5 rounded-full border shadow-sm ${activeSubject === sub.id ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
+                        >
+                          <Text className="mr-2 text-lg">{sub.icon}</Text>
+                          <Text className={`font-black ${activeSubject === sub.id ? 'text-white' : 'text-gray-600'}`}>{sub.label}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </View>
+                </>
               )}
 
-              <Text className="text-xl font-extrabold text-gray-800 mb-4">{activePath === 'school' ? `${activeGrade}. Sınıf Üniteleri` : 'CEFR Seviyeleri (1000+ Kelime)'}</Text>
+              {/* Mode Selection (Only if not parent) */}
+              {!isParentView && (
+                <>
+                  <View className="bg-gray-100 p-1 rounded-2xl flex-row mb-6">
+                    <TouchableOpacity 
+                      onPress={() => setSelectedMode('solo')}
+                      className={`flex-1 py-3 items-center justify-center rounded-xl ${selectedMode === 'solo' ? 'bg-white shadow-sm' : 'bg-transparent'}`}
+                    >
+                      <Text className={`font-bold ${selectedMode === 'solo' ? 'text-indigo-600 text-base' : 'text-gray-500'}`}>🧍‍♂️ Bireysel Çalış</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      onPress={() => setSelectedMode('duel')}
+                      className={`flex-1 py-3 items-center justify-center rounded-xl ${selectedMode === 'duel' ? 'bg-rose-500 shadow-sm shadow-rose-300' : 'bg-transparent'}`}
+                    >
+                      <Text className={`font-bold ${selectedMode === 'duel' ? 'text-white text-base' : 'text-gray-500'}`}>⚔️ Arkadaşla Düello</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  {selectedMode === 'duel' && (
+                     <View className="mb-6">
+                        <Text className="font-extrabold text-gray-800 mb-2 text-sm uppercase tracking-widest pl-1">Meydan Okunacak Rakibi Seç:</Text>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-1">
+                           {['Ahmet Y. (Rakip)', 'Ayşe K. (Kanka)', 'Mehmet D.'].map((f, i) => (
+                              <TouchableOpacity 
+                                 key={i} 
+                                 onPress={() => setDuelOpponent(f)}
+                                 className={`mr-3 px-5 py-3 rounded-2xl border ${duelOpponent === f ? 'bg-rose-500 border-rose-600 shadow-sm shadow-rose-200' : 'bg-white border-gray-200 shadow-sm shadow-gray-100'}`}
+                              >
+                                 <Text className={`font-bold ${duelOpponent === f ? 'text-white' : 'text-gray-700'}`}>{duelOpponent === f ? '🎯 ' : ''}{f}</Text>
+                              </TouchableOpacity>
+                           ))}
+                           <TouchableOpacity onPress={async () => {
+                              const { requirePremium } = await import('../lib/premium');
+                              const isPremium = await requirePremium(navigation, 'Arkadaş Ekleme Sınırı');
+                              if (isPremium) navigation.navigate('SocialDashboard');
+                           }} className="mr-3 px-5 py-3 rounded-2xl border border-dashed border-gray-400 bg-gray-50 flex-row items-center">
+                              <Text className="text-gray-600 font-extrabold">+ Sosyal Ağdan Ekle</Text>
+                           </TouchableOpacity>
+                        </ScrollView>
+                     </View>
+                  )}
+                </>
+              )}
+
+              <Text className="text-xl font-extrabold text-gray-800 mb-4">
+                {activePath === 'school' ? `${activeGrade}. Sınıf ${SUBJECTS.find(s => s.id === activeSubject)?.label} Üniteleri` : 'CEFR Kur Seviyeleri (1000+ Kelime)'}
+              </Text>
 
               {/* Levels List */}
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
