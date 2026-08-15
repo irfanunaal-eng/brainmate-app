@@ -44,6 +44,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
   ]
 };
 
+const SUBJECTS = [
+  { id: 'english', icon: '🇬🇧', label: 'İngilizce' },
+  { id: 'turkish', icon: '🇹🇷', label: 'Türkçe & Ede.' },
+  { id: 'math', icon: '🧮', label: 'Matematik' },
+  { id: 'science', icon: '🧬', label: 'Fen (Fiz/Kim/Biy)' },
+  { id: 'history', icon: '🏛️', label: 'Tarih' },
+  { id: 'geography', icon: '🌍', label: 'Coğrafya' },
+  { id: 'philosophy', icon: '🤔', label: 'Felsefe & Din' },
+];
+
 export function GameLobbyScreen({ route }: any) {
   const navigation = useNavigation<any>();
   const isParentView = route?.params?.isParentView || false;
@@ -54,6 +64,7 @@ export function GameLobbyScreen({ route }: any) {
   const [loading, setLoading] = useState(true);
   const [activePath, setActivePath] = useState<'school' | 'global'>('school');
   const [activeGrade, setActiveGrade] = useState<string>('5');
+  const [activeSubject, setActiveSubject] = useState<string>('english');
 
   useEffect(() => {
     loadUserPreferences();
@@ -105,14 +116,16 @@ export function GameLobbyScreen({ route }: any) {
     <SafeAreaView className="flex-1 bg-surface">
       <View className="flex-1 p-6">
         {/* Header */}
-        <View className="flex-row justify-between items-center mb-6 mt-2">
+        <View className="flex-row justify-between items-center mb-4 mt-2">
           <TouchableOpacity onPress={() => navigation.goBack()} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
             <Text className="text-xl">🔙</Text>
           </TouchableOpacity>
-          <Text className="text-2xl font-extrabold text-gray-800">İngilizce Ustası</Text>
+          <Text className="text-xl font-extrabold text-gray-800 ml-2 flex-1 text-center" adjustsFontSizeToFit numberOfLines={1}>
+            {SUBJECTS.find(s => s.id === activeSubject)?.label} Edu-Pratik
+          </Text>
           <TouchableOpacity 
             onPress={() => setAdminOverride(!adminOverride)}
-            className={`px-3 py-2 rounded-full flex-row items-center ${adminOverride ? 'bg-purple-100' : 'bg-amber-100'}`}
+            className={`px-3 py-2 rounded-full flex-row items-center ml-2 ${adminOverride ? 'bg-purple-100' : 'bg-amber-100'}`}
           >
             <Text className={`${adminOverride ? 'text-purple-600' : 'text-amber-600'} font-black mr-1`}>450</Text>
             <Text className="text-xs">{adminOverride ? '🔓' : '⚡'}</Text>
@@ -128,6 +141,25 @@ export function GameLobbyScreen({ route }: any) {
            </View>
         ) : (
            <>
+             {/* Subject Selector */}
+             <View className="mb-6">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                  {SUBJECTS.map((sub) => (
+                    <TouchableOpacity 
+                      key={sub.id}
+                      onPress={() => {
+                        setActiveSubject(sub.id);
+                        setExpandedLevel(null);
+                      }}
+                      className={`mr-3 flex-row items-center px-4 py-2.5 rounded-full border shadow-sm ${activeSubject === sub.id ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
+                    >
+                      <Text className="mr-2 text-lg">{sub.icon}</Text>
+                      <Text className={`font-black ${activeSubject === sub.id ? 'text-white' : 'text-gray-600'}`}>{sub.label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+             </View>
+
              {/* Mode Selection */}
              <View className="bg-gray-100 p-1 rounded-2xl flex-row mb-6">
                <TouchableOpacity 
