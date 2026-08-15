@@ -45,19 +45,19 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
 };
 
 const SUBJECTS = [
-  { id: 'english', icon: '🇬🇧', label: 'İngilizce' },
-  { id: 'turkish', icon: '🇹🇷', label: 'Türkçe' },
-  { id: 'literature', icon: '📚', label: 'Edebiyat' },
-  { id: 'math', icon: '🧮', label: 'Matematik' },
-  { id: 'science', icon: '🔬', label: 'Fen Bilimleri' },
-  { id: 'physics', icon: '⚛️', label: 'Fizik' },
-  { id: 'chemistry', icon: '🧪', label: 'Kimya' },
-  { id: 'biology', icon: '🧬', label: 'Biyoloji' },
-  { id: 'social_studies', icon: '🌐', label: 'Sosyal Bilgiler' },
-  { id: 'history', icon: '🏛️', label: 'Tarih' },
-  { id: 'revolution_history', icon: '🎖️', label: 'İnkılap Tarihi' },
-  { id: 'geography', icon: '🌍', label: 'Coğrafya' },
-  { id: 'philosophy', icon: '🤔', label: 'Felsefe' },
+  { id: 'english', icon: '🇬🇧', label: 'İngilizce', grades: ['5','6','7','8','9','10','11','12'] },
+  { id: 'turkish', icon: '🇹🇷', label: 'Türkçe', grades: ['5','6','7','8','9','10','11','12'] },
+  { id: 'literature', icon: '📚', label: 'Edebiyat', grades: ['9','10','11','12'] },
+  { id: 'math', icon: '🧮', label: 'Matematik', grades: ['5','6','7','8','9','10','11','12'] },
+  { id: 'science', icon: '🔬', label: 'Fen Bilimleri', grades: ['5','6','7','8'] },
+  { id: 'physics', icon: '⚛️', label: 'Fizik', grades: ['9','10','11','12'] },
+  { id: 'chemistry', icon: '🧪', label: 'Kimya', grades: ['9','10','11','12'] },
+  { id: 'biology', icon: '🧬', label: 'Biyoloji', grades: ['9','10','11','12'] },
+  { id: 'social_studies', icon: '🌐', label: 'Sosyal Bilgiler', grades: ['5','6','7'] },
+  { id: 'history', icon: '🏛️', label: 'Tarih', grades: ['9','10','11','12'] },
+  { id: 'revolution_history', icon: '🎖️', label: 'İnkılap Tarihi', grades: ['8','11','12'] },
+  { id: 'geography', icon: '🌍', label: 'Coğrafya', grades: ['9','10','11','12'] },
+  { id: 'philosophy', icon: '🤔', label: 'Felsefe', grades: ['10','11','12'] },
 ];
 
 export function GameLobbyScreen({ route }: any) {
@@ -106,6 +106,13 @@ export function GameLobbyScreen({ route }: any) {
   const switchGrade = async (grade: string) => {
     setActiveGrade(grade);
     setExpandedLevel(null);
+    
+    // Auto-switch subject if the currently selected subject is not taught in the newly selected grade
+    const currentSub = SUBJECTS.find(s => s.id === activeSubject);
+    if (currentSub && !currentSub.grades.includes(grade)) {
+       setActiveSubject('english');
+    }
+    
     await AsyncStorage.setItem('@game_grade', grade);
   };
 
@@ -191,7 +198,7 @@ export function GameLobbyScreen({ route }: any) {
                   {/* Subject Selector */}
                   <View className="mb-6">
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
-                      {SUBJECTS.map((sub) => (
+                      {SUBJECTS.filter(s => s.grades.includes(activeGrade)).map((sub) => (
                         <TouchableOpacity 
                           key={sub.id}
                           onPress={() => {
