@@ -188,9 +188,15 @@ export function EnglishGameScreen({ route }: any) {
         <SafeAreaView className="flex-1 justify-center p-6 bg-surface">
            <View className={`items-center p-8 rounded-3xl border-4 ${feedback.correct ? 'bg-emerald-50 border-emerald-500 shadow-emerald-200' : 'bg-rose-50 border-rose-500 shadow-rose-200'} shadow-lg mb-8`}>
               <Text className="text-7xl mb-4">{feedback.correct ? '🎯' : '❌'}</Text>
-              <View className="flex-row items-center justify-center mb-2">
-                 <Text className={`text-4xl font-black ${feedback.correct ? 'text-emerald-700' : 'text-rose-700'}`}>{currentWord.en}</Text>
-                 <TouchableOpacity onPress={() => playVoice(currentWord.en)} className="ml-3 bg-white/50 p-2 rounded-full shadow-sm shadow-black/5">
+              <View className="flex-row items-center justify-center mb-2 w-full px-4">
+                 <Text 
+                    className={`text-4xl font-black ${feedback.correct ? 'text-emerald-700' : 'text-rose-700'}`}
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                 >
+                    {currentWord.en}
+                 </Text>
+                 <TouchableOpacity onPress={() => playVoice(currentWord.en)} className="ml-3 bg-white/50 p-2 rounded-full shadow-sm shadow-black/5 flex-shrink-0">
                     <Text className="text-xl">🔊</Text>
                  </TouchableOpacity>
               </View>
@@ -298,8 +304,14 @@ export function EnglishGameScreen({ route }: any) {
             >
                <Text className="text-2xl ml-1">🔊</Text>
             </TouchableOpacity>
-            <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase mt-4">Türkçesi Nedir?</Text>
-            <Text className="text-6xl font-black text-indigo-900">{currentWord.en}</Text>
+            <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase mt-4 text-center">Türkçesi Nedir?</Text>
+            <Text 
+               className="text-6xl font-black text-indigo-900 w-full text-center"
+               adjustsFontSizeToFit
+               numberOfLines={1}
+            >
+               {currentWord.en}
+            </Text>
          </View>
 
          {/* Options Grid */}
@@ -310,7 +322,13 @@ export function EnglishGameScreen({ route }: any) {
                onPress={() => handleOptionPress(opt)}
                className="w-[48%] bg-indigo-50 border-2 border-indigo-100 py-6 mb-4 rounded-2xl items-center shadow-sm"
              >
-               <Text className="text-xl font-bold text-indigo-800">{opt}</Text>
+               <Text 
+                  className="text-xl font-bold text-indigo-800 text-center w-full px-1"
+                  adjustsFontSizeToFit
+                  numberOfLines={1}
+               >
+                 {opt}
+               </Text>
              </TouchableOpacity>
            ))}
          </View>
