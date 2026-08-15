@@ -464,19 +464,19 @@ export function GradesScreen({ navigation, route }: any) {
              <View style={{flex: 1, alignItems: 'center', borderRightWidth: 1, borderColor: '#e2e8f0', paddingHorizontal: 4}}>
                 <Text style={{fontSize: 10, fontWeight: '800', color: '#64748b'}}>1. DÖNEM AĞIRLIKLI ORT.</Text>
                 <Text style={{fontSize: 22, fontWeight: '900', color: '#0369a1', marginVertical: 4}}>{t1AvgGlobal !== null ? t1AvgGlobal.toFixed(2) : '-'}</Text>
-                <Text style={{fontSize: 9, fontWeight: '900', color: t1AvgGlobal && t1AvgGlobal >= 70 ? '#16a34a' : '#d97706', textAlign: 'center'}}>{getCert(t1AvgGlobal, 't1')}</Text>
+                <Text style={{fontSize: 9, fontWeight: '900', color: getCert(t1AvgGlobal, 't1').includes('Belge Alamaz') || getCert(t1AvgGlobal, 't1').includes('Başarısız') ? '#dc2626' : (getCert(t1AvgGlobal, 't1').includes('Takdir') || getCert(t1AvgGlobal, 't1').includes('Teşekkür') ? '#16a34a' : '#d97706'), textAlign: 'center'}}>{getCert(t1AvgGlobal, 't1')}</Text>
              </View>
 
              <View style={{flex: 1, alignItems: 'center', borderRightWidth: 1, borderColor: '#e2e8f0', paddingHorizontal: 4}}>
                 <Text style={{fontSize: 10, fontWeight: '800', color: '#64748b'}}>2. DÖNEM AĞIRLIKLI ORT.</Text>
                 <Text style={{fontSize: 22, fontWeight: '900', color: '#be185d', marginVertical: 4}}>{t2AvgGlobal !== null ? t2AvgGlobal.toFixed(2) : '-'}</Text>
-                <Text style={{fontSize: 9, fontWeight: '900', color: t2AvgGlobal && t2AvgGlobal >= 70 ? '#16a34a' : '#d97706', textAlign: 'center'}}>{getCert(t2AvgGlobal, 't2')}</Text>
+                <Text style={{fontSize: 9, fontWeight: '900', color: getCert(t2AvgGlobal, 't2').includes('Belge Alamaz') || getCert(t2AvgGlobal, 't2').includes('Başarısız') ? '#dc2626' : (getCert(t2AvgGlobal, 't2').includes('Takdir') || getCert(t2AvgGlobal, 't2').includes('Teşekkür') ? '#16a34a' : '#d97706'), textAlign: 'center'}}>{getCert(t2AvgGlobal, 't2')}</Text>
              </View>
 
              <View style={{flex: 1, alignItems: 'center', paddingHorizontal: 4}}>
                 <Text style={{fontSize: 10, fontWeight: '800', color: '#64748b'}}>YIL SONU ORTALAMASI</Text>
                 <Text style={{fontSize: 22, fontWeight: '900', color: '#0f172a', marginVertical: 4}}>{yearEndGlobal !== null ? yearEndGlobal.toFixed(2) : '-'}</Text>
-                <Text style={{fontSize: 10, fontWeight: '800', textAlign: 'center', color: yearEndGlobal && yearEndGlobal >= 50 ? '#16a34a' : '#dc2626'}}>
+                <Text style={{fontSize: 9, fontWeight: '900', textAlign: 'center', color: getCert(yearEndGlobal, 'global').includes('Belge Alamaz') || getCert(yearEndGlobal, 'global').includes('Başarısız') || getCert(yearEndGlobal, 'global') === 'KALDI' ? '#dc2626' : (getCert(yearEndGlobal, 'global') === 'GEÇTİ' || getCert(yearEndGlobal, 'global').includes('Takdir') || getCert(yearEndGlobal, 'global').includes('Teşekkür') ? '#16a34a' : '#d97706')}}>
                   {getCert(yearEndGlobal, 'global')}
                 </Text>
              </View>
