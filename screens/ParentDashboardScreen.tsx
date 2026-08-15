@@ -106,10 +106,11 @@ export function ParentDashboardScreen({ navigation }: any) {
         .insert([{ [columnKey]: user.id, student_id: studentProfile.id }]);
 
       if (linkError) {
-        if (linkError.message.includes('duplicate key') || linkError.code === '23505') {
+        const errorStr = JSON.stringify(linkError);
+        if (errorStr.includes('duplicate') || linkError.code === '23505') {
           setErrorMessage('Bu öğrenci halihazırda listenizde ekli veya başka bir ana hesapla eşleşmiş.');
         } else {
-          setErrorMessage(`Bağlantı Hatası: ${linkError.message}`);
+          setErrorMessage(`Bağlantı Hatası: ${linkError.message || errorStr}`);
         }
       } else {
         const newStudent = { student_id: studentProfile.id, profiles: { full_name: studentProfile.full_name, role: 'student' } };
