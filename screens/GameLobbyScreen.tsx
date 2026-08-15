@@ -14,11 +14,16 @@ const GLOBAL_LEVELS = [
 
 const CURRICULUM_GRADES: Record<string, any[]> = {
   '5': [
-    { id: '5_U1', title: 'Unit 1: Hello!', desc: 'Tanışma ve Selamlaşma, Sınıf İçi Emirler.', unlocked: true, stageNames: ['Greetings', 'Introductions', 'Classroom Rules', 'Numbers & Age', 'Mixed Practice'], words: 20 },
-    { id: '5_U2', title: 'Unit 2: My Town', desc: 'Ülkeler, Milletler ve Yönler.', unlocked: true, stageNames: ['Places', 'Directions', 'Countries', 'Nationalities', 'Locations'], words: 25 },
-    { id: '5_U3', title: 'Unit 3: Games and Hobbies', desc: 'Oyunlar, Hobiler ve Sporlar.', unlocked: true, stageNames: ['Sports', 'Hobbies', 'Board Games', 'Abilities (Can)', 'Likes/Dislikes', 'Mixed Puzzle'], words: 30 },
-    { id: '5_U4', title: 'Unit 4: My Daily Routine', desc: 'Günlük Rutinler, Eylemler ve Zaman.', unlocked: false, stageNames: ['Morning Routine', 'Telling Time', 'School Day', 'After School', 'Evening Routine'], words: 35 },
-    { id: '5_U5', title: 'Unit 5: Health', desc: 'Sağlık İfadeleri ve Hastalıklar.', unlocked: false, stageNames: ['Body Parts', 'Illnesses', 'Feelings', 'Advices (Should)', 'At the Doctor'], words: 30 },
+    { id: '5_U1', title: 'Unit 1: Hello!', desc: 'Greetings, Introductions, Numbers.', unlocked: true, stageNames: ['Greetings', 'Introductions', 'Classroom Rules', 'Numbers & Age'], words: 34 },
+    { id: '5_U2', title: 'Unit 2: My Town', desc: 'Places, Directions, Locations.', unlocked: true, stageNames: ['Places', 'Directions', 'Countries', 'Nationalities'], words: 33 },
+    { id: '5_U3', title: 'Unit 3: Games and Hobbies', desc: 'Sports, Hobbies, Abilities (Can).', unlocked: true, stageNames: ['Sports', 'Hobbies', 'Board Games', 'Abilities (Can)'], words: 31 },
+    { id: '5_U4', title: 'Unit 4: My Daily Routine', desc: 'Morning Routine, Time, School.', unlocked: true, stageNames: ['Morning Routine', 'Telling Time', 'School Day', 'After School'], words: 26 },
+    { id: '5_U5', title: 'Unit 5: Health', desc: 'Body Parts, Illnesses, Advices.', unlocked: true, stageNames: ['Body Parts', 'Illnesses', 'Feelings', 'Advices (Should)'], words: 36 },
+    { id: '5_U6', title: 'Unit 6: Movies', desc: 'Movie Types, Opinions, Adjectives.', unlocked: false, stageNames: ['Movie Types', 'Expressing Opinions', 'Time Words'], words: 29 },
+    { id: '5_U7', title: 'Unit 7: Party Time', desc: 'Party Supplies, Months, Invitations.', unlocked: false, stageNames: ['Party Supplies', 'Months/Seasons', 'Invitations'], words: 30 },
+    { id: '5_U8', title: 'Unit 8: Fitness', desc: 'Fitness Activities, Suggestions.', unlocked: false, stageNames: ['Fitness Activities', 'Offers & Suggestions (Let\'s/How about)'], words: 30 },
+    { id: '5_U9', title: 'Unit 9: The Animal Shelter', desc: 'Animals, Present Continuous.', unlocked: false, stageNames: ['Animals', 'Present Continuous (Actions)'], words: 32 },
+    { id: '5_U10', title: 'Unit 10: Festivals', desc: 'National & International Festivals.', unlocked: false, stageNames: ['National & International Festivals', 'Numbers (100-1000)'], words: 27 },
   ],
   '6': [
     { id: '6_U1', title: 'Unit 1: Life', desc: 'Günlük Yaşam Döngüsü ve İşler.', unlocked: true, stageNames: ['Daily Activities', 'Time & Dates', 'Family Routines', 'Chores', 'Weekly Tracker'], words: 25 },
@@ -323,7 +328,7 @@ export function GameLobbyScreen({ route }: any) {
                                     <TouchableOpacity 
                                       key={i}
                                       disabled={!isStageUnlocked || isParentView}
-                                      onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, stage: i + 1, mode: selectedMode })}
+                                      onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, stage: i + 1, totalStages: level.stageNames ? level.stageNames.length : (level.stages || 1), mode: selectedMode })}
                                       className={`w-[48%] py-3 mb-2 rounded-xl items-center border relative overflow-hidden ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
                                     >
                                       {/* Embedded Visual Progress Bar Background */}

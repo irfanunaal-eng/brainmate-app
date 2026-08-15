@@ -10,7 +10,7 @@ const ROOT_WORD_DB = require('../assets/vocabulary.json');
 const CURRICULUM_DB = require('../assets/curriculum.json');
 
 export function EnglishGameScreen({ route }: any) {
-  const { levelId, mode, stage } = route.params || { levelId: 'A1', mode: 'solo', stage: 1 };
+  const { levelId, mode, stage, totalStages } = route.params || { levelId: 'A1', mode: 'solo', stage: 1, totalStages: 5 };
   
   // Decide which database to pull from based on the levelId
   const isCurriculum = levelId && levelId.includes('_U');
@@ -21,7 +21,8 @@ export function EnglishGameScreen({ route }: any) {
   // partition the unit vocabulary mathematically so each stage shows different words!
   if (isCurriculum && !CURRICULUM_DB[`${levelId}_${stage}`] && Array.isArray(DB)) {
        const wLength = DB.length;
-       const perStage = Math.max(2, Math.ceil(wLength / 5));
+       const tStages = totalStages || 5; 
+       const perStage = Math.max(2, Math.ceil(wLength / tStages));
        const startIdx = ((stage || 1) - 1) * perStage;
        const slicedDB = DB.slice(startIdx, startIdx + perStage);
        // Ensure we have words, otherwise fallback to start
