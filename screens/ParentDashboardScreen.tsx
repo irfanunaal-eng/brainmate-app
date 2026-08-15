@@ -31,21 +31,41 @@ export function ParentDashboardScreen({ navigation }: any) {
         else if (role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
       }
 
-      // Check traditional parent links
+      // Mümkün olan tüm bağlantıları topla
+      let allLinks: any[] = [];
+      
       const { data: parentLinks } = await supabase
         .from('parent_student_links')
         .select(`student_id, profiles:student_id ( full_name, role, student_no )`)
         .eq('parent_id', user.id);
+        
+      if (parentLinks) allLinks = [...parentLinks];
+
+      if (role !== 'parent') {
+        const { data: teacherLinks } = await supabase
+          .from('student_teachers')
+          .select(`student_id, profiles:student_id ( full_name, role, student_no )`)
+          .eq('teacher_id', user.id);
+        
+        if (teacherLinks) allLinks = [...allLinks, ...teacherLinks];
+      }
       
-      const links = parentLinks || [];
-      if (links.length > 0) {
-        setLinkedStudents(links);
+      // Çift kayıtları (fallback parent tablosundan gelirse) engelle
+      const seen = new Set();
+      const uniqueLinks = allLinks.filter(l => {
+        if (seen.has(l.student_id)) return false;
+        seen.add(l.student_id);
+        return true;
+      });
+      
+      if (uniqueLinks.length > 0) {
+        setLinkedStudents(uniqueLinks);
         
         // If it's a parent, they usually have 1 child and want to see the dashboard immediately. 
         // If they have multiple, we can still auto-select the first, or let them pick. For now, parents auto-select.
-        if (role === 'parent' && links.length === 1) {
-            setStudentId(links[0].student_id);
-            setStudentName((links[0].profiles as any)?.full_name || 'Öğrenci');
+        if (role === 'parent' && uniqueLinks.length === 1) {
+            setStudentId(uniqueLinks[0].student_id);
+            setStudentName((uniqueLinks[0].profiles as any)?.full_name || 'Öğrenci');
         }
       }
     }
@@ -77,13 +97,20 @@ export function ParentDashboardScreen({ navigation }: any) {
 
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      // Create link
+      // Hangi tabloya kaydedilecek?
+      const tableName = userRole === 'parent' ? 'parent_student_links' : 'student_teachers';
+      const columnKey = userRole === 'parent' ? 'parent_id' : 'teacher_id';
+
       const { error: linkError } = await supabase
-        .from('parent_student_links')
-        .insert([{ parent_id: user.id, student_id: studentProfile.id }]);
+        .from(tableName as any)
+        .insert([{ [columnKey]: user.id, student_id: studentProfile.id }]);
 
       if (linkError) {
-        setErrorMessage(`Bağlantı Hatası: ${linkError.message}`);
+        if (linkError.message.includes('duplicate key') || linkError.code === '23505') {
+          setErrorMessage('Bu öğrenci halihazırda listenizde ekli veya başka bir ana hesapla eşleşmiş.');
+        } else {
+          setErrorMessage(`Bağlantı Hatası: ${linkError.message}`);
+        }
       } else {
         const newStudent = { student_id: studentProfile.id, profiles: { full_name: studentProfile.full_name, role: 'student' } };
         setLinkedStudents([...linkedStudents, newStudent]);
