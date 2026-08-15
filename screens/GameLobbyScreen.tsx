@@ -53,7 +53,9 @@ const SUBJECTS = [
   { id: 'physics', icon: '⚛️', label: 'Fizik' },
   { id: 'chemistry', icon: '🧪', label: 'Kimya' },
   { id: 'biology', icon: '🧬', label: 'Biyoloji' },
+  { id: 'social_studies', icon: '🌐', label: 'Sosyal Bilgiler' },
   { id: 'history', icon: '🏛️', label: 'Tarih' },
+  { id: 'revolution_history', icon: '🎖️', label: 'İnkılap Tarihi' },
   { id: 'geography', icon: '🌍', label: 'Coğrafya' },
   { id: 'philosophy', icon: '🤔', label: 'Felsefe' },
 ];
