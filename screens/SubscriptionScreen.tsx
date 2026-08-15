@@ -5,11 +5,17 @@ import { supabase } from '../lib/supabase';
 
 export function SubscriptionScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
-  const [price, setPrice] = useState('49');
+  const [price, setPrice] = useState<string | null>(null);
   
   useEffect(() => {
      const checkRole = async () => {
-        const role = await AsyncStorage.getItem('@user_role');
+        let role = await AsyncStorage.getItem('@user_role');
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+           const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+           if (profile) role = profile.role;
+        }
+
         if (role === 'parent' || role === 'student_coach' || role === 'private_tutor') {
            setPrice('199');
         } else {
@@ -101,7 +107,7 @@ export function SubscriptionScreen({ navigation }: any) {
             <View className="items-center mt-4 mb-2">
                <Text className="text-slate-400 font-bold mb-1 uppercase tracking-widest text-xs">YENİ NESİL EĞİTİM</Text>
                <View className="flex-row items-end justify-center mb-3">
-                 <Text className="text-5xl font-black text-white">{price} ₺</Text>
+                 <Text className="text-5xl font-black text-white">{price === null ? '...' : price} ₺</Text>
                  <Text className="text-slate-400 font-bold mb-2 ml-1">/ ay</Text>
                </View>
                <Text className="text-indigo-400 font-bold text-sm bg-indigo-500/10 px-3 py-1 rounded-full">12 Ay Geçerli Sabit Fiyat Garantisi</Text>
