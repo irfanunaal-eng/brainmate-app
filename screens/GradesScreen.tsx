@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, KeyboardAvoidingView, Platform, Keyboard, Modal, ActivityIndicator, Alert } from 'react-native';
 import { supabase } from '../lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MEB_ELECTIVES, ACADEMIC_YEARS } from '../constants/MebCurriculum';
 
 const COL_WIDTH = 45;
 
-const SUBJECTS = [
+const SUBJECTS = Array.from(new Set([
   'Türk Dili ve Edebiyatı', 'Matematik', 'Geometri', 'Fizik', 'Kimya', 'Biyoloji',
   'Tarih', 'Coğrafya', 'Felsefe', 'Din Kültürü', 'İngilizce', 'İkinci Yabancı Dil',
-  'Beden Eğitimi', 'Görsel Sanatlar', 'Müzik', 'Rehberlik', 'Etüt / Bireysel'
+  'Beden Eğitimi', 'Görsel Sanatlar', 'Müzik', 'Rehberlik', 'Etüt / Bireysel',
+  ...MEB_ELECTIVES
+]));
+
+// Not sistemine dahil edilmeyen dersler (sınav notu yok, kredi hesaplamasını bozar)
+const GRADE_EXCLUDED_SUBJECTS = [
+  'Rehberlik',
 ];
 
 export function GradesScreen({ navigation, route }: any) {
@@ -24,8 +31,7 @@ export function GradesScreen({ navigation, route }: any) {
   const [savedCustomSubjects, setSavedCustomSubjects] = useState<string[]>([]);
   const allSubjects = [...SUBJECTS, ...savedCustomSubjects];
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
       setIsLoading(true);
       try {
         const stored = await AsyncStorage.getItem('@custom_subjects');
@@ -37,8 +43,9 @@ export function GradesScreen({ navigation, route }: any) {
 
         if (sId) {
            let existingGrades: any[] = [];
+           // HARD-RESET kapandı, normal not okuma aktif.
+           
            try {
-             // Remote pull attempt
              const { data: dbGrades } = await supabase.from('grades').select('grades_data').eq('student_id', sId).single();
              if (dbGrades && dbGrades.grades_data) existingGrades = dbGrades.grades_data;
            } catch(e) {}
@@ -47,18 +54,15 @@ export function GradesScreen({ navigation, route }: any) {
               const cached = await AsyncStorage.getItem(`@grades_cache_${sId}`);
               if (cached) existingGrades = JSON.parse(cached);
            }
-
            try {
               const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
               if (attLogsData) {
                   const logs = JSON.parse(attLogsData);
                   let mazeretsizSaat = 0;
                   let mazeretliSaat = 0;
-                  
                   const STATUS_OPTS: Record<string, string> = {
                     'yok': 'mazeretsiz', 'gec': 'mazeretsiz', 'rapor': 'mazeretli', 'izin': 'mazeretli', 'faaliyet': 'present'
                   };
-
                   logs.forEach((log: any) => {
                       const tType = STATUS_OPTS[log.statusId] || 'present';
                       if (tType === 'present') return;
@@ -70,67 +74,76 @@ export function GradesScreen({ navigation, route }: any) {
               }
            } catch(e) {}
 
-           const { data: schData } = await supabase
-              .from('schedules')
-              .select('title, schedule_type')
-              .eq('student_id', sId)
-              .eq('schedule_type', 'okul');
-           
+           // Aktif akademik yılı oku (ScheduleScreen ile ortak key)
+           const storedYear = await AsyncStorage.getItem('@selected_academic_year');
+           const activeYear = storedYear || ACADEMIC_YEARS[3];
+
            let merged = [...existingGrades];
+           let syncList: { name: string; hours: number }[] = [];
 
-           if (schData && schData.length > 0) {
-              const counts: Record<string, number> = {};
-              schData.forEach(r => {
-                 const t = r.title.trim();
-                 if(t) counts[t] = (counts[t] || 0) + 1;
-              });
-              
-              const currentSig = JSON.stringify(counts);
-              const lastSig = await AsyncStorage.getItem(`@last_sch_sig_${sId}`);
-
-              if (merged.length === 0 || currentSig !== lastSig) {
-                  // Program değişmiş (veya ilk giriş). SADECE o zaman notları ezerek / güncelleyerek eşitle!
-                  Object.keys(counts).forEach(title => {
-                     const existingIdx = merged.findIndex(s => s.name === title);
-                     if (existingIdx >= 0) {
-                         merged[existingIdx].saat = counts[title].toString();
-                     } else {
-                         merged.push({
-                           id: Date.now().toString() + Math.random().toString(),
-                           no: '0',
-                           name: title,
-                           saat: counts[title].toString(),
-                           t1: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false },
-                           t2: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false },
-                         });
-                     }
-                  });
-                  // Programdan kaldırılan derslerin saatini 0 yap ki toplama yansımasın (öğrenci notları kaybolmasın diye silmiyoruz)
-                  merged.forEach(m => {
-                     if (!counts[m.name]) m.saat = '0';
-                  });
-                  await AsyncStorage.setItem(`@last_sch_sig_${sId}`, currentSig);
+           // ÖNCELİK: Kullanıcının belirlediği saat kotalarından (Okul Programı Saatleri listesi) al
+           const storedQuota = await AsyncStorage.getItem(`@school_quota_${sId}_${activeYear}`);
+           if (storedQuota) {
+              const parsedQuota = JSON.parse(storedQuota);
+              if (parsedQuota && parsedQuota.length > 0) {
+                 parsedQuota.forEach((q: any) => {
+                    const t = (q.name || '').trim();
+                    if (t && !GRADE_EXCLUDED_SUBJECTS.includes(t)) {
+                        syncList.push({ name: t, hours: parseInt(q.hours, 10) || 0 });
+                    }
+                 });
               }
+           }
+
+           // EĞER kota listesi boşsa (eski veri vs.), fallback: veritabanı hücrelerini say
+           if (syncList.length === 0) {
+              const { data: schData } = await supabase
+                 .from('schedules')
+                 .select('title, schedule_type')
+                 .eq('student_id', sId)
+                 .eq('schedule_type', 'okul')
+                 .eq('academic_year', activeYear);
+
+              if (schData && schData.length > 0) {
+                 const counts: Record<string, number> = {};
+                 schData.forEach(r => {
+                    const t = r.title.trim();
+                    if (t && !GRADE_EXCLUDED_SUBJECTS.includes(t)) counts[t] = (counts[t] || 0) + 1;
+                 });
+                 Object.keys(counts).forEach(k => {
+                    syncList.push({ name: k, hours: counts[k] });
+                 });
+              }
+           }
+
+           if (syncList.length > 0) {
+              merged = syncList.map(item => {
+                 const existing = existingGrades.find(s => s.name === item.name);
+                 return existing
+                    ? { ...existing, saat: item.hours.toString() }
+                    : {
+                        id: Date.now().toString() + Math.random().toString(),
+                        no: '0', name: item.name, saat: item.hours.toString(),
+                        t1: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false },
+                        t2: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false },
+                      };
+              });
            }
 
            if (merged.length > 0) {
              merged.forEach((m, idx) => { m.no = (idx + 1).toString(); });
              setSubjects(merged);
            } else {
-              setSubjects([
-                { id: '1', no: '1', name: 'Türk Dili ve Edebiyatı', saat: '5', t1: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false }, t2: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false } },
-                { id: '2', no: '2', name: 'Matematik', saat: '6', t1: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false }, t2: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false } },
-                { id: '3', no: '3', name: 'Fizik', saat: '4', t1: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false }, t2: { yazili: ['','','','',''], perf: ['','','',''], uyg: ['','','',''], proje: '', muaf: false } },
-              ]);
+              setSubjects([]);
            }
         }
       } catch (e) {
       } finally {
         setIsLoading(false);
       }
-    };
-    fetchData();
-  }, []);
+  };
+
+  useEffect(() => { fetchData(); }, []);
 
 
 
@@ -157,6 +170,30 @@ export function GradesScreen({ navigation, route }: any) {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleReset = () => {
+    Alert.alert(
+      'Notları Sıfırla',
+      'Tüm not verileri silinecek ve program sayfasındaki dersler taze yüklenecek. Emin misin?',
+      [
+        { text: 'İptal', style: 'cancel' },
+        { text: 'Sıfırla', style: 'destructive', onPress: async () => {
+            try {
+              const { data: { user } } = await supabase.auth.getUser();
+              let sId = user?.id;
+              if (route?.params?.studentId) sId = route.params.studentId;
+              if (sId) {
+                await AsyncStorage.removeItem(`@grades_cache_${sId}`);
+                try { await supabase.from('grades').delete().eq('student_id', sId); } catch(e) {}
+              }
+            } catch(e) {}
+            setSubjects([]);
+            // Sıfırdan senkronize et
+            await fetchData();
+        }}
+      ]
+    );
   };
 
   const updateGrade = (subId: string, term: string, field: string, index: number | null, value: string | boolean) => {
@@ -374,14 +411,19 @@ export function GradesScreen({ navigation, route }: any) {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
         
         {/* Header */}
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 24, paddingVertical: 16, backgroundColor: 'white', borderBottomWidth: 1, borderColor: '#f1f5f9', zIndex: 10}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 16, backgroundColor: 'white', borderBottomWidth: 1, borderColor: '#f1f5f9', zIndex: 10}}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={{width: 40, height: 40, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f3f4f6', borderRadius: 20}}>
             <Text style={{fontSize: 20}}>🔙</Text>
           </TouchableOpacity>
-          <Text style={{fontSize: 20, fontWeight: '900', color: '#1e293b'}}>Yazılı ve Performans Notları</Text>
-          <TouchableOpacity onPress={handleSave} disabled={isSaving} style={{width: 40, height: 40, alignItems: 'center', justifyContent: 'center', backgroundColor: isSaving ? '#cbd5e1' : '#e0e7ff', borderRadius: 20}}>
-            {isSaving ? <ActivityIndicator size="small" color="#4f46e5" /> : <Text style={{fontSize: 20}}>💾</Text>}
-          </TouchableOpacity>
+          <Text style={{flex: 1, fontSize: 17, fontWeight: '900', color: '#1e293b', textAlign: 'center', marginHorizontal: 8}} numberOfLines={1} adjustsFontSizeToFit>Yazılı ve Performans Notları</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
+            <TouchableOpacity onPress={handleReset} style={{width: 40, height: 40, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fef2f2', borderRadius: 20}}>
+              <Text style={{fontSize: 18}}>🗑️</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSave} disabled={isSaving} style={{width: 40, height: 40, alignItems: 'center', justifyContent: 'center', backgroundColor: isSaving ? '#cbd5e1' : '#e0e7ff', borderRadius: 20}}>
+              {isSaving ? <ActivityIndicator size="small" color="#4f46e5" /> : <Text style={{fontSize: 20}}>💾</Text>}
+            </TouchableOpacity>
+          </View>
         </View>
 
         <ScrollView style={{flex: 1}} contentContainerStyle={{padding: 16, paddingBottom: 60}} keyboardShouldPersistTaps="handled">

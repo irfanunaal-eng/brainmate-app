@@ -82,28 +82,9 @@ export default function ScheduleScreen({ navigation, route }: any) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [pickerMeta, setPickerMeta] = useState<{type: string, rowIndex: number, field: 'start'|'end', date: Date} | null>(null);
 
-  const [isSubjectPickerVisible, setSubjectPickerVisible] = useState(false);
-  const [subjectPickerTargetType, setSubjectPickerTargetType] = useState<'grid'|'quota'>('grid');
-  const [subjectPickerMeta, setSubjectPickerMeta] = useState<{type: string, rowIndex: number, dayIdx: number} | null>(null);
-  const [quotaTargetMeta, setQuotaTargetMeta] = useState<{type: string, qId: string} | null>(null);
   const [floatingSubject, setFloatingSubject] = useState<{name: string, sourceGrid: string, sourceRow: number, sourceDay: number} | null>(null);
   const [lunchBreakIndex, setLunchBreakIndex] = useState<number>(4);
   const [lunchBreakDuration, setLunchBreakDuration] = useState<number>(50);
-  
-  const [customSubject, setCustomSubject] = useState('');
-  const [savedCustomSubjects, setSavedCustomSubjects] = useState<string[]>([]);
-  
-  const allSubjects = [...SUBJECTS, ...savedCustomSubjects];
-
-  useEffect(() => {
-    const loadCustomSubjects = async () => {
-      try {
-        const stored = await AsyncStorage.getItem('@custom_subjects');
-        if (stored) setSavedCustomSubjects(JSON.parse(stored));
-      } catch (e) {}
-    };
-    loadCustomSubjects();
-  }, []);
 
   const [schoolGrid, setSchoolGrid] = useState<GridRow[]>(createEmptyGrid(10));
   const [dershaneGrid, setDershaneGrid] = useState<GridRow[]>(createEmptyGrid(8));
@@ -128,6 +109,19 @@ export default function ScheduleScreen({ navigation, route }: any) {
   const [onboardYear, setOnboardYear] = useState(ACADEMIC_YEARS[3]);
   const [onboardGrade, setOnboardGrade] = useState('9');
   const [onboardTrack, setOnboardTrack] = useState('');
+
+  // Seçili yılı AsyncStorage'dan yükle (GradesScreen ile senkron)
+  useEffect(() => {
+    AsyncStorage.getItem('@selected_academic_year').then(saved => {
+      if (saved && ACADEMIC_YEARS.includes(saved)) setOnboardYear(saved);
+    });
+  }, []);
+
+  // Yıl değişince kaydet
+  const handleYearChange = (year: string) => {
+    setOnboardYear(year);
+    AsyncStorage.setItem('@selected_academic_year', year).catch(() => {});
+  };
 
   useEffect(() => {
     fetchSchedules();
@@ -431,13 +425,6 @@ export default function ScheduleScreen({ navigation, route }: any) {
     hideDatePicker();
   };
 
-  const openSubjectPicker = (type: string, rowIndex: number, dayIdx: number) => {
-    setSubjectPickerTargetType('grid');
-    setSubjectPickerMeta({ type, rowIndex, dayIdx });
-    setCustomSubject('');
-    setSubjectPickerVisible(true);
-  };
-
   const pickupSubject = (type: string, rowIdx: number, colIdx: number, currentText: string) => {
      if (!currentText || floatingSubject) return;
      setFloatingSubject({ name: currentText, sourceGrid: type, sourceRow: rowIdx, sourceDay: colIdx });
@@ -460,30 +447,6 @@ export default function ScheduleScreen({ navigation, route }: any) {
       setFloatingSubject(null);
   };
 
-  const handleCellPress = (type: string, rowIdx: number, colIdx: number, currentText: string) => {
-      if (floatingSubject) {
-          dropSubject(type, rowIdx, colIdx, currentText);
-      } else {
-          openSubjectPicker(type, rowIdx, colIdx);
-      }
-  };
-
-  const openSubjectPickerForQuota = (type: string, qId: string) => {
-    setSubjectPickerTargetType('quota');
-    setQuotaTargetMeta({ type, qId });
-    setCustomSubject('');
-    setSubjectPickerVisible(true);
-  };
-
-  const handleSelectSubject = (subjectTitle: string) => {
-    if (subjectPickerTargetType === 'grid' && subjectPickerMeta) {
-      updateCell(subjectPickerMeta.type, subjectPickerMeta.rowIndex, 'day', subjectTitle, subjectPickerMeta.dayIdx);
-    } else if (subjectPickerTargetType === 'quota' && quotaTargetMeta) {
-      updateQuotaCell(quotaTargetMeta.type, quotaTargetMeta.qId, 'name', subjectTitle);
-    }
-    setSubjectPickerVisible(false);
-  };
-
   const updateQuotaCell = (quotaType: string, qId: string, field: string, value: string) => {
      const up = (qList: any[], setter: any) => setter(qList.map((q: any) => q.id === qId ? {...q, [field]: value} : q));
      if (quotaType === 'okul') up(schoolQuota, setSchoolQuota);
@@ -492,39 +455,12 @@ export default function ScheduleScreen({ navigation, route }: any) {
      else if (quotaType === 'etut') up(etutQuota, setEtutQuota);
   };
 
-  const removeQuotaRow = () => {
-    if (!quotaTargetMeta) return;
-    const { type, qId } = quotaTargetMeta;
+  const removeQuotaRow = (type: string, qId: string) => {
     const up = (qList: any[], setter: any) => setter(qList.filter((q: any) => q.id !== qId));
     if (type === 'okul') up(schoolQuota, setSchoolQuota);
     else if (type === 'dersane') up(dershaneQuota, setDershaneQuota);
     else if (type === 'ozel_ders') up(ozelDersQuota, setOzelDersQuota);
     else if (type === 'etut') up(etutQuota, setEtutQuota);
-    setSubjectPickerVisible(false);
-  };
-
-  const submitCustomSubject = async () => {
-    const trimmed = customSubject.trim();
-    if (!trimmed) return;
-    
-    if (!allSubjects.includes(trimmed)) {
-      const newList = [...savedCustomSubjects, trimmed];
-      setSavedCustomSubjects(newList);
-      try {
-        await AsyncStorage.setItem('@custom_subjects', JSON.stringify(newList));
-      } catch (e) {}
-    }
-    
-    Keyboard.dismiss();
-    handleSelectSubject(trimmed);
-  };
-
-  const removeCustomSubject = async (subjectToRemove: string) => {
-    const newList = savedCustomSubjects.filter(s => s !== subjectToRemove);
-    setSavedCustomSubjects(newList);
-    try {
-      await AsyncStorage.setItem('@custom_subjects', JSON.stringify(newList));
-    } catch (e) {}
   };
 
   const updateCell = (gridType: string, rowIndex: number, field: 'start' | 'end' | 'day', value: string, dayIdx?: number) => {
@@ -586,7 +522,6 @@ export default function ScheduleScreen({ navigation, route }: any) {
              else if (type === 'dersane') setDershaneGrid(newGrid);
              else if (type === 'ozel_ders') setOzelDersGrid(newGrid);
              else if (type === 'etut') setEtutGrid(newGrid);
-             setSubjectPickerVisible(false);
           }
         }
       ]
@@ -606,7 +541,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
         "Bu liste tamamen silinecek. Onaylıyor musun?",
         [
            { text: "İptal", style: "cancel" },
-           { text: "Sil", style: "destructive", onPress: () => { setter([]); setSubjectPickerVisible(false); } }
+           { text: "Sil", style: "destructive", onPress: () => { setter([]); } }
         ]
      );
   };
@@ -746,7 +681,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
                     {row.days.map((cellText, colIdx) => (
                       <View key={`cell-${rowIdx}-${colIdx}`} className={`w-32 p-1.5 justify-center border-r border-gray-100 ${colIdx === 5 || colIdx === 6 ? 'bg-orange-50/30' : ''}`}>
                         <TouchableOpacity
-                          onPress={() => handleCellPress(type, rowIdx, colIdx, cellText)}
+                          onPress={() => floatingSubject && dropSubject(type, rowIdx, colIdx, cellText)}
                           onLongPress={() => pickupSubject(type, rowIdx, colIdx, cellText)}
                           delayLongPress={300}
                           className={`flex-1 rounded-xl p-2 justify-center border ${floatingSubject ? (cellText ? 'bg-indigo-50 border-orange-200 border-dashed' : 'bg-orange-50/50 border-orange-400 border-dashed') : (cellText ? 'bg-indigo-50 border-indigo-100' : 'bg-gray-50/50 border-transparent')}`}
@@ -756,7 +691,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
                             numberOfLines={2}
                             adjustsFontSizeToFit
                           >
-                            {cellText || (floatingSubject ? "Buraya Bırak" : "Ders Seç")}
+                            {cellText || (floatingSubject ? "Buraya Bırak" : "-")}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -810,11 +745,18 @@ export default function ScheduleScreen({ navigation, route }: any) {
              <View className="flex-col">
                {quota.map((q: any) => (
                  <View key={q.id} className={`flex-row items-center mb-2 px-3 py-2 rounded-xl border shadow-sm ${isOkul && isSchoolQuotaLocked ? 'bg-gray-50 border-gray-200 opacity-80' : 'bg-white border-gray-100 shadow-gray-50'}`}>
-                    <TouchableOpacity disabled={isOkul && isSchoolQuotaLocked} onPress={() => openSubjectPickerForQuota(type, q.id)} className="flex-1 pr-2">
-                       <Text className={`font-bold text-[11px] ${q.name ? 'text-gray-800' : 'text-gray-400'}`} numberOfLines={2}>
-                           {q.name || "Ders Seç (Satıra tıkla)"}
-                       </Text>
-                    </TouchableOpacity>
+                    <TextInput
+                        editable={!(isOkul && isSchoolQuotaLocked)}
+                        value={q.name}
+                        onChangeText={(v) => handleUpdate(q.id, 'name', v)}
+                        placeholder="Ders adı..."
+                        className={`flex-1 pr-2 font-bold text-[11px] ${q.name ? 'text-gray-800' : 'text-gray-400'}`}
+                     />
+                     {!(isOkul && isSchoolQuotaLocked) && (
+                        <TouchableOpacity onPress={() => removeQuotaRow(type, q.id)} className="px-2">
+                           <Text className="text-red-400 text-base">✕</Text>
+                        </TouchableOpacity>
+                     )}
                     
                     <View className={`flex-row items-center border rounded-xl h-9 px-1 ${isOkul && isSchoolQuotaLocked ? 'bg-gray-100 border-gray-300' : 'bg-gray-50 border-gray-200'}`}>
                        <TextInput 
@@ -950,79 +892,7 @@ export default function ScheduleScreen({ navigation, route }: any) {
         display="spinner"
       />
 
-      {/* Subject Picker Modal */}
-      <Modal visible={isSubjectPickerVisible} animationType="slide" transparent={true}>
-        <View className="flex-1 justify-end bg-black/50">
-          <View className="bg-white rounded-t-3xl h-[80%] p-6 pt-5 shadow-2xl">
-            <View className="flex-row justify-between items-center mb-6">
-              <Text className="text-2xl font-extrabold text-gray-800">Ders Seçin</Text>
-              <TouchableOpacity onPress={() => setSubjectPickerVisible(false)} className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center">
-                <Text className="text-lg">❌</Text>
-              </TouchableOpacity>
-            </View>
-            
-            {/* Custom Subject Input */}
-            <View className="flex-row items-center border border-gray-200 rounded-2xl px-4 py-2 mb-6 bg-gray-50 shadow-sm">
-               <TextInput 
-                  placeholder="Listede yoksa buraya yazın..." 
-                  className="flex-1 font-bold text-gray-700 h-12 text-base" 
-                  value={customSubject}
-                  onChangeText={setCustomSubject}
-               />
-               <TouchableOpacity 
-                 disabled={!customSubject.trim()} 
-                 onPress={submitCustomSubject} 
-                 className={`ml-2 px-5 py-3 rounded-xl ${customSubject.trim() ? 'bg-indigo-600' : 'bg-gray-300'}`}
-               >
-                  <Text className="text-white font-extrabold">Ekle</Text>
-               </TouchableOpacity>
-            </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 50 }}>
-               {subjectPickerTargetType === 'grid' && subjectPickerMeta && (
-                 <>
-                   <TouchableOpacity onPress={() => handleSelectSubject('')} className="py-4 border-b border-gray-100 mb-2 flex-row justify-between items-center bg-orange-50 px-4 rounded-2xl">
-                      <Text className="text-orange-600 font-extrabold text-lg">🗑️ Sadece Hücreyi Temizle</Text>
-                   </TouchableOpacity>
-                   <TouchableOpacity onPress={() => clearGrid(subjectPickerMeta.type)} className="py-4 border-b border-gray-100 mb-2 flex-row justify-between items-center bg-red-100 px-4 rounded-2xl border border-red-200">
-                      <Text className="text-red-600 font-black text-lg">⚠️ Tüm Tabloyu Sıfırla</Text>
-                   </TouchableOpacity>
-                 </>
-               )}
-               {subjectPickerTargetType === 'quota' && quotaTargetMeta && (
-                 <>
-                   <TouchableOpacity onPress={removeQuotaRow} className="py-4 border-b border-gray-100 mb-2 flex-row justify-between items-center bg-orange-50 px-4 rounded-2xl border border-orange-200 shadow-sm">
-                      <Text className="text-orange-600 font-extrabold text-lg">🗑️ Bu Dersi Listeden Sil</Text>
-                   </TouchableOpacity>
-                   <TouchableOpacity onPress={() => clearQuota(quotaTargetMeta.type)} className="py-4 border-b border-gray-100 mb-2 flex-row justify-between items-center bg-red-100 px-4 rounded-2xl border border-red-200 shadow-sm">
-                      <Text className="text-red-600 font-black text-lg">⚠️ Tüm Listeyi Sıfırla</Text>
-                   </TouchableOpacity>
-                 </>
-               )}
-               
-               <Text className="text-gray-400 font-bold mb-2 mt-4 ml-2">TÜM DERSLER {savedCustomSubjects.length > 0 && "(Özel Dersler Dahil)"}</Text>
-               {allSubjects.map((subItem, idx) => {
-                 const isCustom = savedCustomSubjects.includes(subItem);
-                 return (
-                   <View key={idx} className="border-b border-gray-100 flex-row items-center bg-white">
-                     <TouchableOpacity 
-                        className="flex-1 py-4 px-2 active:bg-gray-50"
-                        onPress={() => handleSelectSubject(subItem)}
-                     >
-                        <Text className="text-gray-800 font-extrabold text-lg">{subItem}</Text>
-                     </TouchableOpacity>
-                     {isCustom && (
-                        <TouchableOpacity onPress={() => removeCustomSubject(subItem)} className="p-4 bg-red-50 rounded-l-xl">
-                           <Text className="text-base text-red-500">🗑️ Sil</Text>
-                        </TouchableOpacity>
-                     )}
-                   </View>
-                 );
-               })}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
 
       {/* Unlock Security Modal */}
       <Modal visible={unlockModalVisible} animationType="fade" transparent={true}>
