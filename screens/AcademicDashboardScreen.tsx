@@ -15,6 +15,7 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
   });
 
   const [average, setAverage] = useState<string | null>(null);
+  const [hasFailed, setHasFailed] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -113,6 +114,7 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
 
       let totalScore = 0;
       let totalSaat = 0;
+      let hasFailedGrade = false;
 
       existingGrades.forEach(sub => {
         const termData = sub['t1']; // 1. Dönem
@@ -121,11 +123,15 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
         const avg = getTermAvgFlat(termData);
         const saat = parseFloat(sub.saat);
 
+        if (avg !== null && avg < 50) hasFailedGrade = true;
+
         if (avg !== null && !isNaN(saat) && saat > 0) {
           totalScore += avg * saat;
           totalSaat += saat;
         }
       });
+
+      setHasFailed(hasFailedGrade);
 
       if (totalSaat > 0) {
         setAverage((totalScore / totalSaat).toFixed(2));
@@ -141,6 +147,8 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
   };
 
   const getCert = (avg: number) => {
+    if (absences.unexcused > 5) return { name: 'Belge Alamaz (Devamsızlık)', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '⚠️' };
+    if (hasFailed) return { name: 'Belge Alamaz (Zayıf Var)', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '🔴' };
     if (avg >= 85) return { name: 'Takdir', color: '#16a34a', bg: 'bg-green-100', text: 'text-green-700', icon: '🏅' };
     if (avg >= 70) return { name: 'Teşekkür', color: '#d97706', bg: 'bg-amber-100', text: 'text-amber-700', icon: '🥈' };
     return { name: 'Belge Yok', color: '#94a3b8', bg: 'bg-gray-100', text: 'text-gray-600', icon: '📝' };
