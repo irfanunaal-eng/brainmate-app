@@ -164,20 +164,22 @@ export function GameLobbyScreen({ route }: any) {
               {/* School specific selectors */}
               {activePath === 'school' && (
                 <>
-                  {/* Grade Tabs */}
-                  <View className="mb-4">
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
-                      {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => (
-                        <TouchableOpacity
-                          key={g}
-                          onPress={() => switchGrade(g)}
-                          className={`mr-3 px-6 py-3 rounded-full border shadow-sm ${activeGrade === g ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
-                        >
-                          <Text className={`font-black ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
-                        </TouchableOpacity>
-                      ))}
-                    </ScrollView>
-                  </View>
+                  {/* Grade Tabs (Only visible for admin/override to switch between grades in demo, regular students are locked to their profile grade) */}
+                  {adminOverride && (
+                    <View className="mb-4">
+                      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                        {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => (
+                          <TouchableOpacity
+                            key={g}
+                            onPress={() => switchGrade(g)}
+                            className={`mr-3 px-6 py-3 rounded-full border shadow-sm ${activeGrade === g ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
+                          >
+                            <Text className={`font-black ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  )}
 
                   {/* Subject Selector */}
                   <View className="mb-6">
