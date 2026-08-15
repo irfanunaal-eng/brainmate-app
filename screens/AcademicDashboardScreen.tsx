@@ -147,11 +147,11 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
   };
 
   const getCert = (avg: number) => {
-    if (absences.unexcused > 5) return { name: 'Belge Alamaz (Devamsızlık)', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '⚠️' };
-    if (hasFailed) return { name: 'Belge Alamaz (Zayıf Var)', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '🔴' };
-    if (avg >= 85) return { name: 'Takdir', color: '#16a34a', bg: 'bg-green-100', text: 'text-green-700', icon: '🏅' };
-    if (avg >= 70) return { name: 'Teşekkür', color: '#d97706', bg: 'bg-amber-100', text: 'text-amber-700', icon: '🥈' };
-    return { name: 'Belge Yok', color: '#94a3b8', bg: 'bg-gray-100', text: 'text-gray-600', icon: '📝' };
+    if (absences.unexcused > 5) return { name: '⛔ Devamsızlıktan Kaldı', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '⚠️' };
+    if (hasFailed) return { name: '❌ Zayıf Notu Var', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '🔴' };
+    if (avg >= 85) return { name: 'Takdir Belgesi', color: '#16a34a', bg: 'bg-green-100', text: 'text-green-700', icon: '🏅' };
+    if (avg >= 70) return { name: 'Teşekkür Belgesi', color: '#d97706', bg: 'bg-amber-100', text: 'text-amber-700', icon: '🥈' };
+    return { name: 'Belge Alanmaz', color: '#94a3b8', bg: 'bg-gray-100', text: 'text-gray-600', icon: '📝' };
   };
 
   const certData = average ? getCert(parseFloat(average)) : getCert(0);
@@ -174,13 +174,16 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
           <Text className="text-secondary-800 font-extrabold text-xl mb-2">Not Ortalaması & Belge</Text>
           <Text className="text-gray-500 mb-4 text-sm">Girilen sınav notlarına göre dönem sonu MEB belge tahmini.</Text>
 
-          <View className="flex-row items-center justify-between bg-white p-5 rounded-2xl shadow-sm mb-4">
-            <View>
-              <Text className="text-gray-400 font-bold mb-1">1. Dönem Ort.</Text>
-              <Text className="text-4xl font-extrabold text-gray-800">{average || '-'}</Text>
+          <View className="bg-white p-5 rounded-2xl shadow-sm mb-4">
+            <View className="items-center mb-4">
+              <Text className="text-gray-400 font-bold mb-1 uppercase tracking-widest text-xs">1. Dönem Ortalaması</Text>
+              <Text className="text-5xl font-extrabold text-gray-800">{average || '-'}</Text>
             </View>
-            <View className={`px-4 py-2 rounded-xl border ${certData.bg} border-gray-200`}>
-              <Text className={`${certData.text} font-extrabold text-lg`}>{certData.icon} {certData.name}</Text>
+            <View className={`w-full py-3 px-4 flex-row items-center justify-center rounded-xl border ${certData.bg} border-gray-200`}>
+              <Text className="text-xl mr-2">{certData.icon}</Text>
+              <Text className={`${certData.text} font-black text-center text-sm`}>
+                 {certData.name}
+              </Text>
             </View>
           </View>
 
