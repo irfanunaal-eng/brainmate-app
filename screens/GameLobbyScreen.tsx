@@ -50,7 +50,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '7_U10', title: 'Unit 10: Planets', desc: 'Güneş Sistemi, Gezegenler ve Uzay.', unlocked: false, stageNames: ['Solar System', 'Planets', 'Space Exploration', 'Comparatives', 'Facts/Distance'], words: 26 },
   ],
   '8': [
-    { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davetler ve LGS Hazırlık.', unlocked: true, stageNames: ['Making Friends', 'Invitations', 'Accepting', 'Refusing / Excuses', 'Personal Traits'], words: 45 },
+    { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davet ve LGS Soru Tipleri.', unlocked: true, stageNames: ['Accepting/Refusing', 'Making Excuses', 'Personal Traits', 'Events/Invitations', 'Friendship Vocabulary'], words: 27 },
+    { id: '8_U2', title: 'Unit 2: Teen Life', desc: 'Gençlerin Hayatı, Tercihler ve İlgiler.', unlocked: true, stageNames: ['Likes & Dislikes', 'Preferences', 'Interests', 'Routines (Frequency)', 'Activities'], words: 25 },
+    { id: '8_U3', title: 'Unit 3: In the Kitchen', desc: 'Mutfak, Yemek Tarifleri ve Süreçler.', unlocked: true, stageNames: ['Cooking Methods', 'Ingredients', 'Steps (First, Next)', 'Kitchen Tools', 'Tastes'], words: 29 },
+    { id: '8_U4', title: 'Unit 4: On the Phone', desc: 'Telefon Görüşmeleri ve Müşteri Hizmetleri.', unlocked: true, stageNames: ['Making Calls', 'Customer Service', 'Leaving Messages', 'Reservations', 'Communication Types'], words: 23 },
+    { id: '8_U5', title: 'Unit 5: The Internet', desc: 'İnternet Alışkanlıkları ve Güvenlik.', unlocked: true, stageNames: ['Internet Habits', 'Connectivity', 'Social Media', 'Online Safety', 'Computer Terms'], words: 26 },
+    { id: '8_U6', title: 'Unit 6: Adventures', desc: 'Ekstrem Sporlar, Macera ve Kıyaslama.', unlocked: false, stageNames: ['Extreme Sports', 'Equipment', 'Preferences/Risks', 'Comparisons', 'Excuses'], words: 24 },
+    { id: '8_U7', title: 'Unit 7: Tourism', desc: 'Turistik Yerler ve Tatil Çeşitleri.', unlocked: false, stageNames: ['Destinations', 'Types of Vacations', 'Attractions', 'Accommodations', 'Describing Places'], words: 27 },
+    { id: '8_U8', title: 'Unit 8: Chores', desc: 'Ev İşleri, Sorumluluklar ve Kurallar.', unlocked: false, stageNames: ['Household Chores', 'Responsibilities', 'Rules/Obligations', 'Feelings about Chores', 'Fairness'], words: 24 },
+    { id: '8_U9', title: 'Unit 9: Science', desc: 'Bilim, İcatlar ve Geçmiş Zaman.', unlocked: false, stageNames: ['Scientific Discoveries', 'Inventors', 'Laboratory Tools', 'Past Events', 'Research'], words: 25 },
+    { id: '8_U10', title: 'Unit 10: Natural Forces', desc: 'Doğal Afetler ve Alınacak Önlemler.', unlocked: false, stageNames: ['Natural Disasters', 'Causes', 'Effects/Damages', 'Precautions', 'Survival'], words: 25 },
   ],
   '9': [
     { id: '9_U1', title: 'Unit 1: Studying Abroad', desc: 'Yurtdışında Eğitim ve Yabancı Kültürler.', unlocked: true, stageNames: ['Meeting New People', 'Countries & Nationalities', 'Asking for Directions'], words: 40 },
