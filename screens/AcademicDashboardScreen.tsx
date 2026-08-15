@@ -147,8 +147,8 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
   };
 
   const getCert = (avg: number) => {
-    if (absences.unexcused > 5) return { name: 'Devamsızlıktan Belge Alamaz', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '⚠️' };
-    if (hasFailed) return { name: 'Başarısız (Zayıf Var)', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '🔴' };
+    if (absences.unexcused > 5) return { name: 'Devamsızlıktan Belge Alamaz', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '' };
+    if (hasFailed) return { name: 'Zayıf Nottan Belge Alamaz', color: '#ef4444', bg: 'bg-red-100', text: 'text-red-700', icon: '' };
     if (avg >= 85) return { name: 'Takdir Belgesi', color: '#16a34a', bg: 'bg-green-100', text: 'text-green-700', icon: '🏆' };
     if (avg >= 70) return { name: 'Teşekkür Belgesi', color: '#d97706', bg: 'bg-amber-100', text: 'text-amber-700', icon: '🎖️' };
     return { name: 'Belge Yok', color: '#94a3b8', bg: 'bg-gray-100', text: 'text-gray-600', icon: '📝' };

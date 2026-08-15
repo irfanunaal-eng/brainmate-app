@@ -327,13 +327,13 @@ export function GradesScreen({ navigation, route }: any) {
        if (subAvg !== null && subAvg < 50 && !sub[term]?.muaf) hasFailed = true;
     });
 
-    if (hasFailed) return '🔴 Başarısız (Zayıf Var)';
-    if (attStats.mazeretsiz > 5) return '⚠️ Devamsızlıktan Belge Alamaz';
+    if (hasFailed) return 'Zayıf Nottan Belge Alamaz';
+    if (attStats.mazeretsiz > 5) return 'Devamsızlıktan Belge Alamaz';
     
     if (avg >= 85.00) return '🏆 Takdir Belgesi';
     if (avg >= 70.00) return '🎖️ Teşekkür Belgesi';
     if (avg >= 50.00) return '🟢 Seçimlik Geçti';
-    return '🔴 Başarısız';
+    return 'Başarısız';
   };
 
   const t1AvgGlobal = calcGlobalTerm('t1');
