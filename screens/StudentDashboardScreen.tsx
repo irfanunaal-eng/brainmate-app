@@ -239,7 +239,7 @@ export function StudentDashboardScreen({ navigation }: any) {
       <ScrollView className="flex-1 px-6 pt-6" showsVerticalScrollIndicator={false}>
         
         {/* Header Section */}
-        <View className="flex-row justify-between items-center mb-8">
+        <View className="flex-row justify-between items-center mb-6">
           <View>
             <Text className="text-4xl font-extrabold text-gray-800 mb-1">Merhaba, {firstName} 👋</Text>
             <Text className="text-gray-500 font-semibold text-base">Bugün ne yapalım?</Text>
@@ -251,6 +251,24 @@ export function StudentDashboardScreen({ navigation }: any) {
             <Text className="text-2xl">😎</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Premium Upgrade Banner */}
+        <TouchableOpacity 
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('SubscriptionScreen')}
+          className="bg-indigo-600 rounded-3xl p-5 mb-8 flex-row items-center border-b-4 border-indigo-700 shadow-xl shadow-indigo-300"
+        >
+          <View className="bg-amber-400 w-12 h-12 rounded-full items-center justify-center mr-4">
+             <Text className="text-2xl">👑</Text>
+          </View>
+          <View className="flex-1">
+             <Text className="text-white font-black text-lg mb-1">BrainMate Pro</Text>
+             <Text className="text-indigo-100 font-medium text-xs">İlk 3 Gün Ücretsiz Deneyin 🚀</Text>
+          </View>
+          <View className="bg-indigo-500 px-3 py-2 rounded-xl">
+             <Text className="text-white font-bold text-xs uppercase">GEÇİŞ YAP</Text>
+          </View>
+        </TouchableOpacity>
 
         {/* Quick Stats / Summary Widgets */}
         <View className="flex-row space-x-4 mb-8">

@@ -21,6 +21,7 @@ import { AttendanceScreen } from './screens/AttendanceScreen';
 import { NotesScreen } from './screens/NotesScreen';
 import { EvaluationsScreen } from './screens/EvaluationsScreen';
 import { TasksScreen } from './screens/TasksScreen';
+import { SubscriptionScreen } from './screens/SubscriptionScreen';
 
 import LocationTrackingScreen from './screens/LocationTrackingScreen';
 import { GameLobbyScreen } from './screens/GameLobbyScreen';
@@ -55,6 +56,7 @@ export default function App() {
         <Stack.Screen name="GameLobbyScreen" component={GameLobbyScreen} options={{ headerShown: false }} />
         <Stack.Screen name="EnglishGameScreen" component={EnglishGameScreen} options={{ headerShown: false }} />
         <Stack.Screen name="MessagesScreen" component={MessagesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} options={{ headerShown: false, presentation: 'modal' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
