@@ -246,7 +246,7 @@ export function ParentDashboardScreen({ navigation }: any) {
         >
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }}>
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('ParentDashboard')} className="items-center justify-center bg-indigo-50 border-2 border-indigo-200 w-[56px] h-[56px] rounded-2xl shadow-sm shadow-indigo-100 mb-1">
+              <TouchableOpacity onPress={() => isEducator ? setStudentId(null) : navigation.navigate('ParentDashboard')} className="items-center justify-center bg-indigo-50 border-2 border-indigo-200 w-[56px] h-[56px] rounded-2xl shadow-sm shadow-indigo-100 mb-1">
                 <Text className="text-3xl">🏠</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-indigo-700">Ana Sayfa</Text>
