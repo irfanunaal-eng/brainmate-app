@@ -463,8 +463,8 @@ export function StudentDashboardScreen({ navigation }: any) {
               ) : pairingCode ? (
                 <>
                   <Text className="text-gray-400 font-bold text-xs tracking-widest uppercase mb-3">Aktif Kod</Text>
-                  <View className="flex-row items-center bg-white px-6 py-3 rounded-2xl mb-6 border border-gray-200 shadow-sm">
-                    <Text selectable={true} className="text-5xl font-extrabold tracking-widest text-primary mr-4">
+                  <View className="flex-row items-center bg-white px-5 py-3 rounded-2xl mb-6 border border-gray-200 shadow-sm">
+                    <Text selectable={true} className="text-4xl font-extrabold tracking-[4px] text-primary flex-1 text-center">
                       {pairingCode}
                     </Text>
                     <TouchableOpacity onPress={handleCopy} className="p-3 bg-indigo-50 rounded-xl">
