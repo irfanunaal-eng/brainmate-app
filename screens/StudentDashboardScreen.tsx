@@ -63,6 +63,7 @@ export function StudentDashboardScreen({ navigation }: any) {
   const [editGrade, setEditGrade] = useState('9');
   const [editTrack, setEditTrack] = useState('');
   const [editIsAnadolu, setEditIsAnadolu] = useState(true);
+  const [editStudentNo, setEditStudentNo] = useState('');
 
   useEffect(() => {
     fetchDashboardData();
@@ -75,7 +76,7 @@ export function StudentDashboardScreen({ navigation }: any) {
       // 1. Fetch Profile & Pairing Code
       const { data: profile } = await supabase
         .from('profiles')
-        .select('pairing_code, full_name')
+        .select('pairing_code, full_name, student_no, academic_year, grade, school_track, school_type')
         .eq('id', user.id)
         .single();
         
@@ -94,6 +95,7 @@ export function StudentDashboardScreen({ navigation }: any) {
         if ((profile as any).grade) setEditGrade((profile as any).grade);
         if ((profile as any).school_track) setEditTrack((profile as any).school_track);
         if ((profile as any).school_type) setEditIsAnadolu((profile as any).school_type === 'anadolu');
+        if ((profile as any).student_no) setEditStudentNo((profile as any).student_no);
       }
 
       // 2. Fetch Today's Schedule
@@ -209,6 +211,7 @@ export function StudentDashboardScreen({ navigation }: any) {
         .from('profiles')
         .update({ 
            full_name: editName.trim(),
+           student_no: editStudentNo.trim(),
            academic_year: editYear,
            grade: editGrade,
            school_track: editTrack,
@@ -529,6 +532,15 @@ export function StudentDashboardScreen({ navigation }: any) {
               value={editName}
               onChangeText={setEditName}
               placeholder="Adını buraya yaz..."
+              className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 text-lg font-medium mb-4"
+            />
+
+            <Text className="text-gray-700 font-bold mb-2 ml-1">Okul Numarası</Text>
+            <TextInput
+              value={editStudentNo}
+              onChangeText={setEditStudentNo}
+              placeholder="Örn: 1453"
+              keyboardType="number-pad"
               className="bg-gray-50 px-5 py-4 rounded-xl border border-gray-200 text-lg font-medium mb-6"
             />
             

@@ -34,7 +34,7 @@ export function ParentDashboardScreen({ navigation }: any) {
       // Check traditional parent links
       const { data: parentLinks } = await supabase
         .from('parent_student_links')
-        .select(`student_id, profiles:student_id ( full_name, role )`)
+        .select(`student_id, profiles:student_id ( full_name, role, student_no )`)
         .eq('parent_id', user.id);
       
       const links = parentLinks || [];
@@ -168,9 +168,14 @@ export function ParentDashboardScreen({ navigation }: any) {
                       onPress={() => selectStudent(link.student_id, link.profiles?.full_name || 'Öğrenci')}
                       className={`px-5 py-4 flex-row justify-between items-center ${idx !== linkedStudents.length -1 ? 'border-b border-gray-100' : ''} active:bg-gray-50`}
                     >
-                       <View>
-                          <Text className="font-extrabold text-gray-900 text-base mb-0.5">{link.profiles?.full_name}</Text>
-                          <Text className="text-gray-400 font-bold text-[10px] uppercase tracking-widest">Öğrenci Profili</Text>
+                       <View className="flex-row items-center">
+                          <Text className="text-gray-400 font-extrabold text-base w-7">{idx + 1}.</Text>
+                          <View>
+                             <Text className="font-extrabold text-gray-900 text-base mb-0.5">{link.profiles?.full_name}</Text>
+                             <Text className="text-gray-400 font-bold text-[10px] uppercase tracking-widest">
+                               Öğrenci No: {link.profiles?.student_no || '-'}
+                             </Text>
+                          </View>
                        </View>
                        <View className="bg-slate-100 px-3 py-1.5 rounded-md border border-slate-200">
                           <Text className="text-slate-600 font-bold text-xs">Eriş ➔</Text>
