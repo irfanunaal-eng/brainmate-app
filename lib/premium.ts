@@ -10,16 +10,23 @@ export const checkPremiumStatus = async (): Promise<boolean> => {
     // Check DB fresh status
     const { data: profile } = await supabase
       .from('profiles')
-      .select('subscription_status, trial_ends_at')
+      .select('subscription_status, trial_ends_at, role')
       .eq('id', user.id)
       .single();
 
     if (!profile) return false;
 
+    // Cache the role for UI dynamically
+    await AsyncStorage.setItem('@user_role', profile.role || 'student');
+
     let isPremium = false;
     
+    // Okul Rehber Öğretmeni ve Sınıf Rehber Öğretmeni are natively FREE.
+    if (profile.role === 'teacher' || profile.role === 'class_teacher') {
+      isPremium = true;
+    }
     // Is actively paying subscriber
-    if (profile.subscription_status === 'active') {
+    else if (profile.subscription_status === 'active') {
       isPremium = true;
     }
     // Is on active trial

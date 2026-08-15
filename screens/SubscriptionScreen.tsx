@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert, ActivityIndicator, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../lib/supabase';
 
 export function SubscriptionScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
+  const [price, setPrice] = useState('49');
+  
+  useEffect(() => {
+     const checkRole = async () => {
+        const role = await AsyncStorage.getItem('@user_role');
+        if (role === 'parent' || role === 'student_coach' || role === 'private_tutor') {
+           setPrice('199');
+        } else {
+           setPrice('49'); // Default or Student
+        }
+     };
+     checkRole();
+  }, []);
 
   const handleSubscribe = async () => {
     setLoading(true);
@@ -16,8 +30,6 @@ export function SubscriptionScreen({ navigation }: any) {
       }
 
       // Simulate RevenueCat / StoreKit Purchase process
-      // In production, this would be: await Purchases.purchasePackage(package)
-      
       // We calculate the trial end date (3 days from now)
       const trialEndsAt = new Date();
       trialEndsAt.setDate(trialEndsAt.getDate() + 3);
@@ -28,13 +40,11 @@ export function SubscriptionScreen({ navigation }: any) {
         .update({ 
            subscription_status: 'trialing', 
            trial_ends_at: trialEndsAt.toISOString(),
-           subscription_plan: 'monthly_49'
+           subscription_plan: `monthly_${price}`
         })
         .eq('id', user.id);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       Alert.alert(
         'Tebrikler! 🎉', 
@@ -91,7 +101,7 @@ export function SubscriptionScreen({ navigation }: any) {
             <View className="items-center mt-4 mb-2">
                <Text className="text-slate-400 font-bold mb-1 uppercase tracking-widest text-xs">YENİ NESİL EĞİTİM</Text>
                <View className="flex-row items-end justify-center mb-3">
-                 <Text className="text-5xl font-black text-white">49 ₺</Text>
+                 <Text className="text-5xl font-black text-white">{price} ₺</Text>
                  <Text className="text-slate-400 font-bold mb-2 ml-1">/ ay</Text>
                </View>
                <Text className="text-indigo-400 font-bold text-sm bg-indigo-500/10 px-3 py-1 rounded-full">12 Ay Geçerli Sabit Fiyat Garantisi</Text>
