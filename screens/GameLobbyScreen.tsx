@@ -50,7 +50,7 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '7_U10', title: 'Unit 10: Planets', desc: 'Güneş Sistemi, Gezegenler ve Uzay.', unlocked: false, stageNames: ['Solar System', 'Planets', 'Space Exploration', 'Comparatives', 'Facts/Distance'], words: 26 },
   ],
   '8': [
-    { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davet ve LGS Soru Tipleri.', unlocked: true, stageNames: ['Accepting/Refusing', 'Making Excuses', 'Personal Traits', 'Events/Invitations', 'Friendship Vocabulary'], words: 27 },
+    { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davetler ve Özellikler.', unlocked: true, stageNames: ['Accepting/Refusing', 'Making Excuses', 'Personal Traits', 'Events/Invitations', 'Friendship Vocabulary'], words: 27 },
     { id: '8_U2', title: 'Unit 2: Teen Life', desc: 'Gençlerin Hayatı, Tercihler ve İlgiler.', unlocked: true, stageNames: ['Likes & Dislikes', 'Preferences', 'Interests', 'Routines (Frequency)', 'Activities'], words: 25 },
     { id: '8_U3', title: 'Unit 3: In the Kitchen', desc: 'Mutfak, Yemek Tarifleri ve Süreçler.', unlocked: true, stageNames: ['Cooking Methods', 'Ingredients', 'Steps (First, Next)', 'Kitchen Tools', 'Tastes'], words: 29 },
     { id: '8_U4', title: 'Unit 4: On the Phone', desc: 'Telefon Görüşmeleri ve Müşteri Hizmetleri.', unlocked: true, stageNames: ['Making Calls', 'Customer Service', 'Leaving Messages', 'Reservations', 'Communication Types'], words: 23 },
@@ -62,7 +62,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '8_U10', title: 'Unit 10: Natural Forces', desc: 'Doğal Afetler ve Alınacak Önlemler.', unlocked: false, stageNames: ['Natural Disasters', 'Causes', 'Effects/Damages', 'Precautions', 'Survival'], words: 25 },
   ],
   '9': [
-    { id: '9_U1', title: 'Unit 1: Studying Abroad', desc: 'Yurtdışında Eğitim ve Yabancı Kültürler.', unlocked: true, stageNames: ['Meeting New People', 'Countries & Nationalities', 'Asking for Directions'], words: 40 },
+    { id: '9_U1', title: 'Unit 1: Studying Abroad', desc: 'Yurt Dışı Eğitim, Tanışma ve Meslekler.', unlocked: true, stageNames: ['Meeting New People', 'Countries/Nationalities', 'Jobs', 'Arrivals', 'Greetings'], words: 26 },
+    { id: '9_U2', title: 'Unit 2: My Environment', desc: 'Çevre, Mahalle ve Yönlendirmeler.', unlocked: true, stageNames: ['Neighborhood', 'Directions', 'Prepositions', 'Public Places', 'Distances'], words: 26 },
+    { id: '9_U3', title: 'Unit 3: Movies', desc: 'Sinema, Film Türleri ve Tercihler.', unlocked: true, stageNames: ['Movie Types', 'Likes/Dislikes', 'Booking Tickets', 'Adjectives', 'Cinema Terms'], words: 25 },
+    { id: '9_U4', title: 'Unit 4: Human in Nature', desc: 'Doğa, İnsan ve Günlük Rutinler.', unlocked: true, stageNames: ['Daily Routines', 'Abilities', 'Wild Life', 'Habitats', 'Nature Elements'], words: 25 },
+    { id: '9_U5', title: 'Unit 5: Inspirational People', desc: 'İlham Verici İnsanlar ve Karakterler.', unlocked: true, stageNames: ['Physical Appearance', 'Character Traits', 'Achievements', 'Past Events', 'Role Models'], words: 25 },
+    { id: '9_U6', title: 'Unit 6: Bridging Cultures', desc: 'Kültürler, Seyahat ve Gelenekler.', unlocked: false, stageNames: ['Travel', 'Accommodations', 'Customs', 'Tourism', 'Experiences'], words: 25 },
+    { id: '9_U7', title: 'Unit 7: World Heritage', desc: 'Dünya Mirası ve Tarihi Yerler.', unlocked: false, stageNames: ['History', 'Seven Wonders', 'Past Continuous', 'Monuments', 'Discoveries'], words: 25 },
+    { id: '9_U8', title: 'Unit 8: Emergency/Health', desc: 'Acil Durumlar, Tavsiyeler ve Sağlık.', unlocked: false, stageNames: ['Illnesses', 'Emergencies', 'Advice (Should)', 'First Aid', 'Hospital Terms'], words: 25 },
+    { id: '9_U9', title: 'Unit 9: Invitations/Celebrations', desc: 'Davetler, Partiler ve Kutlamalar.', unlocked: false, stageNames: ['Parties', 'Refusing/Accepting', 'Future Plans', 'Event Types', 'Organizing'], words: 25 },
+    { id: '9_U10', title: 'Unit 10: TV & Social Media', desc: 'Medya, Sosyal Ağlar ve Tahminler.', unlocked: false, stageNames: ['Media Streams', 'IT Words', 'Predictions', 'Safety', 'Accounts'], words: 25 },
   ],
   '10': [
     { id: '10_U1', title: 'Unit 1: School Life', desc: 'Okul Yaşamı, Kurallar ve Dersler.', unlocked: true, stageNames: ['School Subjects', 'Obligations (Must/Have to)', 'Extracurricular Activities'], words: 45 },
