@@ -36,7 +36,7 @@ export function ParentDashboardScreen({ navigation }: any) {
       
       const { data: parentLinks } = await supabase
         .from('parent_student_links')
-        .select(`student_id, profiles:student_id ( full_name, role, student_no )`)
+        .select(`student_id, profiles:student_id ( full_name, role )`)
         .eq('parent_id', user.id);
         
       if (parentLinks) allLinks = [...parentLinks];
@@ -44,7 +44,7 @@ export function ParentDashboardScreen({ navigation }: any) {
       if (role !== 'parent') {
         const { data: teacherLinks } = await supabase
           .from('student_teachers')
-          .select(`student_id, profiles:student_id ( full_name, role, student_no )`)
+          .select(`student_id, profiles:student_id ( full_name, role )`)
           .eq('teacher_id', user.id);
         
         if (teacherLinks) allLinks = [...allLinks, ...teacherLinks];

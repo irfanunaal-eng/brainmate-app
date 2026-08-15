@@ -76,7 +76,7 @@ export function StudentDashboardScreen({ navigation }: any) {
       // 1. Fetch Profile & Pairing Code
       const { data: profile } = await supabase
         .from('profiles')
-        .select('pairing_code, full_name, student_no, academic_year, grade, school_track, school_type')
+        .select('pairing_code, full_name, academic_year, grade, school_track, school_type')
         .eq('id', user.id)
         .single();
         
@@ -211,7 +211,6 @@ export function StudentDashboardScreen({ navigation }: any) {
         .from('profiles')
         .update({ 
            full_name: editName.trim(),
-           student_no: editStudentNo.trim(),
            academic_year: editYear,
            grade: editGrade,
            school_track: editTrack,
