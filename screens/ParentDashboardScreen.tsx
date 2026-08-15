@@ -126,11 +126,11 @@ export function ParentDashboardScreen({ navigation }: any) {
       ) : showStudentList ? (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 p-6">
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60 }}>
-            <View className="flex-row justify-between items-center mb-6 mt-4">
-               <Text className="text-2xl font-extrabold text-text flex-1 mr-2">{panelTitle}</Text>
-               <TouchableOpacity onPress={handleLogout} className="bg-red-50 border border-red-100 px-3 py-2 rounded-xl flex-row items-center">
-                  <Text className="text-red-600 font-bold text-xs">🏠 Çıkış Yap</Text>
+            <View className="flex-row items-center mb-6 mt-4">
+               <TouchableOpacity onPress={handleLogout} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full mr-4">
+                  <Text className="text-lg">🔙</Text>
                </TouchableOpacity>
+               <Text className="text-2xl font-extrabold text-text flex-1">{panelTitle}</Text>
             </View>
 
             {/* Compact Öğrenci Ekleme Bölümü */}
@@ -189,16 +189,16 @@ export function ParentDashboardScreen({ navigation }: any) {
       ) : (
         <View className="flex-1">
         <ScrollView className="flex-1 p-6" style={{ flex: 1, padding: 24 }} showsVerticalScrollIndicator={false}>
-          <View className="flex-row justify-between items-center mb-6 mt-2" style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, marginTop: 8 }}>
-            <View>
-              <Text className="text-3xl font-extrabold text-text">{panelTitle}</Text>
-              <Text className="text-gray-500 font-medium">Bağlı Öğrenci: {studentName}</Text>
-            </View>
+          <View className="flex-row items-center mb-6 mt-2" style={{ marginBottom: 24, marginTop: 8 }}>
             {isEducator && (
-               <TouchableOpacity onPress={() => setStudentId(null)} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
+               <TouchableOpacity onPress={() => setStudentId(null)} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full mr-4">
                  <Text className="text-lg">🔙</Text>
                </TouchableOpacity>
             )}
+            <View className="flex-1">
+              <Text className="text-xl font-extrabold text-text">{panelTitle}</Text>
+              <Text className="text-gray-500 font-medium">Bağlı Öğrenci: {studentName}</Text>
+            </View>
           </View>
 
           {/* Hızlı Özet */}
