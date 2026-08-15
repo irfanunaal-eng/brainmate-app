@@ -55,7 +55,7 @@ const SUBJECTS = [
   { id: 'biology', icon: '🧬', label: 'Biyoloji' },
   { id: 'history', icon: '🏛️', label: 'Tarih' },
   { id: 'geography', icon: '🌍', label: 'Coğrafya' },
-  { id: 'philosophy', icon: '🤔', label: 'Felsefe & Din' },
+  { id: 'philosophy', icon: '🤔', label: 'Felsefe' },
 ];
 
 export function GameLobbyScreen({ route }: any) {
