@@ -7,10 +7,15 @@ const { width } = Dimensions.get('window');
 import * as Speech from 'expo-speech';
 
 const ROOT_WORD_DB = require('../assets/vocabulary.json');
+const CURRICULUM_DB = require('../assets/curriculum.json');
 
 export function EnglishGameScreen({ route }: any) {
   const { levelId, mode } = route.params || { levelId: 'A1', mode: 'solo' };
-  const DB = ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1'];
+  
+  // Decide which database to pull from based on the levelId
+  const isCurriculum = levelId && levelId.includes('_U');
+  const DB = isCurriculum ? (CURRICULUM_DB[levelId] || CURRICULUM_DB['5_U1']) : (ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1']);
+
   const navigation = useNavigation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);

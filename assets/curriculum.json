@@ -1,0 +1,74 @@
+{
+  "5_U1": [
+    {"en": "Hello", "tr": "Merhaba", "sentence": "Hello, how are you?"},
+    {"en": "Good morning", "tr": "Günaydın", "sentence": "Good morning class!"},
+    {"en": "Goodbye", "tr": "Hoşça kal", "sentence": "Goodbye, see you tomorrow."},
+    {"en": "Stand up", "tr": "Ayağa kalk", "sentence": "Please stand up."},
+    {"en": "Sit down", "tr": "Otur", "sentence": "Sit down and be quiet."},
+    {"en": "Quiet", "tr": "Sessiz", "sentence": "Be quiet please."},
+    {"en": "Pencil", "tr": "Kurşun kalem", "sentence": "Give me the pencil."},
+    {"en": "Teacher", "tr": "Öğretmen", "sentence": "Listen to your teacher."},
+    {"en": "Open", "tr": "Açmak", "sentence": "Open your book."},
+    {"en": "Close", "tr": "Kapatmak", "sentence": "Close the door."}
+  ],
+  "5_U2": [
+    {"en": "Town", "tr": "Kasaba / Şehir", "sentence": "This is my town."},
+    {"en": "Hospital", "tr": "Hastane", "sentence": "The hospital is near here."},
+    {"en": "School", "tr": "Okul", "sentence": "I go to school every day."},
+    {"en": "Library", "tr": "Kütüphane", "sentence": "Read a book in the library."},
+    {"en": "Straight ahead", "tr": "Dümdüz ileri", "sentence": "Go straight ahead."},
+    {"en": "Turn left", "tr": "Sola dön", "sentence": "Turn left at the corner."},
+    {"en": "Turn right", "tr": "Sağa dön", "sentence": "Turn right after school."},
+    {"en": "Between", "tr": "Arasında", "sentence": "The bank is between the school and park."},
+    {"en": "Opposite", "tr": "Karşısında", "sentence": "My house is opposite the hospital."},
+    {"en": "Country", "tr": "Ülke", "sentence": "Turkey is a beautiful country."}
+  ],
+  "5_U3": [
+    {"en": "Play", "tr": "Oynamak", "sentence": "I play football."},
+    {"en": "Swim", "tr": "Yüzmek", "sentence": "She can swim well."},
+    {"en": "Run", "tr": "Koşmak", "sentence": "The dog can run fast."},
+    {"en": "Jump", "tr": "Zıplamak", "sentence": "I like to jump."},
+    {"en": "Ride a bike", "tr": "Bisiklete binmek", "sentence": "Can you ride a bike?"},
+    {"en": "Catch", "tr": "Yakalamak", "sentence": "Catch the ball!"},
+    {"en": "Hide and seek", "tr": "Saklambaç", "sentence": "Let's play hide and seek."},
+    {"en": "Drawing", "tr": "Çizim yapmak", "sentence": "I love drawing pictures."},
+    {"en": "Sing", "tr": "Şarkı söylemek", "sentence": "She sings beautifully."},
+    {"en": "Dance", "tr": "Dans etmek", "sentence": "We dance in the party."}
+  ],
+  "6_U1": [
+    {"en": "Wake up", "tr": "Uyanmak", "sentence": "I wake up at 7 o'clock."},
+    {"en": "Have breakfast", "tr": "Kahvaltı yapmak", "sentence": "We have breakfast together."},
+    {"en": "Go to school", "tr": "Okula gitmek", "sentence": "I go to school by bus."},
+    {"en": "Do homework", "tr": "Ödev yapmak", "sentence": "I do my homework in the evening."},
+    {"en": "Have dinner", "tr": "Akşam yemeği yemek", "sentence": "They have dinner at 8 pm."},
+    {"en": "Rest", "tr": "Dinlenmek", "sentence": "I need some rest."},
+    {"en": "Help", "tr": "Yardım etmek", "sentence": "I help my mother."},
+    {"en": "Listen", "tr": "Dinlemek", "sentence": "Listen to the music."},
+    {"en": "Visit", "tr": "Ziyaret etmek", "sentence": "I visit my grandparents."},
+    {"en": "Sleep", "tr": "Uyumak", "sentence": "Time to sleep."}
+  ],
+  "7_U1": [
+    {"en": "Tall", "tr": "Uzun", "sentence": "He is very tall."},
+    {"en": "Short", "tr": "Kısa", "sentence": "She is short and cute."},
+    {"en": "Slim", "tr": "İnce / Zayıf", "sentence": "The model is slim."},
+    {"en": "Plump", "tr": "Balık etli / Tombul", "sentence": "The baby is plump."},
+    {"en": "Handsome", "tr": "Yakışıklı", "sentence": "He is a handsome boy."},
+    {"en": "Beautiful", "tr": "Güzel", "sentence": "She looks beautiful."},
+    {"en": "Generous", "tr": "Cömert", "sentence": "A generous man."},
+    {"en": "Selfish", "tr": "Bencil", "sentence": "Don't be selfish."},
+    {"en": "Hardworking", "tr": "Çalışkan", "sentence": "She is very hardworking."},
+    {"en": "Lazy", "tr": "Tembel", "sentence": "He is a lazy student."}
+  ],
+  "8_U1": [
+    {"en": "Friendship", "tr": "Arkadaşlık", "sentence": "Friendship is important."},
+    {"en": "Event", "tr": "Etkinlik", "sentence": "We organize an event."},
+    {"en": "Invite", "tr": "Davet etmek", "sentence": "Did you invite him?"},
+    {"en": "Accept", "tr": "Kabul etmek", "sentence": "I accept your offer."},
+    {"en": "Refuse", "tr": "Reddetmek", "sentence": "She refused to come."},
+    {"en": "Excuse", "tr": "Mazeret / Bahane", "sentence": "What is your excuse?"},
+    {"en": "Awesome", "tr": "Harika", "sentence": "That sounds awesome!"},
+    {"en": "Trust", "tr": "Güvenmek", "sentence": "I trust my best friend."},
+    {"en": "Secret", "tr": "Sır", "sentence": "Can you keep a secret?"},
+    {"en": "Together", "tr": "Birlikte", "sentence": "We are always together."}
+  ]
+}
