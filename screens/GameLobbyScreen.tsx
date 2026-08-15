@@ -26,8 +26,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '5_U10', title: 'Unit 10: Festivals', desc: 'National & International Festivals.', unlocked: false, stageNames: ['National & International Festivals', 'Numbers (100-1000)'], words: 27 },
   ],
   '6': [
-    { id: '6_U1', title: 'Unit 1: Life', desc: 'Günlük Yaşam Döngüsü ve İşler.', unlocked: true, stageNames: ['Daily Activities', 'Time & Dates', 'Family Routines', 'Chores', 'Weekly Tracker'], words: 25 },
-    { id: '6_U2', title: 'Unit 2: Yummy Breakfast', desc: 'Yiyecekler ve Tercihler.', unlocked: false, stageNames: ['Breakfast Items', 'Drinks', 'Preferences', 'Ordering Food', 'Healthy Choices'], words: 35 },
+    { id: '6_U1', title: 'Unit 1: Life', desc: 'Günlük Yaşam Döngüsü ve İşler.', unlocked: true, stageNames: ['Daily Activities', 'Time & Dates', 'Family Routines', 'Chores', 'Weekly Tracker'], words: 27 },
+    { id: '6_U2', title: 'Unit 2: Yummy Breakfast', desc: 'Yiyecekler ve Tercihler.', unlocked: true, stageNames: ['Breakfast Items', 'Drinks', 'Preferences', 'Ordering Food', 'Healthy Choices'], words: 28 },
+    { id: '6_U3', title: 'Unit 3: Downtown', desc: 'Şehir Hayatı ve Karşılaştırmalar.', unlocked: true, stageNames: ['City Life', 'Comparatives', 'Describing Places', 'Traffic', 'Buildings'], words: 28 },
+    { id: '6_U4', title: 'Unit 4: Weather and Emotions', desc: 'Hava Durumu ve Duygular.', unlocked: true, stageNames: ['Weather Conditions', 'Seasons', 'Emotions', 'Temperature', 'Forecasts'], words: 28 },
+    { id: '6_U5', title: 'Unit 5: At the Fair', desc: 'Panayır Alanı ve Fikir Belirtme.', unlocked: true, stageNames: ['Fair Rides', 'Expressing Feelings', 'Adjectives', 'Ticket/Cost', 'Opinions'], words: 27 },
+    { id: '6_U6', title: 'Unit 6: Occupations', desc: 'Meslekler, Tarihler ve Yetenekler.', unlocked: false, stageNames: ['Jobs', 'Dates & Years', 'Work Actions', 'Workplaces', 'Past Abilities'], words: 27 },
+    { id: '6_U7', title: 'Unit 7: Holidays', desc: 'Tatil Türleri ve Geçmiş Zaman.', unlocked: false, stageNames: ['Vacations', 'Holiday Activities', 'Past Simple', 'Nature', 'Travel'], words: 28 },
+    { id: '6_U8', title: 'Unit 8: Bookworms', desc: 'Kütüphane ve Kitap Türleri.', unlocked: false, stageNames: ['Types of Books', 'Library Rules', 'Prepositions of Place', 'Reading', 'Information'], words: 27 },
+    { id: '6_U9', title: 'Unit 9: Saving the Planet', desc: 'Çevre, Sorunlar ve Önlemler.', unlocked: false, stageNames: ['Environment', 'Pollution/Waste', 'Recycling', 'Energy/Water', 'Rules (Must)'], words: 27 },
+    { id: '6_U10', title: 'Unit 10: Democracy', desc: 'Seçimler, Oylama ve Sınıf Başkanı.', unlocked: false, stageNames: ['Elections', 'Voting Process', 'Class President', 'Campaigns', 'Results'], words: 24 },
   ],
   '7': [
     { id: '7_U1', title: 'Unit 1: Appearance', desc: 'Dış Görünüş ve Karakterler.', unlocked: true, stageNames: ['Physical traits', 'Personality', 'Comparison', 'Describing People', 'Guess Who'], words: 40 },
