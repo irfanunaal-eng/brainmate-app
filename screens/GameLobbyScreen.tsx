@@ -86,7 +86,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '10_U10', title: 'Unit 10: Shopping', desc: 'Alışveriş, Şikayetler ve Reported Speech.', unlocked: false, stageNames: ['Buying Goods', 'Complaints', 'Reported Speech', 'Payments', 'Returns'], words: 25 },
   ],
   '11': [
-    { id: '11_U1', title: 'Unit 1: Future Jobs', desc: 'Gelecekteki Meslekler ve İstihdam.', unlocked: true, stageNames: ['Professions', 'Job Interviews', 'Future Tenses'], words: 50 },
+    { id: '11_U1', title: 'Unit 1: Future Jobs', desc: 'Meslekler, İş Başvurusu ve Kariyer.', unlocked: true, stageNames: ['Professions', 'Job Interviews', 'Workplace Skills', 'Abilities', 'Career Goals'], words: 25 },
+    { id: '11_U2', title: 'Unit 2: Hobbies', desc: 'Boş Zaman Etkinlikleri ve Gerundum.', unlocked: true, stageNames: ['Free Time Activities', 'Preferences', 'Collections/Arts', 'Sports/Outdoor', 'Creative Hobbies'], words: 25 },
+    { id: '11_U3', title: 'Unit 3: Hard Times', desc: 'Zorluklar, Duygular ve Modal Yapılar.', unlocked: true, stageNames: ['Problems & Solutions', 'Feelings', 'Giving Advice', 'Coping Strategies', 'Recovery'], words: 25 },
+    { id: '11_U4', title: 'Unit 4: Fact or Fiction', desc: 'Gerçek mi Kurgu mu? Eleştirel Düşünce.', unlocked: true, stageNames: ['Truth vs Lie', 'Sources/Evidence', 'Myths/Rumors', 'Critical Thinking', 'Media Literacy'], words: 25 },
+    { id: '11_U5', title: 'Unit 5: Back to the Past', desc: 'Tarihsel Olaylar, İcatlar ve Dönemler.', unlocked: true, stageNames: ['Historical Events', 'Inventions', 'Past Comparison', 'Civilizations', 'Leaders'], words: 25 },
+    { id: '11_U6', title: 'Unit 6: Open for Discussion', desc: 'Tartışma, Görüş Bildirme ve Modal Perfect.', unlocked: false, stageNames: ['Opinions', 'Arguments', 'Agree/Disagree', 'Debating', 'Conclusions'], words: 25 },
+    { id: '11_U7', title: 'Unit 7: Sports', desc: 'Olimpiyatlar, Turnuvalar ve Sportmenlik.', unlocked: false, stageNames: ['Olympic Games', 'Sports Rules', 'Championships', 'Records', 'Sportsmanship'], words: 25 },
+    { id: '11_U8', title: 'Unit 8: Technology', desc: 'Yapay Zeka, Robotlar ve Gelecek Tahminleri.', unlocked: false, stageNames: ['AI/Robotics', 'Gadgets/Devices', 'Wireless Tech', 'Virtual Reality', 'Predictions'], words: 25 },
+    { id: '11_U9', title: 'Unit 9: Environment', desc: 'Çevre Sorunları, Sorumluluklar ve Modal Perfect.', unlocked: false, stageNames: ['Climate Change', 'Renewable Energy', 'Biodiversity', 'Conservation', 'Sustainability'], words: 25 },
+    { id: '11_U10', title: 'Unit 10: Journalism', desc: 'Gazetecilik, Medya ve Passive Voice.', unlocked: false, stageNames: ['Media Types', 'News/Reporting', 'Press Freedom', 'Bias/Accuracy', 'Interviews'], words: 25 },
   ],
   '12': [
     { id: '12_U1', title: 'Unit 1: Music', desc: 'Müzik Türleri ve İfade Biçimleri.', unlocked: true, stageNames: ['Genres', 'Expressing Preferences', 'Concerts & Events'], words: 50 },
