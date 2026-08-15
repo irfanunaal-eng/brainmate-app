@@ -151,7 +151,7 @@ export function GameLobbyScreen({ route }: any) {
                   onPress={() => switchPath('school')}
                   className={`flex-1 py-3 items-center rounded-xl ${activePath === 'school' ? 'bg-white shadow-sm border border-gray-200' : ''}`}
                 >
-                  <Text className={`font-bold ${activePath === 'school' ? 'text-indigo-600' : 'text-gray-500'}`}>📍 Müfredat</Text>
+                  <Text className={`font-bold ${activePath === 'school' ? 'text-indigo-600' : 'text-gray-500'}`}>🇹🇷 MEB Müfredatı</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   onPress={() => switchPath('global')}
