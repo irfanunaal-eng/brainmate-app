@@ -111,6 +111,105 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
   ]
 };
 
+const CURRICULUM_GRAMMAR_GRADES: Record<string, any[]> = {
+  '5': [
+    { id: '5_G1', title: 'Unit 1: to be (am/is/are)', desc: 'Greetings & Introductions', unlocked: true, stageNames: ['Forms', 'Questions', 'Short Answers'], words: 15 },
+    { id: '5_G2', title: 'Unit 2: There is/are', desc: 'Prepositions of Place', unlocked: true, stageNames: ['Affirmative', 'Negative', 'Questions'], words: 15 },
+    { id: '5_G3', title: 'Unit 3: Present Continuous', desc: 'Actions happening now', unlocked: true, stageNames: ['-ing Forms', 'Questions', 'Correct Use'], words: 15 },
+    { id: '5_G4', title: 'Unit 4: How much/many', desc: 'Some/Any and Quantifiers', unlocked: true, stageNames: ['Countable', 'Uncountable', 'Some vs Any'], words: 15 },
+    { id: '5_G5', title: 'Unit 5: Have got/Has got', desc: 'Body parts and ailments', unlocked: true, stageNames: ['Affirmative', 'Questions', 'Illness Matching'], words: 15 },
+    { id: '5_G6', title: 'Unit 6: Imperatives', desc: 'Giving directions', unlocked: false, stageNames: ['Positive', 'Negative', 'Map Reading'], words: 15 },
+    { id: '5_G7', title: 'Unit 7: Simple Past (to be)', desc: 'was / were', unlocked: false, stageNames: ['Statements', 'Questions', 'Time Expressions'], words: 15 },
+    { id: '5_G8', title: 'Unit 8: Simple Present', desc: 'Sequencing (First, then...)', unlocked: false, stageNames: ['3rd Person', 'Sequencing', 'Cooking Steps'], words: 15 },
+    { id: '5_G9', title: 'Unit 9: Must / Should', desc: 'Obligation and Advice', unlocked: false, stageNames: ['Should', 'Must', "Mustn't"], words: 15 },
+    { id: '5_G10', title: 'Unit 10: Simple Past', desc: 'Regular/Irregular verbs', unlocked: false, stageNames: ['Regular', 'Irregular', 'Questions'], words: 15 },
+  ],
+  '6': [
+    { id: '6_G1', title: 'Unit 1: Simple Present', desc: 'Daily Routines, Frequency', unlocked: true, stageNames: ['Routines', 'Frequency Adverbs', 'Questions'], words: 15 },
+    { id: '6_G2', title: 'Unit 2: Countables', desc: 'A/An/Some/Any', unlocked: true, stageNames: ['Count/Uncount', 'Some/Any', 'Questions'], words: 15 },
+    { id: '6_G3', title: 'Unit 3: Can (Ability)', desc: 'There is/are, Can', unlocked: true, stageNames: ["Can/Can't", 'There is/are', 'Locations'], words: 15 },
+    { id: '6_G4', title: 'Unit 4: Present Continuous', desc: 'Weather & Comparatives', unlocked: true, stageNames: ['Present Cont.', 'Comparatives', 'Spelling'], words: 15 },
+    { id: '6_G5', title: 'Unit 5: Future (going to)', desc: 'Plans and Intentions', unlocked: true, stageNames: ['Affirmative', 'Negative', 'Questions'], words: 15 },
+    { id: '6_G6', title: 'Unit 6: Simple Past', desc: 'Regular and Irregular', unlocked: false, stageNames: ['Verb Changes', 'Statements', 'Negatives'], words: 15 },
+    { id: '6_G7', title: 'Unit 7: Past Wh- Questions', desc: 'Asking detailed questions', unlocked: false, stageNames: ['Where', 'What/Who', 'How long'], words: 15 },
+    { id: '6_G8', title: 'Unit 8: Pronouns', desc: 'Object & Possessive Pronouns', unlocked: false, stageNames: ['Object Forms', 'Possessive Forms', 'Matching'], words: 15 },
+    { id: '6_G9', title: 'Unit 9: Should/Must', desc: 'Environmental Advice', unlocked: false, stageNames: ["Should/Shouldn't", "Must/Mustn't", 'Context'], words: 15 },
+    { id: '6_G10', title: 'Unit 10: Modals Review', desc: 'Democracy & Rules', unlocked: false, stageNames: ['Can/Must', 'Should', 'Rules'], words: 15 },
+  ],
+  '7': [
+    { id: '7_G1', title: 'Unit 1: Comparatives', desc: 'Comparing adjectives', unlocked: true, stageNames: ['Comparatives', 'Superlatives', 'Irregular'], words: 15 },
+    { id: '7_G2', title: 'Unit 2: Adverbs of Frequency', desc: 'Simple Present review', unlocked: true, stageNames: ['Position in sentence', 'Meaning', 'Usage'], words: 15 },
+    { id: '7_G3', title: 'Unit 3: Biography Past', desc: 'Timeline formatting', unlocked: true, stageNames: ['Chronology', 'Was born', 'Key verbs'], words: 15 },
+    { id: '7_G4', title: 'Unit 4: Facts & Can', desc: 'Animals & Habitats', unlocked: true, stageNames: ['Simple Pres. Facts', 'Can/Cannot', 'Context'], words: 15 },
+    { id: '7_G5', title: 'Unit 5: Preferences/Gerunds', desc: 'Like, love, hate, prefer', unlocked: true, stageNames: ['Gerund form', 'Prefer to', 'Would rather'], words: 15 },
+    { id: '7_G6', title: 'Unit 6: Quantifiers', desc: 'A few, a little, a lot', unlocked: false, stageNames: ['Countables', 'Uncountables', 'Mixed'], words: 15 },
+    { id: '7_G7', title: 'Unit 7: Future (will)', desc: 'Predictions', unlocked: false, stageNames: ["Will/Won't", 'Probably', 'Will vs Going to'], words: 15 },
+    { id: '7_G8', title: 'Unit 8: Infinitive of Purpose', desc: 'to + V', unlocked: false, stageNames: ['Why questions', 'To verb', 'Locations'], words: 15 },
+    { id: '7_G9', title: "Unit 9: Must/Mustn't", desc: 'Obligations', unlocked: false, stageNames: ['Must', "Mustn't", 'Environmental Context'], words: 15 },
+    { id: '7_G10', title: 'Unit 10: Comparatives Review', desc: 'Planets', unlocked: false, stageNames: ['Bigger/Smaller', 'Farthest/Closest', 'Facts'], words: 15 },
+  ],
+  '8': [
+    { id: '8_G1', title: 'Unit 1: Accepting/Refusing', desc: 'Invitations & Excuses', unlocked: true, stageNames: ['Would you like', 'Refusing', 'Excuses'], words: 15 },
+    { id: '8_G2', title: 'Unit 2: Gerunds/Infinitives', desc: 'Enjoy doing vs want to do', unlocked: true, stageNames: ['Gerund verbs', 'Infinitive verbs', 'Mixed'], words: 15 },
+    { id: '8_G3', title: 'Unit 3: Passive (Present)', desc: 'describing processes', unlocked: true, stageNames: ['is/are + V3', 'Recipes', 'Active to Passive'], words: 15 },
+    { id: '8_G4', title: 'Unit 4: Reported Speech', desc: 'Statements', unlocked: true, stageNames: ['Tense backshift', 'Phone language', 'Pronoun changes'], words: 15 },
+    { id: '8_G5', title: 'Unit 5: Present Perfect', desc: 'ever, never, already, yet', unlocked: true, stageNames: ['Have/has + V3', 'Ever/never', 'Already/yet'], words: 15 },
+    { id: '8_G6', title: 'Unit 6: Would rather/Prefer', desc: 'Extreme sports comparison', unlocked: false, stageNames: ['Prefer + V-ing', 'Would rather', 'Comparatives'], words: 15 },
+    { id: '8_G7', title: 'Unit 7: Pres Perf vs Past', desc: 'for/since', unlocked: false, stageNames: ['For vs Since', 'Past vs Pres Perf', 'Context'], words: 15 },
+    { id: '8_G8', title: 'Unit 8: Have to/Must', desc: 'Chores & Rules', unlocked: false, stageNames: ['Have to vs Must', "Don't have to", "Mustn't"], words: 15 },
+    { id: '8_G9', title: 'Unit 9: Past Continuous', desc: 'Interrupted actions', unlocked: false, stageNames: ['Was/were + V-ing', 'When / While', 'Science context'], words: 15 },
+    { id: '8_G10', title: 'Unit 10: Conditional Type 1', desc: 'If clauses', unlocked: false, stageNames: ['If + Present', "Will/Won't", 'Unless'], words: 15 },
+  ],
+  '9': [
+    { id: '9_G1', title: 'Unit 1: Simple Pres + Wh-', desc: 'Questions & Introductions', unlocked: true, stageNames: ['Wh- Questions', 'Verbs', 'Context'], words: 15 },
+    { id: '9_G2', title: 'Unit 2: Prepositions of Movement', desc: 'Along, past, through', unlocked: true, stageNames: ['Movement', 'Locations', 'Map Reading'], words: 15 },
+    { id: '9_G3', title: 'Unit 3: -ed / -ing Adjectives', desc: 'Expressing Opinions', unlocked: true, stageNames: ['-ed for feelings', '-ing for things', 'Opinion phrases'], words: 15 },
+    { id: '9_G4', title: 'Unit 4: Pres. Simple vs Cont', desc: 'Facts vs Now', unlocked: true, stageNames: ['Habitual', 'Right now', 'Future meaning'], words: 15 },
+    { id: '9_G5', title: 'Unit 5: Simple Past', desc: 'Chronological events', unlocked: true, stageNames: ['Past facts', 'Irregular forms', 'Timelines'], words: 15 },
+    { id: '9_G6', title: 'Unit 6: Future Forms', desc: 'Will vs Going to vs Cont.', unlocked: false, stageNames: ['Instant vs Plan', 'Arrangements', 'Mixed'], words: 15 },
+    { id: '9_G7', title: 'Unit 7: Past Cont. vs Past Simple', desc: 'Interrupted past', unlocked: false, stageNames: ['When vs While', 'Background actions', 'Storytelling'], words: 15 },
+    { id: '9_G8', title: 'Unit 8: Advice Modals', desc: 'Should, must, had better', unlocked: false, stageNames: ['Had better', 'Must vs Should', 'Health Advice'], words: 15 },
+    { id: '9_G9', title: 'Unit 9: Inviting & Declining', desc: 'Future intents', unlocked: false, stageNames: ['Accepting', 'Refusing', "Why don't we"], words: 15 },
+    { id: '9_G10', title: 'Unit 10: Defining Relative Clauses', desc: 'who, which, that, where', unlocked: false, stageNames: ['Who vs Which', 'Where', 'That'], words: 15 },
+  ],
+  '10': [
+    { id: '10_G1', title: 'Unit 1: Obligation Modals', desc: "Have to, must, mustn't", unlocked: true, stageNames: ['Must vs Have to', "Mustn't", "Don't have to"], words: 15 },
+    { id: '10_G2', title: 'Unit 2: Future Comparison', desc: 'All 4 future forms', unlocked: true, stageNames: ['Will vs Going to', 'Pres Cont Future', 'Pres Simple Future'], words: 15 },
+    { id: '10_G3', title: 'Unit 3: Past Perfect', desc: 'Before/after past events', unlocked: true, stageNames: ['Had + V3', 'By the time', 'Before/After'], words: 15 },
+    { id: '10_G4', title: 'Unit 4: Used to / Would', desc: 'Past habits', unlocked: true, stageNames: ['Used to', 'Would for action', 'Negatives'], words: 15 },
+    { id: '10_G5', title: 'Unit 5: Present Perfect Expr', desc: 'Ever/Never/First time', unlocked: true, stageNames: ['Have been to', 'For/Since', 'First time'], words: 15 },
+    { id: '10_G6', title: 'Unit 6: Conditionals 1 & 2', desc: 'Real vs Unreal', unlocked: false, stageNames: ['Type 1', 'Type 2 Unreal', 'Mixed practice'], words: 15 },
+    { id: '10_G7', title: 'Unit 7: Passive (Pres/Past)', desc: 'Processes', unlocked: false, stageNames: ['is/are + V3', 'was/were + V3', 'By agent'], words: 15 },
+    { id: '10_G8', title: 'Unit 8: Relative Clauses', desc: 'Defining vs Non-defining', unlocked: false, stageNames: ['Commas', 'Who/Which/That', 'Context'], words: 15 },
+    { id: '10_G9', title: 'Unit 9: Past Perfect Links', desc: 'When, before, after', unlocked: false, stageNames: ['Sequence', 'By the time', 'Story logic'], words: 15 },
+    { id: '10_G10', title: 'Unit 10: Reported Speech', desc: "Statements, Q's, Commands", unlocked: false, stageNames: ['Tense shift', 'Questions', 'Commands (to)'], words: 15 },
+  ],
+  '11': [
+    { id: '11_G1', title: 'Unit 1: Future Perf & Cont', desc: 'will have / will be', unlocked: true, stageNames: ['Future Cont', 'Future Perfect', 'By 2030 structure'], words: 15 },
+    { id: '11_G2', title: 'Unit 2: Gerunds/Inf. Shift', desc: 'Meaning changes (stop/remember)', unlocked: true, stageNames: ['Remember doing/to do', 'Stop', 'Forget/Try'], words: 15 },
+    { id: '11_G3', title: 'Unit 3: Modal Perfects', desc: 'should/must/could have', unlocked: true, stageNames: ['Should have', 'Must have', 'Could have'], words: 15 },
+    { id: '11_G4', title: 'Unit 4: Passive Mix', desc: 'All tenses passive', unlocked: true, stageNames: ['Present/Past', 'Perfect Passive', 'Modal Passive'], words: 15 },
+    { id: '11_G5', title: 'Unit 5: Narrative Tenses', desc: 'Past, Cont, Perfect', unlocked: true, stageNames: ['Story setting', 'Interruption', 'Sequence'], words: 15 },
+    { id: '11_G6', title: 'Unit 6: Discourse Markers', desc: 'Formal linking words', unlocked: false, stageNames: ['Contrast', 'Addition', 'Conclusion'], words: 15 },
+    { id: '11_G7', title: 'Unit 7: Conditionals 2 & 3', desc: 'Unreal & Regret', unlocked: false, stageNames: ['Type 2', 'Type 3', 'Mixed Usage'], words: 15 },
+    { id: '11_G8', title: 'Unit 8: Reduced Rel. Clauses', desc: 'Participle phrases', unlocked: false, stageNames: ['Active V-ing', 'Passive V3', 'Context'], words: 15 },
+    { id: '11_G9', title: 'Unit 9: Wish / If Only', desc: 'Regrets', unlocked: false, stageNames: ['Wish + past', 'Wish + past perf.', 'If only'], words: 15 },
+    { id: '11_G10', title: 'Unit 10: Reported/Passive', desc: 'Journalism forms', unlocked: false, stageNames: ['It is said that', 'Subject is thought to', 'Reported Mix'], words: 15 },
+  ],
+  '12': [
+    { id: '12_G1', title: 'Unit 1: Cleft Sentences', desc: 'Emphasis', unlocked: true, stageNames: ['It was... that', 'What I... is', 'Emphasis matching'], words: 15 },
+    { id: '12_G2', title: 'Unit 2: Passive Modal Perfect', desc: 'should have been', unlocked: true, stageNames: ['Should have been', 'Must be/been', 'Context'], words: 15 },
+    { id: '12_G3', title: 'Unit 3: Passive Perf/Future', desc: 'will be / has been', unlocked: true, stageNames: ['Future Passive', 'Present Perf Passive', 'Scientific facts'], words: 15 },
+    { id: '12_G4', title: 'Unit 4: Reported Speech Mix', desc: 'All structures', unlocked: true, stageNames: ['Statements', 'Questions', 'Imperatives'], words: 15 },
+    { id: '12_G5', title: 'Unit 5: Mixed Conditionals', desc: 'Type 2+3 combined', unlocked: true, stageNames: ['Past cause -> Present', 'Present cause -> Past', 'Usage'], words: 15 },
+    { id: '12_G6', title: 'Unit 6: Inversion', desc: 'Never have I...', unlocked: false, stageNames: ['Negative adverbs', 'Not only... but', 'Rarely/Hardly'], words: 15 },
+    { id: '12_G7', title: 'Unit 7: Nominalization', desc: 'Verbs to nouns', unlocked: false, stageNames: ['-tion / -sion', '-ment', 'Context'], words: 15 },
+    { id: '12_G8', title: 'Unit 8: Wish / If Only Mix', desc: 'All forms', unlocked: false, stageNames: ['Past', 'Past Perfect', 'Would for complaints'], words: 15 },
+    { id: '12_G9', title: 'Unit 9: Adv. Discourse', desc: 'Despite, As a result', unlocked: false, stageNames: ['Consequently', 'Despite/Although', 'Furthermore'], words: 15 },
+    { id: '12_G10', title: 'Unit 10: Adv. Future', desc: 'is likely to, is bound to', unlocked: false, stageNames: ['Is likely to', 'Is bound to', 'Might/Could'], words: 15 },
+  ]
+};
+
 const SUBJECTS = [
   { id: 'english', icon: '🇬🇧', label: 'İngilizce', grades: ['5','6','7','8','9','10','11','12'] },
   { id: 'turkish', icon: '🇹🇷', label: 'Türkçe', grades: ['5','6','7','8','9','10','11','12'] },
@@ -136,7 +235,8 @@ export function GameLobbyScreen({ route }: any) {
   const [duelOpponent, setDuelOpponent] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [activePath, setActivePath] = useState<'school' | 'global'>('school');
-  const [activeGrade, setActiveGrade] = useState<string>('5');\n  const [englishTab, setEnglishTab] = useState<'vocab' | 'grammar'>('vocab');
+  const [activeGrade, setActiveGrade] = useState<string>('5');
+  const [englishTab, setEnglishTab] = useState<'vocab' | 'grammar'>('vocab');
   const [activeSubject, setActiveSubject] = useState<string>('english');
   const [userProgress, setUserProgress] = useState<any[]>([]);
 

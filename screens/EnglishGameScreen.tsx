@@ -8,25 +8,36 @@ import { supabase } from '../lib/supabase';
 
 const ROOT_WORD_DB = require('../assets/vocabulary.json');
 const CURRICULUM_DB = require('../assets/curriculum.json');
+const GRAMMAR_DB = require('../assets/grammar.json');
 
 export function EnglishGameScreen({ route }: any) {
   const { levelId, mode, stage, totalStages } = route.params || { levelId: 'A1', mode: 'solo', stage: 1, totalStages: 5 };
   
   // Decide which database to pull from based on the levelId
   const isCurriculum = levelId && levelId.includes('_U');
+  const isGrammar = levelId && levelId.includes('_G');
   
   // Build a fixed 25-item test array on component mount
   const [testDB] = useState(() => {
+     if (isGrammar) {
+        let rawDB = GRAMMAR_DB[`${levelId}_${stage}`] || GRAMMAR_DB[levelId] || GRAMMAR_DB['default'];
+        let pool = [...rawDB].sort(() => 0.5 - Math.random());
+        let result = [];
+        // Just fill up 5 or 10 questions for grammar demo
+        while (result.length < 10) {
+           if (pool.length === 0) pool = [...rawDB].sort(() => 0.5 - Math.random());
+           result.push(pool.pop());
+        }
+        return result;
+     }
+
      let rawDB = isCurriculum ? (CURRICULUM_DB[`${levelId}_${stage}`] || CURRICULUM_DB[levelId] || CURRICULUM_DB['5_U1']) : (ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1']);
      
      if (isCurriculum && !CURRICULUM_DB[`${levelId}_${stage}`] && Array.isArray(rawDB)) {
          let pool = [...rawDB].sort(() => 0.5 - Math.random());
          let result = [];
-         
          while (result.length < 25) {
-            if (pool.length === 0) {
-                pool = [...rawDB].sort(() => 0.5 - Math.random());
-            }
+            if (pool.length === 0) pool = [...rawDB].sort(() => 0.5 - Math.random());
             result.push(pool.pop());
          }
          return result;
@@ -42,7 +53,7 @@ export function EnglishGameScreen({ route }: any) {
   const [lives, setLives] = useState(3);
   const [timerAnimated] = useState(new Animated.Value(100));
   const [isGameOver, setIsGameOver] = useState(false);
-  const [gameHistory, setGameHistory] = useState<{en: string, tr: string, correct: boolean}[]>([]);
+  const [gameHistory, setGameHistory] = useState<any[]>([]);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<{ visible: boolean; correct: boolean } | null>(null);
   const [isGameWon, setIsGameWon] = useState(false);
@@ -74,7 +85,6 @@ export function EnglishGameScreen({ route }: any) {
       Speech.stop();
       const voices = await Speech.getAvailableVoicesAsync();
       
-      // Attempt to resolve universally known friendly female iOS English voices
       const preferredFemaleNames = ['Samantha', 'Karen', 'Moira', 'Tessa', 'Nicky', 'Victoria'];
       let selectedVoice = voices.find(v => v.language.startsWith('en') && preferredFemaleNames.some(name => v.name.includes(name)));
       
@@ -93,17 +103,22 @@ export function EnglishGameScreen({ route }: any) {
 
   // Generate dynamic options when word changes
   useEffect(() => {
-    // Pick 3 random wrong answers
-    const wrongAnswers = DB
-      .filter((w: any) => w.en !== currentWord.en)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
-      .map((w: any) => w.tr);
-    
-    // Combine with correct answer and shuffle
-    const combined = [...wrongAnswers, currentWord.tr].sort(() => 0.5 - Math.random());
-    setCurrentOptions(combined);
-  }, [currentWordIndex]);
+    if (isGrammar) {
+      // For grammar questions, options are already provided in DB, just shuffle them
+      const options = [...(currentWord.options || [])].sort(() => 0.5 - Math.random());
+      setCurrentOptions(options);
+    } else {
+      // For vocabulary questions
+      const wrongAnswers = DB
+        .filter((w: any) => w.en !== currentWord.en)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3)
+        .map((w: any) => w.tr);
+      
+      const combined = [...wrongAnswers, currentWord.tr].sort(() => 0.5 - Math.random());
+      setCurrentOptions(combined);
+    }
+  }, [currentWordIndex, isGrammar, DB]);
 
   // Read word aloud only when explicitly pressed (Automatic playback disabled)
 
@@ -126,15 +141,31 @@ export function EnglishGameScreen({ route }: any) {
   }, [currentWordIndex, isGameOver, feedback]);
 
   const handleWrongAnswer = (wordObj: any) => {
-    setGameHistory(prev => [...prev, { en: wordObj.en, tr: wordObj.tr, correct: false }]);
+    if (isGrammar) {
+        setGameHistory(prev => [...prev, { en: wordObj.text, tr: wordObj.translation, correct: false }]);
+    } else {
+        setGameHistory(prev => [...prev, { en: wordObj.en, tr: wordObj.tr, correct: false }]);
+    }
     setFeedback({ visible: true, correct: false });
   };
 
   const handleOptionPress = (selectedOption: string) => {
     timerAnimated.stopAnimation();
-    if (selectedOption === currentWord.tr) {
+    
+    let isCorrect = false;
+    if (isGrammar) {
+        isCorrect = (selectedOption === currentWord.answer);
+    } else {
+        isCorrect = (selectedOption === currentWord.tr);
+    }
+
+    if (isCorrect) {
       // Correct
-      setGameHistory(prev => [...prev, { en: currentWord.en, tr: currentWord.tr, correct: true }]);
+      if (isGrammar) {
+          setGameHistory(prev => [...prev, { en: currentWord.text, tr: currentWord.translation, correct: true }]);
+      } else {
+          setGameHistory(prev => [...prev, { en: currentWord.en, tr: currentWord.tr, correct: true }]);
+      }
       setScore(prev => prev + 10);
       setFeedback({ visible: true, correct: true });
     } else {
@@ -269,13 +300,20 @@ export function EnglishGameScreen({ route }: any) {
                     adjustsFontSizeToFit
                     numberOfLines={1}
                  >
-                    {currentWord.en}
+                    {isGrammar ? (feedback.correct ? currentWord.text.replace('____', currentWord.answer) : currentWord.text) : currentWord.en}
                  </Text>
-                 <TouchableOpacity onPress={() => playVoice(currentWord.en)} className="ml-3 bg-white/50 p-2 rounded-full shadow-sm shadow-black/5 flex-shrink-0">
+                 <TouchableOpacity onPress={() => playVoice(isGrammar ? currentWord.text.replace('____', currentWord.answer) : currentWord.en)} className="ml-3 bg-white/50 p-2 rounded-full shadow-sm shadow-black/5 flex-shrink-0">
                     <Text className="text-xl">🔊</Text>
                  </TouchableOpacity>
               </View>
-              <Text className="text-lg font-bold text-gray-500 uppercase tracking-widest mb-6">{currentWord.tr}</Text>
+              <Text className="text-lg font-bold text-gray-500 uppercase tracking-widest mb-6">{isGrammar ? currentWord.translation : currentWord.tr}</Text>
+
+              {(!isGrammar && !feedback.correct) && (
+                  <Text className="text-lg font-bold text-rose-500 mb-4 text-center">Doğru Cevap: {currentWord.tr}</Text>
+              )}
+              {(isGrammar && !feedback.correct) && (
+                  <Text className="text-lg font-bold text-rose-500 mb-4 text-center">Doğru Cevap: {currentWord.answer}</Text>
+              )}
 
               {currentWord.sentence ? (
                  <View className="bg-white/60 p-4 rounded-2xl w-full relative pt-8 mt-2">
@@ -375,18 +413,17 @@ export function EnglishGameScreen({ route }: any) {
          {/* Question Area */}
          <View className="bg-white p-10 rounded-3xl items-center shadow-lg shadow-indigo-100/50 mb-10 border border-gray-100 relative">
             <TouchableOpacity 
-               onPress={() => playVoice(currentWord.en)} 
+               onPress={() => playVoice(isGrammar ? currentWord.text.replace('____', 'blank') : currentWord.en)} 
                className="absolute top-4 right-4 bg-indigo-50 w-12 h-12 justify-center items-center rounded-full"
             >
                <Text className="text-2xl ml-1">🔊</Text>
             </TouchableOpacity>
-            <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase mt-4 text-center">Türkçesi Nedir?</Text>
+            <Text className="text-gray-400 font-bold text-sm mb-2 tracking-widest uppercase mt-4 text-center">{isGrammar ? 'Boşluğa Hangi Kelime Gelmeli?' : 'Türkçesi Nedir?'}</Text>
             <Text 
-               className="text-6xl font-black text-indigo-900 w-full text-center"
+               className="text-4xl font-black text-indigo-900 w-full text-center"
                adjustsFontSizeToFit
-               numberOfLines={1}
             >
-               {currentWord.en}
+               {isGrammar ? currentWord.text : currentWord.en}
             </Text>
          </View>
 

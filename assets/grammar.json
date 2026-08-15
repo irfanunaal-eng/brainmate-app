@@ -1,0 +1,3923 @@
+{
+  "5_G1": [
+    {
+      "text": "I ____ a student.",
+      "answer": "am",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "be"
+      ],
+      "translation": "Ben bir öğrenciyim."
+    },
+    {
+      "text": "She ____ happy.",
+      "answer": "is",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "have"
+      ],
+      "translation": "O mutlu."
+    },
+    {
+      "text": "They ____ friends.",
+      "answer": "are",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "do"
+      ],
+      "translation": "Onlar arkadaş."
+    },
+    {
+      "text": "____ you a teacher?",
+      "answer": "Are",
+      "options": [
+        "Is",
+        "Am",
+        "Are",
+        "Do"
+      ],
+      "translation": "Sen öğretmen misin?"
+    },
+    {
+      "text": "He ____ tall.",
+      "answer": "isn't",
+      "options": [
+        "aren't",
+        "isn't",
+        "am not",
+        "doesn't"
+      ],
+      "translation": "O uzun değil."
+    },
+    {
+      "text": "What ____ your name?",
+      "answer": "is",
+      "options": [
+        "are",
+        "is",
+        "am",
+        "do"
+      ],
+      "translation": "Adın ne?"
+    },
+    {
+      "text": "Where ____ you from?",
+      "answer": "are",
+      "options": [
+        "is",
+        "are",
+        "am",
+        "do"
+      ],
+      "translation": "Nerelisin?"
+    }
+  ],
+  "5_G2": [
+    {
+      "text": "There ____ a park near the school.",
+      "answer": "is",
+      "options": [
+        "is",
+        "are",
+        "am",
+        "be"
+      ],
+      "translation": "Okulun yakınında bir park var."
+    },
+    {
+      "text": "There ____ three banks in my town.",
+      "answer": "are",
+      "options": [
+        "is",
+        "are",
+        "am",
+        "have"
+      ],
+      "translation": "Benim kasabamda üç banka var."
+    },
+    {
+      "text": "____ there a hospital here?",
+      "answer": "Is",
+      "options": [
+        "Are",
+        "Is",
+        "Am",
+        "Do"
+      ],
+      "translation": "Burada bir hastane var mı?"
+    },
+    {
+      "text": "Are there ____ cafes?",
+      "answer": "any",
+      "options": [
+        "some",
+        "any",
+        "a",
+        "an"
+      ],
+      "translation": "Hiç kafe var mı?"
+    },
+    {
+      "text": "The bank is next ____ the school.",
+      "answer": "to",
+      "options": [
+        "in",
+        "at",
+        "to",
+        "on"
+      ],
+      "translation": "Banka okulun bitişiğindedir."
+    },
+    {
+      "text": "The park is ____ the hotel.",
+      "answer": "opposite",
+      "options": [
+        "opposite",
+        "under",
+        "in",
+        "between"
+      ],
+      "translation": "Park, otelin karşısındadır."
+    },
+    {
+      "text": "There ____ a cinema.",
+      "answer": "isn't",
+      "options": [
+        "aren't",
+        "isn't",
+        "is",
+        "are"
+      ],
+      "translation": "Sinema yok."
+    }
+  ],
+  "5_G3": [
+    {
+      "text": "I am ____ football.",
+      "answer": "playing",
+      "options": [
+        "play",
+        "plays",
+        "playing",
+        "played"
+      ],
+      "translation": "Ben futbol oynuyorum."
+    },
+    {
+      "text": "She is ____ a book.",
+      "answer": "reading",
+      "options": [
+        "read",
+        "reading",
+        "reads",
+        "reader"
+      ],
+      "translation": "O bir kitap okuyor."
+    },
+    {
+      "text": "They ____ watching TV.",
+      "answer": "are",
+      "options": [
+        "is",
+        "are",
+        "am",
+        "do"
+      ],
+      "translation": "Onlar televizyon izliyorlar."
+    },
+    {
+      "text": "____ he swimming?",
+      "answer": "Is",
+      "options": [
+        "Are",
+        "Am",
+        "Is",
+        "Does"
+      ],
+      "translation": "O yüzüyor mu?"
+    },
+    {
+      "text": "He isn't ____ .",
+      "answer": "dancing",
+      "options": [
+        "dance",
+        "dances",
+        "dancing",
+        "danced"
+      ],
+      "translation": "O dans etmiyor."
+    },
+    {
+      "text": "She is ____ in the park.",
+      "answer": "running",
+      "options": [
+        "runing",
+        "running",
+        "runs",
+        "ran"
+      ],
+      "translation": "O parkta koşuyor."
+    }
+  ],
+  "5_G4": [
+    {
+      "text": "How ____ sugar do we need?",
+      "answer": "much",
+      "options": [
+        "many",
+        "much",
+        "some",
+        "any"
+      ],
+      "translation": "Ne kadar şekere ihtiyacımız var?"
+    },
+    {
+      "text": "How ____ eggs are there?",
+      "answer": "many",
+      "options": [
+        "much",
+        "many",
+        "some",
+        "any"
+      ],
+      "translation": "Kaç tane yumurta var?"
+    },
+    {
+      "text": "There is ____ milk.",
+      "answer": "some",
+      "options": [
+        "any",
+        "some",
+        "a",
+        "an"
+      ],
+      "translation": "Biraz süt var."
+    },
+    {
+      "text": "Are there ____ tomatoes?",
+      "answer": "any",
+      "options": [
+        "some",
+        "any",
+        "much",
+        "a"
+      ],
+      "translation": "Hiç domates var mı?"
+    },
+    {
+      "text": "There is ____ butter in the fridge.",
+      "answer": "some",
+      "options": [
+        "any",
+        "some",
+        "many",
+        "a"
+      ],
+      "translation": "Buzdolabında biraz tereyağı var."
+    }
+  ],
+  "5_G5": [
+    {
+      "text": "I have ____ a headache.",
+      "answer": "got",
+      "options": [
+        "get",
+        "gets",
+        "got",
+        "getting"
+      ],
+      "translation": "Baş ağrım var."
+    },
+    {
+      "text": "She ____ got a sore throat.",
+      "answer": "has",
+      "options": [
+        "have",
+        "has",
+        "is",
+        "are"
+      ],
+      "translation": "Onun boğaz ağrısı var."
+    },
+    {
+      "text": "Have you ____ a temperature?",
+      "answer": "got",
+      "options": [
+        "get",
+        "gets",
+        "got",
+        "have"
+      ],
+      "translation": "Ateşin var mı?"
+    },
+    {
+      "text": "I haven't ____ a stomachache.",
+      "answer": "got",
+      "options": [
+        "has",
+        "get",
+        "got",
+        "have"
+      ],
+      "translation": "Karın ağrım yok."
+    },
+    {
+      "text": "You ____ rest.",
+      "answer": "should",
+      "options": [
+        "should",
+        "shouldn't",
+        "mustn't",
+        "are"
+      ],
+      "translation": "Dinlenmelisin."
+    },
+    {
+      "text": "You ____ eat junk food.",
+      "answer": "shouldn't",
+      "options": [
+        "should",
+        "shouldn't",
+        "must",
+        "do"
+      ],
+      "translation": "Abur cubur yememelisin."
+    }
+  ],
+  "5_G6": [
+    {
+      "text": "Go straight ____ for two blocks.",
+      "answer": "on",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "translation": "İki blok düz devam et."
+    },
+    {
+      "text": "____ left at the traffic lights.",
+      "answer": "Turn",
+      "options": [
+        "Turn",
+        "Take",
+        "Go",
+        "Make"
+      ],
+      "translation": "Trafik ışıklarından sola dön."
+    },
+    {
+      "text": "____ the first turning on the right.",
+      "answer": "Take",
+      "options": [
+        "Go",
+        "Take",
+        "Turn",
+        "Make"
+      ],
+      "translation": "Sağdaki ilk sapaktan dön."
+    },
+    {
+      "text": "____ turn left here.",
+      "answer": "Don't",
+      "options": [
+        "Doesn't",
+        "Don't",
+        "Aren't",
+        "Isn't"
+      ],
+      "translation": "Burada sola dönme."
+    },
+    {
+      "text": "The museum is ____ your left.",
+      "answer": "on",
+      "options": [
+        "in",
+        "at",
+        "on",
+        "to"
+      ],
+      "translation": "Müze solunuzdadır."
+    },
+    {
+      "text": "____ the door.",
+      "answer": "Open",
+      "options": [
+        "Open",
+        "Opening",
+        "Opens",
+        "To open"
+      ],
+      "translation": "Kapıyı aç."
+    }
+  ],
+  "5_G7": [
+    {
+      "text": "The pyramid ____ huge.",
+      "answer": "was",
+      "options": [
+        "were",
+        "was",
+        "is",
+        "are"
+      ],
+      "translation": "Piramit devasa büyüklükteydi."
+    },
+    {
+      "text": "The Romans ____ powerful.",
+      "answer": "were",
+      "options": [
+        "was",
+        "were",
+        "is",
+        "are"
+      ],
+      "translation": "Romalılar güçlüydü."
+    },
+    {
+      "text": "____ the Colosseum beautiful?",
+      "answer": "Was",
+      "options": [
+        "Were",
+        "Was",
+        "Is",
+        "Are"
+      ],
+      "translation": "Kolezyum güzel miydi?"
+    },
+    {
+      "text": "____ they ancient?",
+      "answer": "Were",
+      "options": [
+        "Were",
+        "Was",
+        "Are",
+        "Is"
+      ],
+      "translation": "Onlar antik miydi?"
+    },
+    {
+      "text": "It ____ small.",
+      "answer": "wasn't",
+      "options": [
+        "weren't",
+        "wasn't",
+        "isn't",
+        "aren't"
+      ],
+      "translation": "Küçük değildi."
+    },
+    {
+      "text": "The event happened a long time ____.",
+      "answer": "ago",
+      "options": [
+        "ago",
+        "tomorrow",
+        "next",
+        "last"
+      ],
+      "translation": "Olay uzun zaman önce gerçekleşti."
+    }
+  ],
+  "5_G8": [
+    {
+      "text": "____, peel the potatoes.",
+      "answer": "First",
+      "options": [
+        "First",
+        "Then",
+        "After",
+        "Finally"
+      ],
+      "translation": "İlk olarak patatesleri soy."
+    },
+    {
+      "text": "____, chop the onions.",
+      "answer": "Then",
+      "options": [
+        "First",
+        "Then",
+        "Final",
+        "End"
+      ],
+      "translation": "Sonra, soğanları doğra."
+    },
+    {
+      "text": "____ that, fry them.",
+      "answer": "After",
+      "options": [
+        "Before",
+        "After",
+        "Then",
+        "First"
+      ],
+      "translation": "Ondan sonra onları kızart."
+    },
+    {
+      "text": "____, serve the dish.",
+      "answer": "Finally",
+      "options": [
+        "First",
+        "After",
+        "Finally",
+        "End"
+      ],
+      "translation": "Son olarak yemeği servis et."
+    },
+    {
+      "text": "She ____ rice every day.",
+      "answer": "cooks",
+      "options": [
+        "cook",
+        "cooks",
+        "cooking",
+        "cooked"
+      ],
+      "translation": "Her gün pilav pişirir."
+    },
+    {
+      "text": "He ____ some salt.",
+      "answer": "adds",
+      "options": [
+        "add",
+        "adds",
+        "adding",
+        "added"
+      ],
+      "translation": "Biraz tuz ekler."
+    }
+  ],
+  "5_G9": [
+    {
+      "text": "You ____ recycle paper.",
+      "answer": "should",
+      "options": [
+        "should",
+        "shouldn't",
+        "mustn't",
+        "don't"
+      ],
+      "translation": "Kağıdı geri dönüştürmelisin."
+    },
+    {
+      "text": "You ____ waste water.",
+      "answer": "shouldn't",
+      "options": [
+        "should",
+        "shouldn't",
+        "must",
+        "do"
+      ],
+      "translation": "Suyu israf etmemelisin."
+    },
+    {
+      "text": "We ____ protect nature.",
+      "answer": "must",
+      "options": [
+        "must",
+        "mustn't",
+        "shouldn't",
+        "are"
+      ],
+      "translation": "Doğayı korumalıyız."
+    },
+    {
+      "text": "We ____ throw litter.",
+      "answer": "mustn't",
+      "options": [
+        "must",
+        "mustn't",
+        "should",
+        "do"
+      ],
+      "translation": "Çöp atmamalıyız."
+    }
+  ],
+  "5_G10": [
+    {
+      "text": "I ____ football yesterday.",
+      "answer": "played",
+      "options": [
+        "play",
+        "played",
+        "playing",
+        "plays"
+      ],
+      "translation": "Dün futbol oynadım."
+    },
+    {
+      "text": "She ____ a film.",
+      "answer": "watched",
+      "options": [
+        "watch",
+        "watched",
+        "watching",
+        "watches"
+      ],
+      "translation": "Bir film izledi."
+    },
+    {
+      "text": "She ____ to the park.",
+      "answer": "went",
+      "options": [
+        "go",
+        "went",
+        "going",
+        "goes"
+      ],
+      "translation": "Parka gitti."
+    },
+    {
+      "text": "He ____ pizza.",
+      "answer": "ate",
+      "options": [
+        "eat",
+        "ate",
+        "eating",
+        "eats"
+      ],
+      "translation": "O pizza yedi."
+    },
+    {
+      "text": "He didn't ____ to school.",
+      "answer": "go",
+      "options": [
+        "go",
+        "went",
+        "going",
+        "goes"
+      ],
+      "translation": "Okula gitmedi."
+    },
+    {
+      "text": "____ you watch TV?",
+      "answer": "Did",
+      "options": [
+        "Do",
+        "Does",
+        "Did",
+        "Are"
+      ],
+      "translation": "Televizyon izledin mi?"
+    }
+  ],
+  "6_G1": [
+    {
+      "text": "She ____ to school at 8.",
+      "answer": "goes",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "translation": "O saat 8'de okula gider."
+    },
+    {
+      "text": "He doesn't ____ meat.",
+      "answer": "eat",
+      "options": [
+        "eats",
+        "eat",
+        "eating",
+        "ate"
+      ],
+      "translation": "O et yemez."
+    },
+    {
+      "text": "____ she play chess?",
+      "answer": "Does",
+      "options": [
+        "Do",
+        "Does",
+        "Is",
+        "Has"
+      ],
+      "translation": "O satranç oynar mı?"
+    },
+    {
+      "text": "I ____ wake up at 7.",
+      "answer": "always",
+      "options": [
+        "always",
+        "never",
+        "am",
+        "was"
+      ],
+      "translation": "Ben her zaman 7'de uyanırım."
+    },
+    {
+      "text": "They often ____ tennis.",
+      "answer": "play",
+      "options": [
+        "play",
+        "plays",
+        "playing",
+        "played"
+      ],
+      "translation": "Onlar sık sık tenis oynarlar."
+    }
+  ],
+  "6_G2": [
+    {
+      "text": "There is ____ orange juice.",
+      "answer": "some",
+      "options": [
+        "a",
+        "an",
+        "some",
+        "any"
+      ],
+      "translation": "Biraz portakal suyu var."
+    },
+    {
+      "text": "How ____ bread do we need?",
+      "answer": "much",
+      "options": [
+        "many",
+        "much",
+        "some",
+        "any"
+      ],
+      "translation": "Ne kadar ekmeğe ihtiyacımız var?"
+    },
+    {
+      "text": "Are there ____ tomatoes?",
+      "answer": "any",
+      "options": [
+        "some",
+        "any",
+        "a",
+        "much"
+      ],
+      "translation": "Hiç domates var mı?"
+    },
+    {
+      "text": "I don't have ____ butter.",
+      "answer": "any",
+      "options": [
+        "some",
+        "any",
+        "a",
+        "many"
+      ],
+      "translation": "Hiç tereyağım yok."
+    },
+    {
+      "text": "How ____ eggs do we need?",
+      "answer": "many",
+      "options": [
+        "much",
+        "many",
+        "some",
+        "any"
+      ],
+      "translation": "Kaç yumurtaya ihtiyacımız var?"
+    }
+  ],
+  "6_G3": [
+    {
+      "text": "____ you help me?",
+      "answer": "Can",
+      "options": [
+        "Can",
+        "Are",
+        "Do",
+        "Is"
+      ],
+      "translation": "Bana yardım edebilir misin?"
+    },
+    {
+      "text": "She ____ dance very well.",
+      "answer": "can",
+      "options": [
+        "can",
+        "cans",
+        "does",
+        "is"
+      ],
+      "translation": "O çok iyi dans edebilir."
+    },
+    {
+      "text": "He can't ____ a bike.",
+      "answer": "ride",
+      "options": [
+        "rides",
+        "ride",
+        "riding",
+        "rode"
+      ],
+      "translation": "O bisiklet süremez."
+    },
+    {
+      "text": "There ____ two banks downtown.",
+      "answer": "are",
+      "options": [
+        "is",
+        "are",
+        "was",
+        "were"
+      ],
+      "translation": "Şehir merkezinde iki banka var."
+    }
+  ],
+  "6_G4": [
+    {
+      "text": "Summer is ____ than winter.",
+      "answer": "hotter",
+      "options": [
+        "hotter",
+        "more hot",
+        "hottest",
+        "hot"
+      ],
+      "translation": "Yaz kıştan daha sıcaktır."
+    },
+    {
+      "text": "It is ____ right now.",
+      "answer": "raining",
+      "options": [
+        "rain",
+        "rains",
+        "raining",
+        "rained"
+      ],
+      "translation": "Şu an yağmur yağıyor."
+    },
+    {
+      "text": "Which is the ____ month?",
+      "answer": "coldest",
+      "options": [
+        "coldest",
+        "most cold",
+        "colder",
+        "cold"
+      ],
+      "translation": "En soğuk ay hangisidir?"
+    },
+    {
+      "text": "It is more ____ than yesterday.",
+      "answer": "cloudy",
+      "options": [
+        "cloudy",
+        "cloudier",
+        "cloud",
+        "clouds"
+      ],
+      "translation": "Dünden daha bulutlu."
+    }
+  ],
+  "6_G5": [
+    {
+      "text": "She ____ going to watch the show.",
+      "answer": "is",
+      "options": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "translation": "O gösteriyi izleyecek."
+    },
+    {
+      "text": "Are they going to ____ ?",
+      "answer": "come",
+      "options": [
+        "come",
+        "comes",
+        "coming",
+        "came"
+      ],
+      "translation": "Onlar gelecek mi?"
+    },
+    {
+      "text": "I ____ going to ride the roller coaster.",
+      "answer": "am",
+      "options": [
+        "is",
+        "am",
+        "are",
+        "was"
+      ],
+      "translation": "Ben hız trenine bineceğim."
+    },
+    {
+      "text": "He isn't going to ____ long.",
+      "answer": "stay",
+      "options": [
+        "stays",
+        "stay",
+        "staying",
+        "stayed"
+      ],
+      "translation": "O uzun süre kalmayacak."
+    }
+  ],
+  "6_G6": [
+    {
+      "text": "We ____ hiking last weekend.",
+      "answer": "went",
+      "options": [
+        "go",
+        "went",
+        "going",
+        "goes"
+      ],
+      "translation": "Geçen hafta sonu doğa yürüyüşüne gittik."
+    },
+    {
+      "text": "She didn't ____ the horse.",
+      "answer": "ride",
+      "options": [
+        "rode",
+        "ride",
+        "riding",
+        "rides"
+      ],
+      "translation": "O ata binmedi."
+    },
+    {
+      "text": "____ they climb the mountain?",
+      "answer": "Did",
+      "options": [
+        "Do",
+        "Does",
+        "Did",
+        "Are"
+      ],
+      "translation": "Onlar dağa tırmandılar mı?"
+    },
+    {
+      "text": "They ____ a waterfall.",
+      "answer": "saw",
+      "options": [
+        "see",
+        "saw",
+        "seeing",
+        "sees"
+      ],
+      "translation": "Onlar bir şelale gördüler."
+    },
+    {
+      "text": "I ____ new boots.",
+      "answer": "bought",
+      "options": [
+        "buy",
+        "bought",
+        "buying",
+        "buys"
+      ],
+      "translation": "Ben yeni bot satın aldım."
+    }
+  ],
+  "6_G7": [
+    {
+      "text": "Where ____ you go last summer?",
+      "answer": "did",
+      "options": [
+        "do",
+        "did",
+        "are",
+        "were"
+      ],
+      "translation": "Geçen yaz nereye gittin?"
+    },
+    {
+      "text": "What did she ____ at the museum?",
+      "answer": "see",
+      "options": [
+        "see",
+        "saw",
+        "seeing",
+        "sees"
+      ],
+      "translation": "O müzede ne gördü?"
+    },
+    {
+      "text": "____ did they meet?",
+      "answer": "Who",
+      "options": [
+        "Who",
+        "Where",
+        "What",
+        "How"
+      ],
+      "translation": "Kiminle buluştular?"
+    },
+    {
+      "text": "How long did it ____ ?",
+      "answer": "take",
+      "options": [
+        "takes",
+        "take",
+        "took",
+        "taking"
+      ],
+      "translation": "Ne kadar sürdü?"
+    }
+  ],
+  "6_G8": [
+    {
+      "text": "She gave ____ a book.",
+      "answer": "him",
+      "options": [
+        "he",
+        "him",
+        "his",
+        "her"
+      ],
+      "translation": "Ona bir kitap verdi."
+    },
+    {
+      "text": "This bag is ____.",
+      "answer": "mine",
+      "options": [
+        "my",
+        "mine",
+        "me",
+        "I"
+      ],
+      "translation": "Bu çanta benimki."
+    },
+    {
+      "text": "I'll help ____.",
+      "answer": "them",
+      "options": [
+        "they",
+        "them",
+        "their",
+        "theirs"
+      ],
+      "translation": "Onlara yardım edeceğim."
+    },
+    {
+      "text": "It's ____.",
+      "answer": "yours",
+      "options": [
+        "you",
+        "your",
+        "yours",
+        "me"
+      ],
+      "translation": "O seninki."
+    }
+  ],
+  "6_G9": [
+    {
+      "text": "We ____ throw litter.",
+      "answer": "mustn't",
+      "options": [
+        "must",
+        "mustn't",
+        "should",
+        "can"
+      ],
+      "translation": "Çöp atmamalıyız."
+    },
+    {
+      "text": "You ____ turn off the lights.",
+      "answer": "should",
+      "options": [
+        "should",
+        "shouldn't",
+        "mustn't",
+        "are"
+      ],
+      "translation": "Işıkları kapatmalısın."
+    },
+    {
+      "text": "We ____ recycle.",
+      "answer": "must",
+      "options": [
+        "must",
+        "mustn't",
+        "shouldn't",
+        "can't"
+      ],
+      "translation": "Geri dönüşüm yapmalıyız."
+    },
+    {
+      "text": "You ____ pollute the river.",
+      "answer": "mustn't",
+      "options": [
+        "must",
+        "mustn't",
+        "should",
+        "can"
+      ],
+      "translation": "Nehri kirletmemelisin."
+    }
+  ],
+  "6_G10": [
+    {
+      "text": "Everyone ____ vote in a democracy.",
+      "answer": "can",
+      "options": [
+        "can",
+        "cans",
+        "is",
+        "does"
+      ],
+      "translation": "Herkes demokraside oy kullanabilir."
+    },
+    {
+      "text": "The president ____ listen to the people.",
+      "answer": "should",
+      "options": [
+        "should",
+        "shoulds",
+        "mustn't",
+        "can't"
+      ],
+      "translation": "Cumhurbaşkanı halkı dinlemelidir."
+    },
+    {
+      "text": "Everyone ____ respect the rules.",
+      "answer": "must",
+      "options": [
+        "must",
+        "musts",
+        "shouldn't",
+        "can't"
+      ],
+      "translation": "Herkes kurallara uymalıdır."
+    },
+    {
+      "text": "People shouldn't be ____ against.",
+      "answer": "discriminated",
+      "options": [
+        "discriminated",
+        "discriminate",
+        "discriminates",
+        "discriminating"
+      ],
+      "translation": "İnsanlara ayrımcılık yapılmamalıdır."
+    }
+  ],
+  "7_G1": [
+    {
+      "text": "She is ____ than her friend.",
+      "answer": "taller",
+      "options": [
+        "tall",
+        "taller",
+        "more tall",
+        "tallest"
+      ],
+      "translation": "O arkadaşından daha uzundur."
+    },
+    {
+      "text": "He is the ____ generous student.",
+      "answer": "most",
+      "options": [
+        "more",
+        "most",
+        "much",
+        "many"
+      ],
+      "translation": "O en cömert öğrencidir."
+    },
+    {
+      "text": "She is ____ slim as her mother.",
+      "answer": "as",
+      "options": [
+        "so",
+        "as",
+        "more",
+        "most"
+      ],
+      "translation": "Annesi kadar incedir."
+    },
+    {
+      "text": "He is the ____ hardworking student.",
+      "answer": "most",
+      "options": [
+        "more",
+        "most",
+        "as",
+        "much"
+      ],
+      "translation": "O en çalışkan öğrencidir."
+    },
+    {
+      "text": "Good, better, the ____.",
+      "answer": "best",
+      "options": [
+        "goodest",
+        "best",
+        "more good",
+        "most good"
+      ],
+      "translation": "İyi, daha iyi, en iyi."
+    }
+  ],
+  "7_G2": [
+    {
+      "text": "She ____ trains before school.",
+      "answer": "always",
+      "options": [
+        "always",
+        "never",
+        "is",
+        "was"
+      ],
+      "translation": "O her zaman okuldan önce antrenman yapar."
+    },
+    {
+      "text": "He ____ watches games.",
+      "answer": "usually",
+      "options": [
+        "usual",
+        "usually",
+        "never",
+        "always"
+      ],
+      "translation": "O genellikle maç izler."
+    },
+    {
+      "text": "I ____ go cycling.",
+      "answer": "sometimes",
+      "options": [
+        "sometime",
+        "sometimes",
+        "always",
+        "never"
+      ],
+      "translation": "Bazen bisiklete binerim."
+    },
+    {
+      "text": "He ____ plays football.",
+      "answer": "never",
+      "options": [
+        "never",
+        "always",
+        "usual",
+        "often"
+      ],
+      "translation": "O hiç futbol oynamaz."
+    }
+  ],
+  "7_G3": [
+    {
+      "text": "She was ____ in Warsaw.",
+      "answer": "born",
+      "options": [
+        "born",
+        "borns",
+        "borning",
+        "borned"
+      ],
+      "translation": "O Varşova'da doğdu."
+    },
+    {
+      "text": "He ____ the prize in 1921.",
+      "answer": "won",
+      "options": [
+        "win",
+        "won",
+        "wins",
+        "winning"
+      ],
+      "translation": "O 1921'de ödülü kazandı."
+    },
+    {
+      "text": "When did she ____ ?",
+      "answer": "die",
+      "options": [
+        "dies",
+        "die",
+        "died",
+        "dying"
+      ],
+      "translation": "O ne zaman öldü?"
+    },
+    {
+      "text": "She ____ radium.",
+      "answer": "discovered",
+      "options": [
+        "discover",
+        "discovered",
+        "discovers",
+        "discovering"
+      ],
+      "translation": "O radyumu keşfetti."
+    },
+    {
+      "text": "He ____ up in London.",
+      "answer": "grew",
+      "options": [
+        "grow",
+        "grew",
+        "grown",
+        "growing"
+      ],
+      "translation": "O Londra'da büyüdü."
+    }
+  ],
+  "7_G4": [
+    {
+      "text": "Dolphins ____ breathe underwater.",
+      "answer": "can't",
+      "options": [
+        "can",
+        "can't",
+        "are",
+        "aren't"
+      ],
+      "translation": "Yunuslar su altında nefes alamazlar."
+    },
+    {
+      "text": "Elephants ____ in Africa.",
+      "answer": "live",
+      "options": [
+        "lives",
+        "live",
+        "living",
+        "lived"
+      ],
+      "translation": "Filler Afrika'da yaşar."
+    },
+    {
+      "text": "An eagle ____ fly very high.",
+      "answer": "can",
+      "options": [
+        "can",
+        "can't",
+        "is",
+        "are"
+      ],
+      "translation": "Bir kartal çok yüksek uçabilir."
+    },
+    {
+      "text": "Snakes ____ cold-blooded.",
+      "answer": "are",
+      "options": [
+        "is",
+        "are",
+        "was",
+        "were"
+      ],
+      "translation": "Yılanlar soğukkanlıdır."
+    }
+  ],
+  "7_G5": [
+    {
+      "text": "She loves ____ quiz shows.",
+      "answer": "watching",
+      "options": [
+        "watch",
+        "watching",
+        "watches",
+        "watched"
+      ],
+      "translation": "O yarışma programları izlemeyi sever."
+    },
+    {
+      "text": "He prefers ____ sports.",
+      "answer": "watching",
+      "options": [
+        "to watch",
+        "watching",
+        "watch",
+        "watched"
+      ],
+      "translation": "O spor izlemeyi tercih eder."
+    },
+    {
+      "text": "I ____ reality shows boring.",
+      "answer": "find",
+      "options": [
+        "finding",
+        "find",
+        "finds",
+        "found"
+      ],
+      "translation": "Reality şovlarını sıkıcı buluyorum."
+    },
+    {
+      "text": "I'd ____ watch a comedy.",
+      "answer": "rather",
+      "options": [
+        "prefer",
+        "rather",
+        "better",
+        "love"
+      ],
+      "translation": "Daha çok komedi izlemek isterim."
+    }
+  ],
+  "7_G6": [
+    {
+      "text": "We need a ____ salt.",
+      "answer": "little",
+      "options": [
+        "few",
+        "little",
+        "lot",
+        "many"
+      ],
+      "translation": "Biraz tuza ihtiyacımız var."
+    },
+    {
+      "text": "Are there ____ guests at the party?",
+      "answer": "many",
+      "options": [
+        "much",
+        "many",
+        "little",
+        "some"
+      ],
+      "translation": "Partide çok misafir var mı?"
+    },
+    {
+      "text": "He doesn't have ____ time.",
+      "answer": "much",
+      "options": [
+        "many",
+        "much",
+        "few",
+        "little"
+      ],
+      "translation": "Onun çok vakti yok."
+    },
+    {
+      "text": "We have a ____ candles.",
+      "answer": "few",
+      "options": [
+        "little",
+        "few",
+        "much",
+        "lot"
+      ],
+      "translation": "Birkaç mumumuz var."
+    }
+  ],
+  "7_G7": [
+    {
+      "text": "She ____ probably become famous.",
+      "answer": "will",
+      "options": [
+        "will",
+        "is",
+        "was",
+        "does"
+      ],
+      "translation": "O muhtemelen ünlü olacak."
+    },
+    {
+      "text": "Will they ____ on other planets?",
+      "answer": "live",
+      "options": [
+        "live",
+        "lives",
+        "living",
+        "lived"
+      ],
+      "translation": "Onlar başka gezegenlerde yaşayacaklar mı?"
+    },
+    {
+      "text": "I ____ give up on my dreams.",
+      "answer": "won't",
+      "options": [
+        "will",
+        "won't",
+        "don't",
+        "didn't"
+      ],
+      "translation": "Hayallerimden vazgeçmeyeceğim."
+    },
+    {
+      "text": "She ____ probably win.",
+      "answer": "will",
+      "options": [
+        "will",
+        "won't",
+        "is",
+        "does"
+      ],
+      "translation": "O muhtemelen kazanacak."
+    }
+  ],
+  "7_G8": [
+    {
+      "text": "I go to the bakery ____ bread.",
+      "answer": "to buy",
+      "options": [
+        "buying",
+        "buy",
+        "to buy', 'buys"
+      ],
+      "translation": "Ekmek almak için fırına giderim."
+    },
+    {
+      "text": "People visit the museum ____ historical artifacts.",
+      "answer": "to see",
+      "options": [
+        "seeing",
+        "to see",
+        "see",
+        "saw"
+      ],
+      "translation": "İnsanlar tarihi eserleri görmek için müzeyi ziyaret ederler."
+    },
+    {
+      "text": "She went to the pharmacy ____ medicine.",
+      "answer": "to get",
+      "options": [
+        "getting",
+        "get",
+        "to get",
+        "got"
+      ],
+      "translation": "İlaç almak için eczaneye gitti."
+    }
+  ],
+  "7_G9": [
+    {
+      "text": "We ____ protect endangered species.",
+      "answer": "must",
+      "options": [
+        "must",
+        "mustn't",
+        "shouldn't",
+        "don't"
+      ],
+      "translation": "Nesli tükenmekte olan türleri korumalıyız."
+    },
+    {
+      "text": "You ____ pollute the rivers.",
+      "answer": "mustn't",
+      "options": [
+        "must",
+        "mustn't",
+        "should",
+        "can"
+      ],
+      "translation": "Nehirleri kirletmemelisin."
+    },
+    {
+      "text": "You ____ use solar energy.",
+      "answer": "should",
+      "options": [
+        "should",
+        "shouldn't",
+        "mustn't",
+        "don't"
+      ],
+      "translation": "Güneş enerjisi kullanmalısın."
+    }
+  ],
+  "7_G10": [
+    {
+      "text": "Jupiter is the ____ planet.",
+      "answer": "biggest",
+      "options": [
+        "biggest",
+        "most big",
+        "bigger",
+        "big"
+      ],
+      "translation": "Jüpiter en büyük gezegendir."
+    },
+    {
+      "text": "Mars is ____ than Earth.",
+      "answer": "smaller",
+      "options": [
+        "smaller",
+        "more small",
+        "small",
+        "smallest"
+      ],
+      "translation": "Mars, Dünya'dan daha küçüktür."
+    },
+    {
+      "text": "Which planet is the ____ to the Sun?",
+      "answer": "closest",
+      "options": [
+        "closest",
+        "close",
+        "closer",
+        "most close"
+      ],
+      "translation": "Güneşe en yakın gezegen hangisidir?"
+    },
+    {
+      "text": "The Moon is not ____ large as the Earth.",
+      "answer": "as",
+      "options": [
+        "so",
+        "as",
+        "more",
+        "most"
+      ],
+      "translation": "Ay, Dünya kadar büyük değildir."
+    }
+  ],
+  "8_G1": [
+    {
+      "text": "Would you like to ____?",
+      "answer": "come",
+      "options": [
+        "come",
+        "coming",
+        "comes",
+        "came"
+      ],
+      "translation": "Gelmek ister misin?"
+    },
+    {
+      "text": "How about ____ to the cinema?",
+      "answer": "going",
+      "options": [
+        "go",
+        "going",
+        "to go",
+        "goes"
+      ],
+      "translation": "Sinemaya gitmeye ne dersin?"
+    },
+    {
+      "text": "I'm afraid I ____.",
+      "answer": "can't",
+      "options": [
+        "can",
+        "can't",
+        "am",
+        "do"
+      ],
+      "translation": "Korkarım ki gelemeyeceğim."
+    },
+    {
+      "text": "I have ____ visit my grandma.",
+      "answer": "to",
+      "options": [
+        "for",
+        "at",
+        "to",
+        "in"
+      ],
+      "translation": "Büyükannemi ziyaret etmem gerekiyor."
+    }
+  ],
+  "8_G2": [
+    {
+      "text": "I enjoy ____ films.",
+      "answer": "watching",
+      "options": [
+        "to watch",
+        "watching",
+        "watch",
+        "watched"
+      ],
+      "translation": "Film izlemekten zevk alırım."
+    },
+    {
+      "text": "She decided ____ the team.",
+      "answer": "to join",
+      "options": [
+        "joining",
+        "join",
+        "to join",
+        "joined"
+      ],
+      "translation": "Takıma katılmaya karar verdi."
+    },
+    {
+      "text": "He dislikes ____ housework.",
+      "answer": "doing",
+      "options": [
+        "to do",
+        "doing",
+        "do",
+        "did"
+      ],
+      "translation": "O ev işi yapmaktan hoşlanmaz."
+    },
+    {
+      "text": "She wants ____ a vet.",
+      "answer": "to become",
+      "options": [
+        "becoming",
+        "become",
+        "to become",
+        "became"
+      ],
+      "translation": "O veteriner olmak istiyor."
+    }
+  ],
+  "8_G3": [
+    {
+      "text": "The pizza ____ at 200°C.",
+      "answer": "is baked",
+      "options": [
+        "bakes",
+        "bake",
+        "is baked",
+        "baking"
+      ],
+      "translation": "Pizza 200°C'de pişirilir."
+    },
+    {
+      "text": "The onions ____ finely.",
+      "answer": "are chopped",
+      "options": [
+        "chop",
+        "are chopped",
+        "chopped",
+        "is chopped"
+      ],
+      "translation": "Soğanlar ince doğranır."
+    },
+    {
+      "text": "The ingredients ____ mixed.",
+      "answer": "are",
+      "options": [
+        "is",
+        "are",
+        "was",
+        "be"
+      ],
+      "translation": "Malzemeler karıştırılır."
+    },
+    {
+      "text": "The water ____ boiled.",
+      "answer": "is",
+      "options": [
+        "is",
+        "are",
+        "do",
+        "was"
+      ],
+      "translation": "Su kaynatılır."
+    }
+  ],
+  "8_G4": [
+    {
+      "text": "She said she ____ busy.",
+      "answer": "was",
+      "options": [
+        "is",
+        "were",
+        "was",
+        "are"
+      ],
+      "translation": "Meşgul olduğunu söyledi."
+    },
+    {
+      "text": "He told me he ____ call back.",
+      "answer": "would",
+      "options": [
+        "will",
+        "would",
+        "can",
+        "do"
+      ],
+      "translation": "Geri arayacağını söyledi."
+    },
+    {
+      "text": "He said he ____ help me.",
+      "answer": "could",
+      "options": [
+        "can",
+        "could",
+        "will",
+        "do"
+      ],
+      "translation": "Bana yardım edebileceğini söyledi."
+    },
+    {
+      "text": "He said that he ____ at home.",
+      "answer": "was",
+      "options": [
+        "am",
+        "is",
+        "was",
+        "were"
+      ],
+      "translation": "Evde olduğunu söyledi."
+    }
+  ],
+  "8_G5": [
+    {
+      "text": "Have you ____ created an account?",
+      "answer": "ever",
+      "options": [
+        "ever",
+        "never",
+        "yet",
+        "already"
+      ],
+      "translation": "Hiç hesap oluşturdun mu?"
+    },
+    {
+      "text": "She has ____ logged in.",
+      "answer": "already",
+      "options": [
+        "already",
+        "yet",
+        "ever",
+        "never"
+      ],
+      "translation": "O zaten giriş yaptı."
+    },
+    {
+      "text": "He hasn't registered ____.",
+      "answer": "yet",
+      "options": [
+        "yet",
+        "already",
+        "ever",
+        "never"
+      ],
+      "translation": "O henüz kayıt olmadı."
+    },
+    {
+      "text": "____ you ever uploaded a video?",
+      "answer": "Have",
+      "options": [
+        "Has",
+        "Have",
+        "Did",
+        "Do"
+      ],
+      "translation": "Hiç video yükledin mi?"
+    }
+  ],
+  "8_G6": [
+    {
+      "text": "I'd rather ____ surfing.",
+      "answer": "go",
+      "options": [
+        "to go",
+        "going",
+        "go",
+        "goes"
+      ],
+      "translation": "Daha çok sörfe gitmek isterim."
+    },
+    {
+      "text": "Skydiving is ____ dangerous than cycling.",
+      "answer": "more",
+      "options": [
+        "most",
+        "more",
+        "much",
+        "many"
+      ],
+      "translation": "Gökyüzü dalışı bisiklete binmekten daha tehlikelidir."
+    },
+    {
+      "text": "She prefers ____ to climbing.",
+      "answer": "hiking",
+      "options": [
+        "hike",
+        "to hike",
+        "hiking",
+        "hiked"
+      ],
+      "translation": "Tırmanmaya göre doğa yürüyüşünü tercih eder."
+    },
+    {
+      "text": "Canoeing is ____ than parachuting.",
+      "answer": "safer",
+      "options": [
+        "safest",
+        "more safe",
+        "safely",
+        "safer"
+      ],
+      "translation": "Kano, paraşütten daha güvenlidir."
+    }
+  ],
+  "8_G7": [
+    {
+      "text": "She ____ Paris last summer.",
+      "answer": "visited",
+      "options": [
+        "has visited",
+        "visit",
+        "visited",
+        "visiting"
+      ],
+      "translation": "Geçen yaz Paris'i ziyaret etti."
+    },
+    {
+      "text": "They have been here ____ three days.",
+      "answer": "for",
+      "options": [
+        "since",
+        "for",
+        "in",
+        "at"
+      ],
+      "translation": "Üç gündür buradalar."
+    },
+    {
+      "text": "Have you ____ been to London?",
+      "answer": "ever",
+      "options": [
+        "ever",
+        "never",
+        "yet",
+        "has"
+      ],
+      "translation": "Hiç Londra'da bulundun mu?"
+    },
+    {
+      "text": "He has lived here ____ Monday.",
+      "answer": "since",
+      "options": [
+        "for",
+        "since",
+        "at",
+        "in"
+      ],
+      "translation": "Pazartesi'den beri burada yaşıyor."
+    }
+  ],
+  "8_G8": [
+    {
+      "text": "She ____ clean her room — it's the house rule.",
+      "answer": "must",
+      "options": [
+        "must",
+        "have to",
+        "has to",
+        "should"
+      ],
+      "translation": "Odasını temizlemek zorunda - bu evin kuralıdır."
+    },
+    {
+      "text": "You don't ____ help me, but it would be nice.",
+      "answer": "have to",
+      "options": [
+        "must",
+        "have to",
+        "has to",
+        "should"
+      ],
+      "translation": "Bana yardım etmek zorunda değilsin, ama iyi olurdu."
+    },
+    {
+      "text": "We ____ shout in the library.",
+      "answer": "mustn't",
+      "options": [
+        "mustn't",
+        "don't have to",
+        "have to",
+        "should"
+      ],
+      "translation": "Kütüphanede bağırmamalıyız."
+    },
+    {
+      "text": "I ____ do the dishes.",
+      "answer": "have to",
+      "options": [
+        "mustn't",
+        "has to",
+        "have to",
+        "does"
+      ],
+      "translation": "Bulaşıkları yıkamam lazım."
+    }
+  ],
+  "8_G9": [
+    {
+      "text": "He ____ when he made the discovery.",
+      "answer": "was working",
+      "options": [
+        "worked",
+        "working",
+        "was working",
+        "were working"
+      ],
+      "translation": "Keşfi yaptığında çalışıyordu."
+    },
+    {
+      "text": "While they ____ the sample, the alarm rang.",
+      "answer": "were testing",
+      "options": [
+        "tested",
+        "testing",
+        "was testing",
+        "were testing"
+      ],
+      "translation": "Örneği test ederlerken alarm çaldı."
+    },
+    {
+      "text": "What was she doing when the experiment ____?",
+      "answer": "started",
+      "options": [
+        "starting",
+        "starts",
+        "started",
+        "start"
+      ],
+      "translation": "Deney başladığında ne yapıyordu?"
+    },
+    {
+      "text": "I was studying ____ the phone rang.",
+      "answer": "when",
+      "options": [
+        "while",
+        "when",
+        "what",
+        "where"
+      ],
+      "translation": "Telefon çaldığında ders çalışıyordum."
+    }
+  ],
+  "8_G10": [
+    {
+      "text": "If there ____ an earthquake, drop and cover.",
+      "answer": "is",
+      "options": [
+        "will be",
+        "is",
+        "are",
+        "be"
+      ],
+      "translation": "Eğer deprem olursa, çök ve kapan."
+    },
+    {
+      "text": "Unless we ____ pollution, global warming will get worse.",
+      "answer": "reduce",
+      "options": [
+        "will reduce",
+        "reducing",
+        "reduce",
+        "reduces"
+      ],
+      "translation": "Kirliliği azaltmazsak, küresel ısınma daha kötü olacak."
+    },
+    {
+      "text": "If it ____, there will be an avalanche.",
+      "answer": "snows",
+      "options": [
+        "will snow",
+        "snows",
+        "snow",
+        "snowing"
+      ],
+      "translation": "Eğer kar yağarsa, çığ olacak."
+    },
+    {
+      "text": "If we recycle, we ____ save energy.",
+      "answer": "can",
+      "options": [
+        "do",
+        "can",
+        "does",
+        "cannot"
+      ],
+      "translation": "Geri dönüşüm yaparsak, enerji tasarrufu yapabiliriz."
+    }
+  ],
+  "9_G1": [
+    {
+      "text": "What ____ you do in your free time?",
+      "answer": "do",
+      "options": [
+        "do",
+        "does",
+        "are",
+        "is"
+      ],
+      "translation": "Boş zamanlarında ne yaparsın?"
+    },
+    {
+      "text": "She ____ at a university abroad.",
+      "answer": "studies",
+      "options": [
+        "study",
+        "studies",
+        "studying",
+        "studied"
+      ],
+      "translation": "O yurtdışında bir üniversitede okur."
+    },
+    {
+      "text": "____ do you live?",
+      "answer": "Where",
+      "options": [
+        "What",
+        "Where",
+        "When",
+        "Who"
+      ],
+      "translation": "Nerede yaşıyorsun?"
+    },
+    {
+      "text": "____ do you come from?",
+      "answer": "Where",
+      "options": [
+        "Where",
+        "What",
+        "When",
+        "How"
+      ],
+      "translation": "Nereden geliyorsun?"
+    }
+  ],
+  "9_G2": [
+    {
+      "text": "Walk ____ the bridge, then turn right.",
+      "answer": "across",
+      "options": [
+        "across",
+        "along",
+        "past",
+        "through"
+      ],
+      "translation": "Köprüden karşıya geç, sonra sağa dön."
+    },
+    {
+      "text": "The cafe is ____ the bank.",
+      "answer": "opposite",
+      "options": [
+        "opposite",
+        "next to",
+        "along",
+        "past"
+      ],
+      "translation": "Kafe bankanın karşısındadır."
+    },
+    {
+      "text": "Go ____ the main road.",
+      "answer": "along",
+      "options": [
+        "along",
+        "across",
+        "past",
+        "towards"
+      ],
+      "translation": "Ana yol boyunca ilerle."
+    },
+    {
+      "text": "Turn left and go ____ the cinema.",
+      "answer": "past",
+      "options": [
+        "past",
+        "across",
+        "along",
+        "through"
+      ],
+      "translation": "Sola dön ve sinemayı geç."
+    }
+  ],
+  "9_G3": [
+    {
+      "text": "The film was so ____.",
+      "answer": "boring",
+      "options": [
+        "boring",
+        "bored",
+        "bore",
+        "bores"
+      ],
+      "translation": "Film çok sıkıcıydı."
+    },
+    {
+      "text": "She was ____ to see the actor.",
+      "answer": "excited",
+      "options": [
+        "exciting",
+        "excited",
+        "excite",
+        "excites"
+      ],
+      "translation": "Aktörü gördüğüne heyecanlandı."
+    },
+    {
+      "text": "I find comedy films ____.",
+      "answer": "amusing",
+      "options": [
+        "amused",
+        "amusing",
+        "amuse",
+        "amuses"
+      ],
+      "translation": "Komedi filmlerini eğlenceli buluyorum."
+    },
+    {
+      "text": "I find horror films ____.",
+      "answer": "frightening",
+      "options": [
+        "frightened",
+        "frightening",
+        "frighten",
+        "frights"
+      ],
+      "translation": "Korku filmlerini korkutucu buluyorum."
+    }
+  ],
+  "9_G4": [
+    {
+      "text": "Bears ____ every winter.",
+      "answer": "hibernate",
+      "options": [
+        "hibernate",
+        "are hibernating",
+        "hibernated",
+        "hibernates"
+      ],
+      "translation": "Ayılar her kış kış uykusuna yatar."
+    },
+    {
+      "text": "Look! The whale ____ !",
+      "answer": "is swimming",
+      "options": [
+        "swims",
+        "is swimming",
+        "swam",
+        "swim"
+      ],
+      "translation": "Bak! Balina yüzüyor!"
+    },
+    {
+      "text": "She ____ the national park next week.",
+      "answer": "is visiting",
+      "options": [
+        "visits",
+        "is visiting",
+        "visited",
+        "visit"
+      ],
+      "translation": "O gelecek hafta milli parkı ziyaret edecek."
+    },
+    {
+      "text": "Eagles ____ rabbits.",
+      "answer": "eat",
+      "options": [
+        "eats",
+        "are eating",
+        "eat",
+        "eating"
+      ],
+      "translation": "Kartallar tavşan yer."
+    }
+  ],
+  "9_G5": [
+    {
+      "text": "She ____ radioactivity.",
+      "answer": "discovered",
+      "options": [
+        "discover",
+        "discovered",
+        "discovers",
+        "discovering"
+      ],
+      "translation": "O radyoaktiviteyi keşfetti."
+    },
+    {
+      "text": "He ____ poverty to succeed.",
+      "answer": "overcame",
+      "options": [
+        "overcome",
+        "overcame",
+        "overcoming",
+        "overcomes"
+      ],
+      "translation": "O başarılı olmak için yoksulluğun üstesinden geldi."
+    },
+    {
+      "text": "She was ____ in 1869.",
+      "answer": "born",
+      "options": [
+        "born",
+        "borns",
+        "borning",
+        "borned"
+      ],
+      "translation": "O 1869'da doğdu."
+    },
+    {
+      "text": "She received the Nobel Prize ____.",
+      "answer": "twice",
+      "options": [
+        "twice",
+        "two",
+        "second",
+        "two times"
+      ],
+      "translation": "O iki kez Nobel Ödülü aldı."
+    }
+  ],
+  "9_G6": [
+    {
+      "text": "They ____ to Japan next summer.",
+      "answer": "are flying",
+      "options": [
+        "fly",
+        "will fly",
+        "are flying",
+        "flew"
+      ],
+      "translation": "Onlar gelecek yaz Japonya'ya uçuyorlar."
+    },
+    {
+      "text": "She's going to ____ at a hostel.",
+      "answer": "stay",
+      "options": [
+        "stay",
+        "staying",
+        "stays",
+        "stayed"
+      ],
+      "translation": "O bir hostelde kalacak."
+    },
+    {
+      "text": "____ you going to bring a guide?",
+      "answer": "Are",
+      "options": [
+        "Do",
+        "Are",
+        "Will",
+        "Is"
+      ],
+      "translation": "Bir rehber getirecek misin?"
+    },
+    {
+      "text": "I am ____ to visit Rome.",
+      "answer": "going",
+      "options": [
+        "go",
+        "going",
+        "goes",
+        "will"
+      ],
+      "translation": "Ben Roma'yı ziyaret edeceğim."
+    }
+  ],
+  "9_G7": [
+    {
+      "text": "The architect ____ the temple when the earthquake struck.",
+      "answer": "was designing",
+      "options": [
+        "designed",
+        "was designing",
+        "designing",
+        "designs"
+      ],
+      "translation": "Deprem olduğunda mimar tapınağı tasarlıyordu."
+    },
+    {
+      "text": "While they ____, they found a golden statue.",
+      "answer": "were excavating",
+      "options": [
+        "excavated",
+        "were excavating",
+        "excavating",
+        "excavate"
+      ],
+      "translation": "Onlar kazı yaparken altın bir heykel buldular."
+    },
+    {
+      "text": "What were they doing when the storm ____?",
+      "answer": "started",
+      "options": [
+        "starting",
+        "start",
+        "started",
+        "starts"
+      ],
+      "translation": "Fırtına başladığında onlar ne yapıyordu?"
+    },
+    {
+      "text": "The workers ____ building the pyramid.",
+      "answer": "were",
+      "options": [
+        "was",
+        "were",
+        "are",
+        "is"
+      ],
+      "translation": "İşçiler piramidi inşa ediyorlardı."
+    }
+  ],
+  "9_G8": [
+    {
+      "text": "You ____ rest if you have a fever.",
+      "answer": "should",
+      "options": [
+        "must",
+        "should",
+        "had better",
+        "shouldn't"
+      ],
+      "translation": "Ateşin varsa dinlenmelisin."
+    },
+    {
+      "text": "She had better ____ a doctor.",
+      "answer": "see",
+      "options": [
+        "to see",
+        "seeing",
+        "see",
+        "saw"
+      ],
+      "translation": "O doktora görünse iyi olur."
+    },
+    {
+      "text": "You ____ skip your medicine.",
+      "answer": "shouldn't",
+      "options": [
+        "should",
+        "shouldn't",
+        "must",
+        "had better"
+      ],
+      "translation": "İlacını atlamamalısın."
+    },
+    {
+      "text": "You ____ take this medicine twice a day.",
+      "answer": "must",
+      "options": [
+        "must",
+        "shouldn't",
+        "mustn't",
+        "should"
+      ],
+      "translation": "Bu ilacı günde iki kez almalısın."
+    }
+  ],
+  "9_G9": [
+    {
+      "text": "I'm afraid I ____ make it to the party.",
+      "answer": "can't",
+      "options": [
+        "won't",
+        "can't",
+        "don't",
+        "am not"
+      ],
+      "translation": "Korkarım partiye gelemeyeceğim."
+    },
+    {
+      "text": "She ____ celebrate her graduation.",
+      "answer": "is going to",
+      "options": [
+        "is going to",
+        "will",
+        "goes",
+        "going"
+      ],
+      "translation": "O mezuniyetini kutlayacak."
+    },
+    {
+      "text": "Why don't we ____ a surprise party?",
+      "answer": "organize",
+      "options": [
+        "organizing",
+        "organize",
+        "organized",
+        "to organize"
+      ],
+      "translation": "Neden sürpriz bir parti düzenlemiyoruz?"
+    },
+    {
+      "text": "I'll be there ____ 7!",
+      "answer": "at",
+      "options": [
+        "in",
+        "on",
+        "at",
+        "to"
+      ],
+      "translation": "Saat 7'de orada olacağım!"
+    }
+  ],
+  "9_G10": [
+    {
+      "text": "A blogger is someone ____ writes online.",
+      "answer": "who",
+      "options": [
+        "which",
+        "who",
+        "where",
+        "that"
+      ],
+      "translation": "Blogger çevrimiçi yazan kişidir."
+    },
+    {
+      "text": "The channel ____ I watch the most is...",
+      "answer": "which",
+      "options": [
+        "who",
+        "which",
+        "where",
+        "when"
+      ],
+      "translation": "En çok izlediğim kanal..."
+    },
+    {
+      "text": "This is the place ____ they record the show.",
+      "answer": "where",
+      "options": [
+        "where",
+        "which",
+        "who",
+        "that"
+      ],
+      "translation": "Burası programı kaydettikleri yerdir."
+    },
+    {
+      "text": "The film ____ won the award.",
+      "answer": "that",
+      "options": [
+        "who",
+        "that",
+        "where",
+        "when"
+      ],
+      "translation": "Ödülü kazanan film."
+    }
+  ],
+  "10_G1": [
+    {
+      "text": "Students ____ arrive on time.",
+      "answer": "must",
+      "options": [
+        "must",
+        "have to",
+        "has to",
+        "should"
+      ],
+      "translation": "Öğrenciler zamanında varmalıdır."
+    },
+    {
+      "text": "She ____ miss the deadline.",
+      "answer": "mustn't",
+      "options": [
+        "doesn't have to",
+        "mustn't",
+        "don't have to",
+        "shouldn't"
+      ],
+      "translation": "O teslim tarihini kaçırmamalı."
+    },
+    {
+      "text": "You ____ attend the club — it's optional.",
+      "answer": "don't have to",
+      "options": [
+        "mustn't",
+        "don't have to",
+        "shouldn't",
+        "haven't to"
+      ],
+      "translation": "Kulübe katılmak zorunda değilsin — isteğe bağlı."
+    },
+    {
+      "text": "We ____ submit our project by Friday.",
+      "answer": "have to",
+      "options": [
+        "mustn't",
+        "have to",
+        "doesn't have to",
+        "shouldn't"
+      ],
+      "translation": "Projemizi Cuma'ya kadar teslim etmemiz gerekiyor."
+    }
+  ],
+  "10_G2": [
+    {
+      "text": "Look at those clouds. It ____ rain.",
+      "answer": "is going to",
+      "options": [
+        "will",
+        "is going to",
+        "rains",
+        "raining"
+      ],
+      "translation": "Şu bulutlara bak. Yağmur yağacak."
+    },
+    {
+      "text": "The bus ____ at 9 AM tomorrow.",
+      "answer": "leaves",
+      "options": [
+        "leave",
+        "leaves",
+        "is leaving",
+        "will leave"
+      ],
+      "translation": "Otobüs yarın sabah 9'da kalkıyor."
+    },
+    {
+      "text": "I ____ study medicine next year.",
+      "answer": "am going to",
+      "options": [
+        "will",
+        "am going to",
+        "am studying",
+        "study"
+      ],
+      "translation": "Gelecek yıl tıp okuyacağım."
+    },
+    {
+      "text": "I'll ____ you later.",
+      "answer": "call",
+      "options": [
+        "call",
+        "calling",
+        "calls",
+        "called"
+      ],
+      "translation": "Seni sonra arayacağım."
+    }
+  ],
+  "10_G3": [
+    {
+      "text": "By 1500, Columbus ____ to the Americas.",
+      "answer": "had sailed",
+      "options": [
+        "sailed",
+        "had sailed",
+        "sails",
+        "was sailing"
+      ],
+      "translation": "1500 yılına gelindiğinde Kolomb Amerika'ya yelken açmıştı."
+    },
+    {
+      "text": "Before she became queen, she ____ in exile.",
+      "answer": "had lived",
+      "options": [
+        "lived",
+        "had lived",
+        "living",
+        "was living"
+      ],
+      "translation": "Kraliçe olmadan önce sürgünde yaşamıştı."
+    },
+    {
+      "text": "When he died, he ____ over 200 books.",
+      "answer": "had written",
+      "options": [
+        "wrote",
+        "had written",
+        "writes",
+        "writing"
+      ],
+      "translation": "Öldüğünde 200'den fazla kitap yazmıştı."
+    },
+    {
+      "text": "When they arrived, the show ____ already started.",
+      "answer": "had",
+      "options": [
+        "has",
+        "had",
+        "have",
+        "was"
+      ],
+      "translation": "Onlar vardığında gösteri çoktan başlamıştı."
+    }
+  ],
+  "10_G4": [
+    {
+      "text": "Children ____ play outside more often.",
+      "answer": "used to",
+      "options": [
+        "use to",
+        "used to",
+        "would",
+        "using"
+      ],
+      "translation": "Çocuklar eskiden daha sık dışarıda oynardı."
+    },
+    {
+      "text": "Did they use to ____ this holiday?",
+      "answer": "celebrate",
+      "options": [
+        "celebrating",
+        "celebrates",
+        "celebrate",
+        "celebrated"
+      ],
+      "translation": "Bu bayramı kutlarlar mıydı?"
+    },
+    {
+      "text": "She ____ be afraid of dogs.",
+      "answer": "used to",
+      "options": [
+        "would",
+        "used to",
+        "use to",
+        "uses"
+      ],
+      "translation": "O eskiden köpeklerden korkardı."
+    },
+    {
+      "text": "Every summer they ____ visit their grandparents.",
+      "answer": "would",
+      "options": [
+        "will",
+        "would",
+        "used to",
+        "use to"
+      ],
+      "translation": "Her yaz büyükannelerini ziyaret ederlerdi."
+    }
+  ],
+  "10_G5": [
+    {
+      "text": "Have you ever ____ by plane?",
+      "answer": "traveled",
+      "options": [
+        "travel",
+        "traveling",
+        "traveled",
+        "travels"
+      ],
+      "translation": "Hiç uçakla seyahat ettin mi?"
+    },
+    {
+      "text": "She has lived here ____ three years.",
+      "answer": "for",
+      "options": [
+        "since",
+        "for",
+        "in",
+        "from"
+      ],
+      "translation": "O üç yıldır burada yaşıyor."
+    },
+    {
+      "text": "It's the first time he ____ the Eiffel Tower.",
+      "answer": "has seen",
+      "options": [
+        "saw",
+        "has seen",
+        "see",
+        "seeing"
+      ],
+      "translation": "Eyfel Kulesini ilk kez görüyor."
+    },
+    {
+      "text": "I have never ____ to Japan.",
+      "answer": "been",
+      "options": [
+        "go",
+        "been",
+        "went",
+        "gone"
+      ],
+      "translation": "Ben Japonya'ya hiç gitmedim."
+    }
+  ],
+  "10_G6": [
+    {
+      "text": "If it ____, we'll cancel the picnic.",
+      "answer": "rains",
+      "options": [
+        "will rain",
+        "rains",
+        "rain",
+        "raining"
+      ],
+      "translation": "Yağmur yağarsa pikniği iptal edeceğiz."
+    },
+    {
+      "text": "If I ____ you, I'd see a doctor.",
+      "answer": "were",
+      "options": [
+        "am",
+        "was",
+        "were",
+        "be"
+      ],
+      "translation": "Yerinde olsam, bir doktora görünürdüm."
+    },
+    {
+      "text": "Unless you ____ the medicine, you'll feel worse.",
+      "answer": "take",
+      "options": [
+        "will take",
+        "take",
+        "takes",
+        "taking"
+      ],
+      "translation": "İlacı almazsan daha kötü hissedeceksin."
+    },
+    {
+      "text": "If he had more time, he ____ exercise.",
+      "answer": "would",
+      "options": [
+        "will",
+        "would",
+        "can",
+        "shall"
+      ],
+      "translation": "Daha fazla zamanı olsaydı, egzersiz yapardı."
+    }
+  ],
+  "10_G7": [
+    {
+      "text": "The dessert ____ with honey.",
+      "answer": "is made",
+      "options": [
+        "makes",
+        "is made",
+        "made",
+        "making"
+      ],
+      "translation": "Tatlı balla yapılır."
+    },
+    {
+      "text": "This dish ____ for centuries.",
+      "answer": "was cooked",
+      "options": [
+        "cooked",
+        "was cooked",
+        "cooks",
+        "is cooking"
+      ],
+      "translation": "Bu yemek yüzyıllarca pişirildi."
+    },
+    {
+      "text": "Rice ____ grown in Asia.",
+      "answer": "is",
+      "options": [
+        "is",
+        "are",
+        "do",
+        "does"
+      ],
+      "translation": "Pirinç Asya'da yetiştirilir."
+    },
+    {
+      "text": "The festival is ____ in spring.",
+      "answer": "celebrated",
+      "options": [
+        "celebrate",
+        "celebrates",
+        "celebrated",
+        "celebrating"
+      ],
+      "translation": "Festival ilkbaharda kutlanır."
+    }
+  ],
+  "10_G8": [
+    {
+      "text": "She is the person ____ invented the algorithm.",
+      "answer": "who",
+      "options": [
+        "which",
+        "who",
+        "where",
+        "that"
+      ],
+      "translation": "Algoritmayı icat eden kişi odur."
+    },
+    {
+      "text": "The software ____ protects your data is important.",
+      "answer": "that",
+      "options": [
+        "who",
+        "which",
+        "that",
+        "where"
+      ],
+      "translation": "Verilerinizi koruyan yazılım önemlidir."
+    },
+    {
+      "text": "My phone, ____ I use every day, needs charging.",
+      "answer": "which",
+      "options": [
+        "who",
+        "which",
+        "that",
+        "where"
+      ],
+      "translation": "Her gün kullandığım telefonumun şarj edilmesi gerekiyor."
+    },
+    {
+      "text": "Mark Zuckerberg, ____ founded Facebook, is very wealthy.",
+      "answer": "who",
+      "options": [
+        "which",
+        "that",
+        "who",
+        "whom"
+      ],
+      "translation": "Facebook'u kuran Mark Zuckerberg çok zengindir."
+    }
+  ],
+  "10_G9": [
+    {
+      "text": "When they arrived, the speech ____.",
+      "answer": "had already started",
+      "options": [
+        "already started",
+        "had already started",
+        "was starting",
+        "started"
+      ],
+      "translation": "Onlar vardığında konuşma çoktan başlamıştı."
+    },
+    {
+      "text": "Before he became a hero, he ____ many obstacles.",
+      "answer": "had overcome",
+      "options": [
+        "overcame",
+        "had overcome",
+        "overcome",
+        "has overcome"
+      ],
+      "translation": "O bir kahraman olmadan önce birçok engeli aşmıştı."
+    },
+    {
+      "text": "By the time she graduated, she ____ already published a book.",
+      "answer": "had",
+      "options": [
+        "has",
+        "have",
+        "had",
+        "would"
+      ],
+      "translation": "O mezun olana kadar çoktan bir kitap yayımlamıştı."
+    },
+    {
+      "text": "After she had trained for years, she ____ the gold medal.",
+      "answer": "won",
+      "options": [
+        "win",
+        "won",
+        "had won",
+        "winning"
+      ],
+      "translation": "O yıllarca antrenman yaptıktan sonra altın madalyayı kazandı."
+    }
+  ],
+  "10_G10": [
+    {
+      "text": "The assistant said the jacket ____ on sale.",
+      "answer": "was",
+      "options": [
+        "is",
+        "were",
+        "was",
+        "are"
+      ],
+      "translation": "Asistan ceketin indirimde olduğunu söyledi."
+    },
+    {
+      "text": "He asked if they ____ a smaller size.",
+      "answer": "had",
+      "options": [
+        "have",
+        "has",
+        "had",
+        "having"
+      ],
+      "translation": "Daha küçük bir bedenleri olup olmadığını sordu."
+    },
+    {
+      "text": "She told him ____ at the counter.",
+      "answer": "to wait",
+      "options": [
+        "wait",
+        "waits",
+        "waiting",
+        "to wait"
+      ],
+      "translation": "Ona gişede beklemesini söyledi."
+    },
+    {
+      "text": "She said she ____ that jacket.",
+      "answer": "liked",
+      "options": [
+        "like",
+        "likes",
+        "liked",
+        "liking"
+      ],
+      "translation": "O ceketi beğendiğini söyledi."
+    }
+  ],
+  "11_G1": [
+    {
+      "text": "By 2040, robots ____ most factory jobs.",
+      "answer": "will be doing",
+      "options": [
+        "will do",
+        "will be doing",
+        "are doing",
+        "doing"
+      ],
+      "translation": "2040'a kadar robotlar çoğu fabrika işini yapıyor olacak."
+    },
+    {
+      "text": "By the time she retires, she ____ for 35 years.",
+      "answer": "will have worked",
+      "options": [
+        "will work",
+        "will be working",
+        "will have worked",
+        "worked"
+      ],
+      "translation": "Emekli olduğunda 35 yıl çalışmış olacak."
+    },
+    {
+      "text": "____ you be working late tomorrow?",
+      "answer": "Will",
+      "options": [
+        "Do",
+        "Are",
+        "Will",
+        "Have"
+      ],
+      "translation": "Yarın geç saatlere kadar çalışıyor olacak mısın?"
+    },
+    {
+      "text": "He ____ studying next year.",
+      "answer": "won't be",
+      "options": [
+        "will",
+        "won't",
+        "won't be",
+        "will has"
+      ],
+      "translation": "Gelecek yıl çalışmıyor olacak."
+    }
+  ],
+  "11_G2": [
+    {
+      "text": "I remember ____ her at the art fair.",
+      "answer": "meeting",
+      "options": [
+        "meet",
+        "to meet",
+        "meeting",
+        "met"
+      ],
+      "translation": "Onunla sanat fuarında tanıştığımı hatırlıyorum."
+    },
+    {
+      "text": "She forgot ____ her studio.",
+      "answer": "to lock",
+      "options": [
+        "locking",
+        "to lock",
+        "lock",
+        "locked"
+      ],
+      "translation": "Stüdyosunu kilitlemeyi unuttu."
+    },
+    {
+      "text": "He stopped ____ — he needed a break.",
+      "answer": "to rest",
+      "options": [
+        "resting",
+        "to rest",
+        "rest",
+        "rested"
+      ],
+      "translation": "Dinlenmek için durdu - molaya ihtiyacı vardı."
+    },
+    {
+      "text": "She stopped ____ for years.",
+      "answer": "painting",
+      "options": [
+        "to paint",
+        "painting",
+        "paint",
+        "painted"
+      ],
+      "translation": "Yıllarca resim yapmayı bıraktı."
+    }
+  ],
+  "11_G3": [
+    {
+      "text": "You ____ calm under pressure.",
+      "answer": "should have stayed",
+      "options": [
+        "should stay",
+        "stayed",
+        "should have stayed",
+        "staying"
+      ],
+      "translation": "Baskı altında sakin kalmalıydın."
+    },
+    {
+      "text": "She must ____ devastated when she failed.",
+      "answer": "have felt",
+      "options": [
+        "feel",
+        "feeling",
+        "have felt",
+        "felt"
+      ],
+      "translation": "Başarısız olduğunda yıkılmış hissetmiş olmalı."
+    },
+    {
+      "text": "He could ____ for support earlier.",
+      "answer": "have asked",
+      "options": [
+        "ask",
+        "asks",
+        "have asked",
+        "asking"
+      ],
+      "translation": "Daha erken destek isteyebilirdi."
+    },
+    {
+      "text": "She ____ given up.",
+      "answer": "shouldn't have",
+      "options": [
+        "shouldn't",
+        "shouldn't have",
+        "mustn't",
+        "couldn't"
+      ],
+      "translation": "Pes etmemeliydi."
+    }
+  ],
+  "11_G4": [
+    {
+      "text": "The rumor ____ by scientists.",
+      "answer": "has been confirmed",
+      "options": [
+        "has confirmed",
+        "has been confirmed",
+        "have been confirmed",
+        "confirmed"
+      ],
+      "translation": "Söylenti bilim insanları tarafından doğrulandı."
+    },
+    {
+      "text": "This theory ____ tested before it's accepted.",
+      "answer": "must be",
+      "options": [
+        "must been",
+        "must be",
+        "must",
+        "be"
+      ],
+      "translation": "Bu teori kabul edilmeden önce test edilmelidir."
+    },
+    {
+      "text": "This fact ____ been proven by scientists.",
+      "answer": "has",
+      "options": [
+        "have",
+        "has",
+        "had",
+        "is"
+      ],
+      "translation": "Bu gerçek bilim adamları tarafından kanıtlanmıştır."
+    },
+    {
+      "text": "It ____ published next week.",
+      "answer": "will be",
+      "options": [
+        "has been",
+        "will be",
+        "is",
+        "will"
+      ],
+      "translation": "Gelecek hafta yayınlanacak."
+    }
+  ],
+  "11_G5": [
+    {
+      "text": "When the revolution ____ out, thousands had already fled.",
+      "answer": "broke",
+      "options": [
+        "had broken",
+        "broke",
+        "breaking",
+        "breaks"
+      ],
+      "translation": "Devrim patlak verdiğinde, binlerce kişi çoktan kaçmıştı."
+    },
+    {
+      "text": "While the soldiers ____ , the general had a plan.",
+      "answer": "were fighting",
+      "options": [
+        "fought",
+        "fighting",
+        "were fighting",
+        "had fought"
+      ],
+      "translation": "Askerler savaşırken, generalin bir planı vardı."
+    },
+    {
+      "text": "By 1945, the empire ____ .",
+      "answer": "had collapsed",
+      "options": [
+        "collapsed",
+        "had collapsed",
+        "collapsing",
+        "collapses"
+      ],
+      "translation": "1945'e gelindiğinde imparatorluk çökmüştü."
+    },
+    {
+      "text": "People ____ suffering.",
+      "answer": "were",
+      "options": [
+        "are",
+        "were",
+        "had",
+        "was"
+      ],
+      "translation": "İnsanlar acı çekiyordu."
+    }
+  ],
+  "11_G6": [
+    {
+      "text": "Although she disagreed, ____ listened carefully.",
+      "answer": "she",
+      "options": [
+        "however",
+        "she",
+        "but",
+        "although"
+      ],
+      "translation": "Aynı fikirde olmamasına rağmen, dikkatlice dinledi."
+    },
+    {
+      "text": "On the ____ hand, some people support the idea.",
+      "answer": "other",
+      "options": [
+        "other",
+        "another",
+        "one",
+        "some"
+      ],
+      "translation": "Öte yandan, bazı insanlar fikri destekliyor."
+    },
+    {
+      "text": "____ the evidence strongly supports this view.",
+      "answer": "Moreover",
+      "options": [
+        "But",
+        "Moreover",
+        "However",
+        "Although"
+      ],
+      "translation": "Dahası kanıtlar bu görüşü güçlü bir şekilde desteklemektedir."
+    },
+    {
+      "text": "____ my opinion, it is true.",
+      "answer": "In",
+      "options": [
+        "On",
+        "At",
+        "To",
+        "In"
+      ],
+      "translation": "Benim görüşüme göre bu doğrudur."
+    }
+  ],
+  "11_G7": [
+    {
+      "text": "If she ____ harder, she would have broken the record.",
+      "answer": "had trained",
+      "options": [
+        "trained",
+        "have trained",
+        "had trained",
+        "training"
+      ],
+      "translation": "Daha sıkı antrenman yapsaydı, rekoru kırardı."
+    },
+    {
+      "text": "If I ____ the coach, I would change the strategy.",
+      "answer": "were",
+      "options": [
+        "was",
+        "were",
+        "am",
+        "have been"
+      ],
+      "translation": "Koç ben olsaydım, stratejiyi değiştirirdim."
+    },
+    {
+      "text": "He would have competed ____ he hadn't broken his leg.",
+      "answer": "if",
+      "options": [
+        "unless",
+        "if",
+        "when",
+        "while"
+      ],
+      "translation": "Eğer bacağını kırmasaydı, yarışacaktı."
+    },
+    {
+      "text": "If she weren't injured, she ____ play.",
+      "answer": "would",
+      "options": [
+        "will",
+        "would have",
+        "would",
+        "can"
+      ],
+      "translation": "Yaralı olmasaydı oynardı."
+    }
+  ],
+  "11_G8": [
+    {
+      "text": "The software ____ by this company is very powerful.",
+      "answer": "developed",
+      "options": [
+        "developing",
+        "develop",
+        "developed",
+        "develops"
+      ],
+      "translation": "Bu şirket tarafından geliştirilen yazılım çok güçlüdür."
+    },
+    {
+      "text": "People ____ social media should be aware of privacy risks.",
+      "answer": "using",
+      "options": [
+        "using",
+        "used",
+        "use",
+        "uses"
+      ],
+      "translation": "Sosyal medya kullanan kişiler gizlilik risklerinin farkında olmalıdır."
+    },
+    {
+      "text": "A drone ____ remotely can carry packages.",
+      "answer": "controlled",
+      "options": [
+        "controlling",
+        "controlled",
+        "control",
+        "controls"
+      ],
+      "translation": "Uzaktan kontrol edilen bir drone paket taşıyabilir."
+    },
+    {
+      "text": "The scientist ____ the app is highly skilled.",
+      "answer": "developing",
+      "options": [
+        "developed",
+        "developing",
+        "develop",
+        "develops"
+      ],
+      "translation": "Uygulamayı geliştiren bilim insanı son derece yeteneklidir."
+    }
+  ],
+  "11_G9": [
+    {
+      "text": "I wish people ____ littering.",
+      "answer": "stopped",
+      "options": [
+        "stop",
+        "stopped",
+        "had stopped",
+        "stopping"
+      ],
+      "translation": "Keşke insanlar çöp atmayı bıraksa."
+    },
+    {
+      "text": "If only we ____ more forests.",
+      "answer": "had protected",
+      "options": [
+        "protect",
+        "protected",
+        "had protected",
+        "have protected"
+      ],
+      "translation": "Keşke daha fazla ormanı korumuş olsaydık."
+    },
+    {
+      "text": "I wish it ____ too late to save the glaciers.",
+      "answer": "weren't",
+      "options": [
+        "isn't",
+        "wasn't",
+        "weren't",
+        "hadn't been"
+      ],
+      "translation": "Keşke buzulları kurtarmak için çok geç olmasaydı."
+    },
+    {
+      "text": "I wish people recycled ____.",
+      "answer": "more",
+      "options": [
+        "much",
+        "many",
+        "more",
+        "most"
+      ],
+      "translation": "Keşke insanlar daha fazla geri dönüşüm yapsaydı."
+    }
+  ],
+  "11_G10": [
+    {
+      "text": "It ____ that the building was evacuated.",
+      "answer": "is reported",
+      "options": [
+        "reports",
+        "is reported",
+        "was reporting",
+        "reported"
+      ],
+      "translation": "Binanın tahliye edildiği bildirildi."
+    },
+    {
+      "text": "The editor is said ____ the article.",
+      "answer": "to review",
+      "options": [
+        "to review",
+        "reviewing",
+        "reviewed",
+        "review"
+      ],
+      "translation": "Editörün makaleyi incelediği söyleniyor."
+    },
+    {
+      "text": "It ____ believed that the news is fake.",
+      "answer": "is",
+      "options": [
+        "has",
+        "is",
+        "was",
+        "are"
+      ],
+      "translation": "Haberin sahte olduğuna inanılıyor."
+    },
+    {
+      "text": "It is said ____ hundreds were affected.",
+      "answer": "that",
+      "options": [
+        "which",
+        "what",
+        "that",
+        "who"
+      ],
+      "translation": "Yüzlerce kişinin etkilendiği söyleniyor."
+    }
+  ],
+  "12_G1": [
+    {
+      "text": "It was Mozart ____ composed this symphony.",
+      "answer": "who",
+      "options": [
+        "which",
+        "that",
+        "who",
+        "whom"
+      ],
+      "translation": "Bu senfoniyi besteleyen Mozart idi."
+    },
+    {
+      "text": "What I enjoy ____ listening to folk music.",
+      "answer": "is",
+      "options": [
+        "is",
+        "are",
+        "do",
+        "does"
+      ],
+      "translation": "En çok zevk aldığım şey halk müziği dinlemektir."
+    },
+    {
+      "text": "It ____ the lyrics that made the song famous.",
+      "answer": "was",
+      "options": [
+        "is",
+        "was",
+        "were",
+        "are"
+      ],
+      "translation": "Şarkıyı ünlü yapan sözleriydi."
+    },
+    {
+      "text": "The thing ____ makes music special is harmony.",
+      "answer": "that",
+      "options": [
+        "who",
+        "which",
+        "that",
+        "what"
+      ],
+      "translation": "Müziği özel yapan şey armonisidir."
+    }
+  ],
+  "12_G2": [
+    {
+      "text": "Equal rights ____ protected by law.",
+      "answer": "should be",
+      "options": [
+        "should be",
+        "should been",
+        "must",
+        "should"
+      ],
+      "translation": "Eşit haklar kanunla korunmalıdır."
+    },
+    {
+      "text": "The policy should have ____ earlier.",
+      "answer": "been changed",
+      "options": [
+        "changed",
+        "been changed",
+        "be changed",
+        "change"
+      ],
+      "translation": "Politika daha erken değiştirilmeliydi."
+    },
+    {
+      "text": "Discrimination ____ .",
+      "answer": "must be stopped",
+      "options": [
+        "must stop",
+        "must be stopped",
+        "must stopped",
+        "must stopped"
+      ],
+      "translation": "Ayrımcılık durdurulmalıdır."
+    },
+    {
+      "text": "More rights could ____ been granted.",
+      "answer": "have",
+      "options": [
+        "have",
+        "has",
+        "had",
+        "be"
+      ],
+      "translation": "Daha fazla hak tanınabilirdi."
+    }
+  ],
+  "12_G3": [
+    {
+      "text": "A new vaccine ____ by researchers.",
+      "answer": "has been discovered",
+      "options": [
+        "has discovered",
+        "has been discovered",
+        "is discovered",
+        "was discovered"
+      ],
+      "translation": "Araştırmacılar tarafından yeni bir aşı keşfedildi."
+    },
+    {
+      "text": "The experiment results will ____ next month.",
+      "answer": "be published",
+      "options": [
+        "publish",
+        "be published",
+        "make",
+        "be made"
+      ],
+      "translation": "Deney sonuçları önümüzdeki ay yayınlanacak."
+    },
+    {
+      "text": "Has the hypothesis ____ yet?",
+      "answer": "been proved",
+      "options": [
+        "proved",
+        "been proving",
+        "been proved",
+        "prove"
+      ],
+      "translation": "Hipotez henüz kanıtlandı mı?"
+    },
+    {
+      "text": "The vaccine is going to be ____ .",
+      "answer": "tested",
+      "options": [
+        "test",
+        "tested",
+        "testing",
+        "tests"
+      ],
+      "translation": "Aşı test edilecek."
+    }
+  ],
+  "12_G4": [
+    {
+      "text": "The professor said the exam ____ been rescheduled.",
+      "answer": "had",
+      "options": [
+        "has",
+        "had",
+        "have",
+        "is"
+      ],
+      "translation": "Profesör sınavın yeniden planlandığını söyledi."
+    },
+    {
+      "text": "He asked if I ____ applied for the dormitory.",
+      "answer": "had",
+      "options": [
+        "have",
+        "has",
+        "had",
+        "did"
+      ],
+      "translation": "Yurda başvurup başvurmadığımı sordu."
+    },
+    {
+      "text": "She told me ____ my thesis early.",
+      "answer": "to submit",
+      "options": [
+        "submit",
+        "to submit",
+        "submitting",
+        "submitted"
+      ],
+      "translation": "Bana tezimi erken teslim etmemi söyledi."
+    },
+    {
+      "text": "She asked ____ I had got a scholarship.",
+      "answer": "if",
+      "options": [
+        "that",
+        "if",
+        "is",
+        "where"
+      ],
+      "translation": "Burs alıp almadığımı sordu."
+    }
+  ],
+  "12_G5": [
+    {
+      "text": "If I ____ better as a child, I would be healthier now.",
+      "answer": "had eaten",
+      "options": [
+        "ate",
+        "have eaten",
+        "had eaten",
+        "eat"
+      ],
+      "translation": "Çocukken daha iyi beslenseydim, şimdi daha sağlıklı olurdum."
+    },
+    {
+      "text": "If I were more disciplined, I wouldn't ____ this disease.",
+      "answer": "have got",
+      "options": [
+        "got",
+        "have got",
+        "had got",
+        "getting"
+      ],
+      "translation": "Daha disiplinli olsaydım, bu hastalığa yakalanmazdım."
+    },
+    {
+      "text": "She would be a doctor now if she ____ medicine.",
+      "answer": "had studied",
+      "options": [
+        "studied",
+        "studies",
+        "had studied",
+        "studying"
+      ],
+      "translation": "Tıp okumuş olsaydı şimdi bir doktor olurdu."
+    },
+    {
+      "text": "If I had exercised regularly, I ____ be healthier now.",
+      "answer": "would",
+      "options": [
+        "will",
+        "would",
+        "do",
+        "am"
+      ],
+      "translation": "Düzenli egzersiz yapsaydım şimdi daha sağlıklı olurdum."
+    }
+  ],
+  "12_G6": [
+    {
+      "text": "Never ____ the economy been so fragile.",
+      "answer": "has",
+      "options": [
+        "has",
+        "have",
+        "had",
+        "did"
+      ],
+      "translation": "Ekonomi hiçbir zaman bu kadar kırılgan olmamıştı."
+    },
+    {
+      "text": "Not only ____ , but unemployment increased too.",
+      "answer": "did prices rise",
+      "options": [
+        "prices rose",
+        "did prices rise",
+        "does prices rise",
+        "prices rise"
+      ],
+      "translation": "Sadece fiyatlar yükselmedi, aynı zamanda işsizlik de arttı."
+    },
+    {
+      "text": "Rarely ____ inflation drop so quickly.",
+      "answer": "does",
+      "options": [
+        "do",
+        "does",
+        "did",
+        "has"
+      ],
+      "translation": "Enflasyon nadiren bu kadar hızlı düşer."
+    },
+    {
+      "text": "Hardly had the crisis begun ____ banks collapsed.",
+      "answer": "when",
+      "options": [
+        "while",
+        "when",
+        "then",
+        "just"
+      ],
+      "translation": "Kriz başlar başlamaz bankalar çöktü."
+    }
+  ],
+  "12_G7": [
+    {
+      "text": "The ____ of this sculpture required great skill.",
+      "answer": "creation",
+      "options": [
+        "create",
+        "creation",
+        "creative",
+        "creates"
+      ],
+      "translation": "Bu heykelin yaratılması büyük beceri gerektiriyordu."
+    },
+    {
+      "text": "Art is a powerful form of ____.",
+      "answer": "expression",
+      "options": [
+        "express",
+        "expression",
+        "expressing",
+        "expressed"
+      ],
+      "translation": "Sanat güçlü bir ifade biçimidir."
+    },
+    {
+      "text": "Cultural ____ is celebrated in modern art.",
+      "answer": "diversity",
+      "options": [
+        "diverse",
+        "diversity",
+        "diversify",
+        "diversed"
+      ],
+      "translation": "Kültürel çeşitlilik modern sanatta kutlanır."
+    },
+    {
+      "text": "Her paintings are full of ____.",
+      "answer": "inspiration",
+      "options": [
+        "inspire",
+        "inspiration",
+        "inspiring",
+        "inspired"
+      ],
+      "translation": "Tabloları ilham dolu."
+    }
+  ],
+  "12_G8": [
+    {
+      "text": "I wish I ____ to her advice.",
+      "answer": "listened",
+      "options": [
+        "listen",
+        "listened",
+        "have listened",
+        "listening"
+      ],
+      "translation": "Keşke onun tavsiyesini dinleseydim."
+    },
+    {
+      "text": "If only he ____ lost his temper.",
+      "answer": "hadn't",
+      "options": [
+        "hasn't",
+        "didn't",
+        "hadn't",
+        "wouldn't"
+      ],
+      "translation": "Keşke öfkesini kaybetmeseydi."
+    },
+    {
+      "text": "She wishes he ____ be so stubborn.",
+      "answer": "wouldn't",
+      "options": [
+        "won't",
+        "wouldn't",
+        "don't",
+        "didn't"
+      ],
+      "translation": "Keşke o kadar inatçı olmasaydı."
+    },
+    {
+      "text": "I wish I ____ communicated better.",
+      "answer": "communicated",
+      "options": [
+        "communicate",
+        "communicates",
+        "communicating",
+        "communicated"
+      ],
+      "translation": "Keşke daha iyi iletişim kursaydım."
+    }
+  ],
+  "12_G9": [
+    {
+      "text": "____ the difficulties, they continued cooperating.",
+      "answer": "Despite",
+      "options": [
+        "Although",
+        "Despite",
+        "Even though",
+        "However"
+      ],
+      "translation": "Zorluklara rağmen işbirliğine devam ettiler."
+    },
+    {
+      "text": "More migrants arrived. ____ , resources were stretched.",
+      "answer": "Consequently",
+      "options": [
+        "Consequently",
+        "Despite",
+        "Furthermore",
+        "Although"
+      ],
+      "translation": "Daha fazla göçmen geldi. Sonuç olarak, kaynaklar yetersiz kaldı."
+    },
+    {
+      "text": "____ , the treaty was signed by 50 countries.",
+      "answer": "Furthermore",
+      "options": [
+        "Furthermore",
+        "However",
+        "Despite",
+        "Though"
+      ],
+      "translation": "Üstelik antlaşma 50 ülke tarafından imzalandı."
+    },
+    {
+      "text": "____ the situation is difficult, progress is being made.",
+      "answer": "Although",
+      "options": [
+        "Although",
+        "Despite",
+        "However",
+        "Moreover"
+      ],
+      "translation": "Durum zor olmasına rağmen ilerleme kaydediliyor."
+    }
+  ],
+  "12_G10": [
+    {
+      "text": "AI ____ create new types of jobs.",
+      "answer": "is likely to",
+      "options": [
+        "is likely to",
+        "is bound to",
+        "will",
+        "might"
+      ],
+      "translation": "Yapay zekanın yeni tür işler yaratması muhtemeldir."
+    },
+    {
+      "text": "Climate change ____ get worse unless we act.",
+      "answer": "is bound to",
+      "options": [
+        "might",
+        "is bound to",
+        "could",
+        "would"
+      ],
+      "translation": "Eyleme geçmezsek iklim değişikliğinin daha da kötüleşmesi kaçınılmazdır."
+    },
+    {
+      "text": "In 2050, most people ____ in smart cities.",
+      "answer": "will be living",
+      "options": [
+        "will live",
+        "will be living",
+        "going to live",
+        "living"
+      ],
+      "translation": "2050 yılında çoğu insan akıllı şehirlerde yaşıyor olacak."
+    },
+    {
+      "text": "Education ____ be fully digital.",
+      "answer": "could",
+      "options": [
+        "could",
+        "is bound to",
+        "bound",
+        "had"
+      ],
+      "translation": "Eğitim tamamen dijital olabilir."
+    }
+  ]
+}
