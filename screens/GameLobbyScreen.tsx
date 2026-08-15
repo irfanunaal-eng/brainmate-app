@@ -5,11 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../lib/supabase';
 
 const GLOBAL_LEVELS = [
-  { id: 'A1', title: 'A1 Şampiyonu', desc: 'Başlangıç (A1) seviyesindeki tüm kelimeleri kapsar.', unlocked: true, stars: 3, stages: 15, words: 20 },
-  { id: 'A2', title: 'A2 Kaptanı', desc: 'Temel (A2) seviyesindeki yeni kelimeleri içerir.', unlocked: true, stars: 1, stages: 20, words: 25 },
-  { id: 'B1', title: 'B1 Uzmanı', desc: 'Orta (B1) seviyesi kelimelerini kapsar.', unlocked: true, stars: 0, stages: 25, words: 40 },
-  { id: 'B2', title: 'B2 Lideri', desc: 'İleri (B2) seviye zenginleştirilmiş kelime havuzu.', unlocked: false, stars: 0, stages: 30, words: 50 },
-  { id: 'C1', title: 'C1 Efsanesi', desc: 'Akademik ve akıcı (C1) seviye son kelimeler.', unlocked: false, stars: 0, stages: 40, words: 50 },
+  { id: 'A1', title: 'A1 Şampiyonu', desc: 'Başlangıç (A1) seviyesindeki tüm kelimeleri kapsar.', unlocked: true, stars: 3, stages: 15, words: 20, grades: ['5','6','7','8','9','10','11','12'] },
+  { id: 'A2', title: 'A2 Kaptanı', desc: 'Temel (A2) seviyesindeki yeni kelimeleri içerir.', unlocked: true, stars: 1, stages: 20, words: 25, grades: ['6','7','8','9','10','11','12'] },
+  { id: 'B1', title: 'B1 Uzmanı', desc: 'Orta (B1) seviyesi kelimelerini kapsar.', unlocked: true, stars: 0, stages: 25, words: 40, grades: ['8','9','10','11','12'] },
+  { id: 'B2', title: 'B2 Lideri', desc: 'İleri (B2) seviye zenginleştirilmiş kelime havuzu.', unlocked: false, stars: 0, stages: 30, words: 50, grades: ['10','11','12'] },
+  { id: 'C1', title: 'C1 Efsanesi', desc: 'Akademik ve akıcı (C1) seviye son kelimeler.', unlocked: false, stars: 0, stages: 40, words: 50, grades: ['11','12'] },
 ];
 
 const CURRICULUM_GRADES: Record<string, any[]> = {
@@ -267,7 +267,10 @@ export function GameLobbyScreen({ route }: any) {
               {/* Levels List */}
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
                 {(() => {
-                  const itemsToRender = activePath === 'school' ? (CURRICULUM_GRADES[activeGrade] || []) : GLOBAL_LEVELS;
+                  const itemsToRender = activePath === 'school' 
+                      ? (CURRICULUM_GRADES[activeGrade] || []) 
+                      : GLOBAL_LEVELS.filter(l => !l.grades || l.grades.includes(activeGrade));
+                  
                   return itemsToRender.map((level, idx) => {
                     const isPremiumOnly = activePath === 'global' ? (idx >= 2) : (!level.unlocked);
                     const visualUnlockedLevel = adminOverride || !isPremiumOnly;
