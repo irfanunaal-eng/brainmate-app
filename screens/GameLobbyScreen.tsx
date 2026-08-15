@@ -191,17 +191,19 @@ export function GameLobbyScreen({ route }: any) {
 
               {/* Grade Tabs (Only for School Path) */}
               {activePath === 'school' && (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6 h-12 flex-grow-0" contentContainerStyle={{ paddingHorizontal: 4 }}>
-                  {['5', '6', '7', '8'].map(g => (
-                    <TouchableOpacity
-                      key={g}
-                      onPress={() => switchGrade(g)}
-                      className={`mr-3 px-5 py-2.5 rounded-full border ${activeGrade === g ? 'bg-indigo-600 border-indigo-700' : 'bg-white border-gray-200'}`}
-                    >
-                      <Text className={`font-bold ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+                <View className="mb-6">
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                    {['5', '6', '7', '8'].map(g => (
+                      <TouchableOpacity
+                        key={g}
+                        onPress={() => switchGrade(g)}
+                        className={`mr-3 px-6 py-3 rounded-full border shadow-sm ${activeGrade === g ? 'bg-indigo-600 border-indigo-700 shadow-indigo-300' : 'bg-white border-gray-200 shadow-gray-100'}`}
+                      >
+                        <Text className={`font-black ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
               )}
 
               <Text className="text-xl font-extrabold text-gray-800 mb-4">{activePath === 'school' ? `${activeGrade}. Sınıf Üniteleri` : 'CEFR Seviyeleri (1000+ Kelime)'}</Text>
