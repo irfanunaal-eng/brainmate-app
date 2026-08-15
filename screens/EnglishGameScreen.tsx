@@ -15,19 +15,26 @@ export function EnglishGameScreen({ route }: any) {
   // Decide which database to pull from based on the levelId
   const isCurriculum = levelId && levelId.includes('_U');
   
-  let DB = isCurriculum ? (CURRICULUM_DB[`${levelId}_${stage}`] || CURRICULUM_DB[levelId] || CURRICULUM_DB['5_U1']) : (ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1']);
+  // Build a fixed 25-item test array on component mount
+  const [testDB] = useState(() => {
+     let rawDB = isCurriculum ? (CURRICULUM_DB[`${levelId}_${stage}`] || CURRICULUM_DB[levelId] || CURRICULUM_DB['5_U1']) : (ROOT_WORD_DB[levelId] || ROOT_WORD_DB['A1']);
+     
+     if (isCurriculum && !CURRICULUM_DB[`${levelId}_${stage}`] && Array.isArray(rawDB)) {
+         let pool = [...rawDB].sort(() => 0.5 - Math.random());
+         let result = [];
+         
+         while (result.length < 25) {
+            if (pool.length === 0) {
+                pool = [...rawDB].sort(() => 0.5 - Math.random());
+            }
+            result.push(pool.pop());
+         }
+         return result;
+     }
+     return rawDB;
+  });
 
-  // If explicit stage data doesn't exist yet (e.g., waiting for real DB records), 
-  // partition the unit vocabulary mathematically so each stage shows different words!
-  if (isCurriculum && !CURRICULUM_DB[`${levelId}_${stage}`] && Array.isArray(DB)) {
-       const wLength = DB.length;
-       const tStages = totalStages || 5; 
-       const perStage = Math.max(2, Math.ceil(wLength / tStages));
-       const startIdx = ((stage || 1) - 1) * perStage;
-       const slicedDB = DB.slice(startIdx, startIdx + perStage);
-       // Ensure we have words, otherwise fallback to start
-       if (slicedDB.length > 0) DB = slicedDB;
-  }
+  const DB = testDB;
 
   const navigation = useNavigation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -316,6 +323,7 @@ export function EnglishGameScreen({ route }: any) {
             </TouchableOpacity>
             <View>
                <Text className="text-indigo-800 font-extrabold text-xl">{score} XP</Text>
+               <Text className="text-gray-500 font-bold text-xs mt-0.5">Kalan Kelime: {Math.max(0, DB.length - currentWordIndex)}</Text>
                <Text className="text-gray-400 text-xs font-bold">{levelId} Seviyesi</Text>
             </View>
          </View>

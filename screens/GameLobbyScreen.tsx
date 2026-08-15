@@ -329,9 +329,16 @@ export function GameLobbyScreen({ route }: any) {
                         {expandedLevel === level.id && (
                           <View className="bg-indigo-50/50 rounded-b-2xl border border-t-0 border-indigo-100 p-2 mx-2">
                             <View className="flex-row flex-wrap justify-between p-2">
-                              {[...Array(level.stageNames ? level.stageNames.length : (level.stages || 1))].map((_, i) => {
+                              {(() => {
+                                 const stageCount = activePath === 'school' ? 5 : (level.stageNames ? level.stageNames.length : (level.stages || 1));
+                                 return [...Array(stageCount)].map((_, i) => {
                                   const isStageUnlocked = adminOverride || i < 3; // Demo: first three stages unlocked natively
-                                  const stageNameStr = level.stageNames ? `${i+1}. ${level.stageNames[i]}` : `Aşama ${i+1}`;
+                                  let stageNameStr = `Aşama ${i+1}`;
+                                  if (level.stageNames && level.stageNames[i]) {
+                                      stageNameStr = `${i+1}. ${level.stageNames[i]}`;
+                                  } else if (activePath === 'school') {
+                                      stageNameStr = `Test ${i+1} (Karma)`;
+                                  }
                                   
                                   // Fetch real progress from Supabase state
                                   const stageLogId = `${level.id}_${i + 1}`;
@@ -355,10 +362,14 @@ export function GameLobbyScreen({ route }: any) {
                                     <TouchableOpacity 
                                       key={i}
                                       disabled={!isStageUnlocked || isParentView}
-                                      onPress={() => navigation.navigate('EnglishGameScreen', { levelId: level.id, stage: i + 1, totalStages: level.stageNames ? level.stageNames.length : (level.stages || 1), mode: selectedMode })}
+                                      onPress={() => navigation.navigate('EnglishGameScreen', { 
+                                        levelId: level.id, 
+                                        stage: i + 1, 
+                                        totalStages: stageCount, 
+                                        mode: selectedMode 
+                                      })}
                                       className={`w-[48%] py-3 mb-2 rounded-xl items-center border relative overflow-hidden ${isStageUnlocked ? 'bg-white border-indigo-200 shadow-sm' : 'bg-gray-100 border-gray-200 opacity-60'}`}
                                     >
-                                      {/* Embedded Visual Progress Bar Background */}
                                       {isStageUnlocked && completionPct > 0 && (
                                           <View className={`absolute left-0 top-0 bottom-0 ${completionPct === 100 ? 'bg-emerald-100/40' : 'bg-amber-100/40'}`} style={{ width: `${completionPct}%` }} />
                                       )}
@@ -380,7 +391,9 @@ export function GameLobbyScreen({ route }: any) {
                                         </View>
 
                                         <View className="flex-row justify-between w-full items-center">
-                                          <Text className={`text-[10px] font-bold ${isStageUnlocked ? 'text-gray-500' : 'text-gray-400'}`}>~25 Kelime</Text>
+                                          <Text className={`text-[10px] font-bold ${isStageUnlocked ? 'text-gray-500' : 'text-gray-400'}`}>
+                                            {activePath === 'school' ? '25 Kelime' : '~25 Kelime'}
+                                          </Text>
                                           
                                           {isStageUnlocked && completionPct === 100 && successScore !== null && (
                                             <View className="flex-row items-center">
@@ -395,7 +408,8 @@ export function GameLobbyScreen({ route }: any) {
                                       </View>
                                     </TouchableOpacity>
                                   );
-                              })}
+                                 });
+                              })()}
                             </View>
                           </View>
                         )}
