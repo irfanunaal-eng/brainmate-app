@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 
 export function ParentDashboardScreen({ navigation }: any) {
   const [pairingCode, setPairingCode] = useState('');
-  const [isPaired, setIsPaired] = useState(false);
+  const [linkedStudents, setLinkedStudents] = useState<any[]>([]);
   const [studentName, setStudentName] = useState('Öğrenci');
   const [studentId, setStudentId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -12,8 +12,6 @@ export function ParentDashboardScreen({ navigation }: any) {
   const [panelTitle, setPanelTitle] = useState('Eğitimci Paneli');
   const [userRole, setUserRole] = useState<string>('');
   
-  // Navigation strictly resolving into universal TasksScreen
-
   useEffect(() => {
     checkExistingPairing();
   }, []);
@@ -22,42 +20,33 @@ export function ParentDashboardScreen({ navigation }: any) {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      let role = '';
       if (profile) {
-        setUserRole(profile.role);
-        if (profile.role === 'parent') setPanelTitle('Veli Paneli');
-        else if (profile.role === 'teacher') setPanelTitle('Okul Rehber Öğretmeni Paneli');
-        else if (profile.role === 'class_teacher') setPanelTitle('Sınıf Rehber Öğretmeni Paneli');
-        else if (profile.role === 'private_tutor') setPanelTitle('Özel Ders Öğretmeni Paneli');
-        else if (profile.role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
+        role = profile.role;
+        setUserRole(role);
+        if (role === 'parent') setPanelTitle('Veli Paneli');
+        else if (role === 'teacher') setPanelTitle('Okul Rehber Öğretmeni Paneli');
+        else if (role === 'class_teacher') setPanelTitle('Sınıf Rehber Öğretmeni Paneli');
+        else if (role === 'private_tutor') setPanelTitle('Özel Ders Öğretmeni Paneli');
+        else if (role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
       }
 
-      let linkData: any = null;
-
-      // Check traditional parent links first
+      // Check traditional parent links
       const { data: parentLinks } = await supabase
         .from('parent_student_links')
         .select(`student_id, profiles:student_id ( full_name, role )`)
-        .eq('parent_id', user.id)
-        .limit(1);
+        .eq('parent_id', user.id);
       
-      if (parentLinks && parentLinks.length > 0) {
-        linkData = parentLinks[0];
-      } else {
-        // Fallback to broader educator-student relationship links
-        const { data: teacherLinks } = await supabase
-          .from('student_teachers')
-          .select(`student_id, profiles:student_id ( full_name, role )`)
-          .eq('teacher_id', user.id)
-          .limit(1);
-        if (teacherLinks && teacherLinks.length > 0) {
-           linkData = teacherLinks[0];
+      const links = parentLinks || [];
+      if (links.length > 0) {
+        setLinkedStudents(links);
+        
+        // If it's a parent, they usually have 1 child and want to see the dashboard immediately. 
+        // If they have multiple, we can still auto-select the first, or let them pick. For now, parents auto-select.
+        if (role === 'parent' && links.length === 1) {
+            setStudentId(links[0].student_id);
+            setStudentName((links[0].profiles as any)?.full_name || 'Öğrenci');
         }
-      }
-
-      if (linkData) {
-        setIsPaired(true);
-        setStudentId(linkData.student_id);
-        setStudentName((linkData.profiles as any)?.full_name || 'Öğrenci');
       }
     }
     setLoading(false);
@@ -84,6 +73,8 @@ export function ParentDashboardScreen({ navigation }: any) {
       return;
     }
 
+    // YENİ KURAL: Okul veya Sınıf Rehber Öğretmeni ise eklediği çocuğun PRO olması kuralı denetlenebilir (İleri aşama için).
+
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       // Create link
@@ -94,18 +85,24 @@ export function ParentDashboardScreen({ navigation }: any) {
       if (linkError) {
         setErrorMessage(`Bağlantı Hatası: ${linkError.message}`);
       } else {
-        setStudentName(studentProfile.full_name || 'Öğrenci');
-        setStudentId(studentProfile.id);
-        setIsPaired(true);
+        const newStudent = { student_id: studentProfile.id, profiles: { full_name: studentProfile.full_name, role: 'student' } };
+        setLinkedStudents([...linkedStudents, newStudent]);
+        setPairingCode('');
+        Alert.alert('Başarılı', `${studentProfile.full_name} isimli öğrenci listenize başarıyla eklendi!`);
+        
+        if (userRole === 'parent') {
+           setStudentName(studentProfile.full_name || 'Öğrenci');
+           setStudentId(studentProfile.id);
+        }
       }
     }
     setLoading(false);
   };
 
-  const handlePremiumPurchase = () => {
-    Alert.alert('Premium Satın Al', 'Burada RevenueCat ile Apple/Google Pay ekranı açılacaktır.');
+  const selectStudent = (id: string, name: string) => {
+     setStudentId(id);
+     setStudentName(name);
   };
-
 
   const handleLogout = async () => {
     try {
@@ -117,46 +114,73 @@ export function ParentDashboardScreen({ navigation }: any) {
     }
   };
 
+  const isEducator = userRole !== 'parent' && userRole !== 'student' && userRole !== '';
+  const showStudentList = (isEducator && !studentId) || (!isEducator && linkedStudents.length === 0);
+
   return (
     <SafeAreaView className="flex-1 bg-surface">
       {loading ? (
         <View className="flex-1 justify-center items-center">
           <ActivityIndicator size="large" color="#fcd34d" />
         </View>
-      ) : !isPaired ? (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 p-6 justify-center">
-          <Text className="text-3xl font-extrabold text-text mb-2 mt-4">{panelTitle}</Text>
-          <Text className="text-gray-500 mb-10 text-base">Öğrencinizin gelişimini, ders çalışma sürelerini ve devamsızlıklarını anlık takip etmek için onun cihazındaki 6 haneli bağlantı kodunu girin.</Text>
-          
-          <View className="mb-8">
-            <Text className="text-gray-700 font-bold ml-1 mb-2 text-lg">Öğrenci Bağlantı Kodu</Text>
-            <TextInput 
-              className="bg-gray-50 px-5 py-6 rounded-2xl border border-gray-200 text-3xl tracking-widest uppercase font-extrabold text-center text-primary"
-              placeholder="XXXXXX"
-              placeholderTextColor="#cbd5e1"
-              maxLength={6}
-              autoCapitalize="characters"
-              value={pairingCode}
-              onChangeText={setPairingCode}
-            />
-            {errorMessage ? (
-              <Text className="text-red-500 font-bold mt-3 text-center px-2">{errorMessage}</Text>
-            ) : null}
-          </View>
+      ) : showStudentList ? (
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 p-6">
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60 }}>
+            <View className="flex-row justify-between items-center mb-6 mt-4">
+               <Text className="text-3xl font-extrabold text-text">{panelTitle}</Text>
+               <TouchableOpacity onPress={handleLogout} className="bg-gray-100 p-3 rounded-full">
+                  <Text className="text-xl">🚪</Text>
+               </TouchableOpacity>
+            </View>
 
-          <TouchableOpacity 
-            onPress={handlePairing}
-            className="bg-secondary w-full py-4 rounded-xl items-center mb-6 shadow-sm"
-          >
-            <Text className="text-white font-bold text-lg">Öğrenciyi Ekle</Text>
-          </TouchableOpacity>
+            {/* Öğrenci Ekleme Bölümü */}
+            <View className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm mb-8">
+               <Text className="font-extrabold text-gray-800 text-lg mb-2">Öğrenci Ekle</Text>
+               <Text className="text-gray-500 mb-4 text-sm font-medium">Öğrencinin cihazındaki 6 haneli kodu girerek sisteme dahil edin.</Text>
+               
+               <TextInput 
+                 className="bg-gray-50 px-5 py-4 rounded-2xl border border-gray-200 text-2xl tracking-widest uppercase font-extrabold text-center text-primary mb-3"
+                 placeholder="XXXXXX"
+                 placeholderTextColor="#cbd5e1"
+                 maxLength={6}
+                 autoCapitalize="characters"
+                 value={pairingCode}
+                 onChangeText={setPairingCode}
+               />
+               {errorMessage ? <Text className="text-red-500 font-bold mb-3 text-center px-1 text-xs">{errorMessage}</Text> : null}
 
-          <TouchableOpacity 
-            className="py-3 items-center mt-auto mb-4"
-            onPress={handleLogout}
-          >
-            <Text className="text-gray-500 font-bold text-base">🏠 Ana Ekran</Text>
-          </TouchableOpacity>
+               <TouchableOpacity onPress={handlePairing} className="bg-secondary w-full py-4 rounded-xl items-center shadow-sm">
+                 <Text className="text-white font-bold text-lg">Öğrenciyi Listeye Ekle</Text>
+               </TouchableOpacity>
+            </View>
+
+            <Text className="text-xl font-extrabold text-gray-800 mb-4">Öğrenci Listem</Text>
+            
+            {linkedStudents.length === 0 ? (
+               <View className="items-center justify-center p-8 bg-gray-50 border border-dashed border-gray-200 rounded-3xl">
+                  <Text className="text-3xl mb-3">👥</Text>
+                  <Text className="text-gray-500 font-bold text-center">Henüz listenizde öğrenci bulunmuyor. Yukarıdan ekleyebilirsiniz.</Text>
+               </View>
+            ) : (
+               linkedStudents.map((link, idx) => (
+                  <TouchableOpacity 
+                    key={idx} 
+                    onPress={() => selectStudent(link.student_id, link.profiles?.full_name || 'Öğrenci')}
+                    className="bg-white p-4 rounded-2xl mb-3 border border-gray-100 shadow-sm flex-row justify-between items-center"
+                  >
+                     <View className="flex-row items-center">
+                        <View className="w-12 h-12 bg-indigo-50 rounded-full items-center justify-center mr-4">
+                           <Text className="text-2xl">🎓</Text>
+                        </View>
+                        <View>
+                           <Text className="font-extrabold text-gray-800 text-lg">{link.profiles?.full_name}</Text>
+                           <Text className="text-primary font-bold text-xs uppercase tracking-widest mt-0.5">Profili İncele ➔</Text>
+                        </View>
+                     </View>
+                  </TouchableOpacity>
+               ))
+            )}
+          </ScrollView>
         </KeyboardAvoidingView>
       ) : (
         <View className="flex-1">
@@ -166,6 +190,11 @@ export function ParentDashboardScreen({ navigation }: any) {
               <Text className="text-3xl font-extrabold text-text">{panelTitle}</Text>
               <Text className="text-gray-500 font-medium">Bağlı Öğrenci: {studentName}</Text>
             </View>
+            {isEducator && (
+               <TouchableOpacity onPress={() => setStudentId(null)} className="w-10 h-10 items-center justify-center bg-gray-100 rounded-full">
+                 <Text className="text-lg">🔙</Text>
+               </TouchableOpacity>
+            )}
           </View>
 
           {/* Hızlı Özet */}
@@ -180,8 +209,6 @@ export function ParentDashboardScreen({ navigation }: any) {
             </View>
           </View>
 
-
-
           {/* Kilitli İçerik / Premium Çağrısı */}
           <View className="bg-amber-50 p-6 rounded-3xl mb-8 border-2 border-amber-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
             <View className="absolute -right-4 -top-4 w-20 h-20 bg-amber-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
@@ -192,7 +219,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             </Text>
             
             <TouchableOpacity 
-              onPress={handlePremiumPurchase}
+              onPress={() => Alert.alert('Premium Satın Al', 'Burada RevenueCat ile Apple/Google Pay ekranı açılacaktır.')}
               className="bg-amber-500 w-full py-4 rounded-xl items-center shadow-sm"
             >
               <Text className="text-white font-extrabold text-lg">Aylık 199₺ ile Kilidi Aç</Text>
