@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, Animated, Dimensions, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Animated, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
-
 import * as Speech from 'expo-speech';
+import { supabase } from '../lib/supabase';
 
 const ROOT_WORD_DB = require('../assets/vocabulary.json');
 const CURRICULUM_DB = require('../assets/curriculum.json');
@@ -38,6 +38,8 @@ export function EnglishGameScreen({ route }: any) {
   const [gameHistory, setGameHistory] = useState<{en: string, tr: string, correct: boolean}[]>([]);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<{ visible: boolean; correct: boolean } | null>(null);
+  const [isGameWon, setIsGameWon] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   
   const [showCannedMenu, setShowCannedMenu] = useState(false);
   const [floatingMsg, setFloatingMsg] = useState<{sender: string, text: string} | null>(null);
@@ -134,28 +136,79 @@ export function EnglishGameScreen({ route }: any) {
     }
   };
 
-  const handleNextWord = () => {
-    setFeedback(null);
-    if (!feedback?.correct) {
-      if (lives > 1) {
-        setLives(prev => prev - 1);
-        setCurrentWordIndex(prev => prev + 1);
-      } else {
-        setLives(0);
-        setIsGameOver(true);
-      }
+  const saveLog = async (historyAcc: typeof gameHistory) => {
+    setIsSaving(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      
+      const total = historyAcc.length;
+      const rights = historyAcc.filter(h => h.correct).length;
+      const accuracy = total > 0 ? (rights / total) * 100 : 0;
+      
+      let earnedStars = 0;
+      if (accuracy >= 85) earnedStars = 3;
+      else if (accuracy >= 60) earnedStars = 2;
+      else if (accuracy >= 35) earnedStars = 1;
+
+      await supabase.from('user_game_progress').insert({
+        user_id: user.id,
+        subject_id: 'english',
+        unit_id: `${levelId}_${stage}`,
+        score: Math.round(accuracy),
+        stars: earnedStars
+      });
+    } catch (e) {
+      console.log('Error saving progress', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const checkGameEndCondition = (newHistory: typeof gameHistory) => {
+    if (newHistory.length >= DB.length) {
+      setIsGameOver(true);
+      setIsGameWon(true);
+      saveLog(newHistory);
     } else {
       setCurrentWordIndex(prev => prev + 1);
     }
   };
 
+  const handleNextWord = () => {
+    setFeedback(null);
+    if (!feedback?.correct) {
+      if (lives > 1) {
+        setLives(prev => prev - 1);
+        checkGameEndCondition(gameHistory);
+      } else {
+        setLives(0);
+        setIsGameOver(true);
+        setIsGameWon(false);
+      }
+    } else {
+      checkGameEndCondition(gameHistory);
+    }
+  };
+
   if (isGameOver) {
+    const total = gameHistory.length;
+    const rights = gameHistory.filter(h => h.correct).length;
+    const accuracy = total > 0 ? (rights / total) * 100 : 0;
+    
+    let renderedStars = '🌑🌑🌑';
+    if (accuracy >= 85) renderedStars = '🌟🌟🌟';
+    else if (accuracy >= 60) renderedStars = '🌟🌟🌑';
+    else if (accuracy >= 35) renderedStars = '🌟🌑🌑';
+
     return (
       <SafeAreaView className="flex-1 bg-surface justify-center p-6">
         <View className="items-center mb-6">
-          <Text className="text-6xl mb-4">💀</Text>
-          <Text className="text-3xl font-black text-gray-800 mb-1">Oyun Bitti!</Text>
-          <Text className="text-lg text-indigo-600 font-bold">Kazanılan: {score} XP</Text>
+          <Text className="text-6xl mb-4">{isGameWon ? '🏆' : '💀'}</Text>
+          <Text className="text-3xl font-black text-gray-800 mb-1">{isGameWon ? 'Bölüm Tamamlandı!' : 'Oyun Bitti!'}</Text>
+          <Text className="text-lg text-indigo-600 font-bold mb-1">Kazanılan: {score} XP</Text>
+          {isGameWon && <Text className="text-3xl mt-2">{renderedStars}</Text>}
+          {isSaving && <ActivityIndicator className="mt-2" color="#4f46e5" />}
         </View>
 
         <Text className="font-extrabold text-gray-800 mb-3 text-lg">Cevap Özeti</Text>
@@ -180,6 +233,8 @@ export function EnglishGameScreen({ route }: any) {
             setCurrentWordIndex(0);
             setGameHistory([]);
             setIsGameOver(false);
+            setIsGameWon(false);
+            setFeedback(null);
           }}
           className="bg-indigo-600 w-full py-4 rounded-xl items-center shadow-lg shadow-indigo-600/30 mb-4"
         >
