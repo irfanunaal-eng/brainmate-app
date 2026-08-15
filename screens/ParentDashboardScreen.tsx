@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Modal } from 'react-native';
 import { supabase } from '../lib/supabase';
+import { checkPremiumStatus } from '../lib/premium';
 
 export function ParentDashboardScreen({ navigation }: any) {
   const [pairingCode, setPairingCode] = useState('');
@@ -11,9 +12,11 @@ export function ParentDashboardScreen({ navigation }: any) {
   const [errorMessage, setErrorMessage] = useState('');
   const [panelTitle, setPanelTitle] = useState('Eğitimci Paneli');
   const [userRole, setUserRole] = useState<string>('');
+  const [isPremium, setIsPremium] = useState(false);
   
   useEffect(() => {
     checkExistingPairing();
+    checkPremiumStatus().then(setIsPremium);
   }, []);
 
   const checkExistingPairing = async () => {
@@ -242,21 +245,23 @@ export function ParentDashboardScreen({ navigation }: any) {
           </View>
 
           {/* Kilitli İçerik / Premium Çağrısı */}
-          <View className="bg-amber-50 p-6 rounded-3xl mb-8 border-2 border-amber-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
-            <View className="absolute -right-4 -top-4 w-20 h-20 bg-amber-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
-            
-            <Text className="text-amber-800 font-extrabold text-xl mb-2" style={{ marginBottom: 8 }}>⭐ Premium Takip Aboneliği</Text>
-            <Text className="text-amber-700 mb-5 text-sm leading-5">
-              Öğrencinizin branş bazlı Türkiye geneli sıralamasını, zayıf olduğu konuları analiz eden yapay zeka raporunu ve anlık bildirimleri açmak için BrainMate Premium'a geçin.
-            </Text>
-            
-            <TouchableOpacity 
-              onPress={() => Alert.alert('Premium Satın Al', 'Burada RevenueCat ile Apple/Google Pay ekranı açılacaktır.')}
-              className="bg-amber-500 w-full py-4 rounded-xl items-center shadow-sm"
-            >
-              <Text className="text-white font-extrabold text-lg">Aylık 199₺ ile Kilidi Aç</Text>
-            </TouchableOpacity>
-          </View>
+          {!isPremium && (
+             <View className="bg-amber-50 p-6 rounded-3xl mb-8 border-2 border-amber-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
+               <View className="absolute -right-4 -top-4 w-20 h-20 bg-amber-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
+               
+               <Text className="text-amber-800 font-extrabold text-xl mb-2" style={{ marginBottom: 8 }}>⭐ Premium Takip Aboneliği</Text>
+               <Text className="text-amber-700 mb-5 text-sm leading-5">
+                 Öğrencinizin branş bazlı Türkiye geneli sıralamasını, zayıf olduğu konuları analiz eden yapay zeka raporunu ve anlık bildirimleri açmak için BrainMate Premium'a geçin.
+               </Text>
+               
+               <TouchableOpacity 
+                 onPress={() => navigation.navigate('SubscriptionScreen')}
+                 className="bg-amber-500 w-full py-4 rounded-xl items-center shadow-sm"
+               >
+                 <Text className="text-white font-extrabold text-lg">BrainMate Pro'ya Geç 🚀</Text>
+               </TouchableOpacity>
+             </View>
+          )}
 
           <Text className="text-xl font-extrabold text-gray-800 mb-4" style={{ marginBottom: 16 }}>Son Girilen Notlar</Text>
           <View className="bg-white p-4 rounded-2xl mb-3 border border-gray-100 flex-row justify-between items-center shadow-sm" style={{ padding: 16, marginBottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
