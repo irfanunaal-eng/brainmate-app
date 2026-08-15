@@ -1,9 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { supabase } from '../lib/supabase';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 
+// Configure Locales for Turkish
+LocaleConfig.locales['tr'] = {
+  monthNames: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+  monthNamesShort: ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],
+  dayNames: ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
+  dayNamesShort: ['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'],
+  today: 'Bugün'
+};
+LocaleConfig.defaultLocale = 'tr';
+
+const getCalendarMarks = (selectedDate: Date, holidays: string[]) => {
+  const marks: any = {};
+  const year = selectedDate.getFullYear();
+  [year - 1, year, year + 1].forEach(y => {
+     for (let m = 0; m < 12; m++) {
+        const dInM = new Date(y, m + 1, 0).getDate();
+        for (let d = 1; d <= dInM; d++) {
+           const dt = new Date(y, m, d);
+           const dayOfWeek = dt.getDay();
+           const dd = d.toString().padStart(2, '0');
+           const mm = (m + 1).toString().padStart(2, '0');
+           const dStr = `${y}-${mm}-${dd}`;
+           const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+           const isHoliday = holidays.includes(`${dd}-${mm}`);
+           if (isWeekend || isHoliday) {
+              marks[dStr] = { disabled: true, disableTouchEvent: true, disabledTextColor: '#f87171' };
+           }
+        }
+     }
+  });
+  const selMM = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+  const selDD = selectedDate.getDate().toString().padStart(2, '0');
+  const selStr = `${selectedDate.getFullYear()}-${selMM}-${selDD}`;
+  marks[selStr] = { ...marks[selStr], selected: true, selectedColor: '#4f46e5', selectedTextColor: '#ffffff' };
+  return marks;
+};
 const STATUS_OPTIONS = [
   { id: 'yok', label: '❌ Mazeretsiz (Yok Yazıldı)', type: 'mazeretsiz', color: 'text-rose-700', bg: 'bg-rose-50', border: 'border-rose-200' },
   { id: 'gec', label: '⏱️ Geç Kaldı (Kurul/Yok Sayılır)', type: 'mazeretsiz', color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200' },
@@ -298,19 +334,31 @@ export function AttendanceScreen({ navigation, route }: any) {
                      className="flex-row items-center bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-6"
                   >
                      <Text className="text-xl mr-3">📅</Text>
-                     <Text className="font-bold text-slate-700 text-base">{formDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' })}</Text>
-                  </TouchableOpacity>
-
-                  <DateTimePickerModal
-                     isVisible={isDatePickerVisible}
-                     mode="date"
-                     onConfirm={(date) => { setFormDate(date); setDatePickerVisibility(false); }}
-                     onCancel={() => setDatePickerVisibility(false)}
-                     locale="tr-TR"
-                     cancelTextIOS="İptal"
-                     confirmTextIOS="Seç"
-                     customHeaderIOS={() => <View className="p-4 items-center border-b border-gray-200"><Text className="font-bold text-lg">Tarih Seç</Text></View>}
-                  />
+                  {isDatePickerVisible && (
+                    <View className="mb-6 rounded-2xl overflow-hidden border border-slate-200">
+                       <Calendar
+                           current={formDate.toISOString().split('T')[0]}
+                           firstDay={1}
+                           onDayPress={(day: any) => {
+                              const [y, m, d] = day.dateString.split('-');
+                              setFormDate(new Date(parseInt(y), parseInt(m)-1, parseInt(d)));
+                              setDatePickerVisibility(false);
+                           }}
+                           markedDates={getCalendarMarks(formDate, OFFICIAL_HOLIDAYS)}
+                           theme={{
+                              textSectionTitleColor: '#4f46e5',
+                              selectedDayBackgroundColor: '#4f46e5',
+                              todayTextColor: '#4f46e5',
+                              arrowColor: '#4f46e5',
+                              monthTextColor: '#1e293b',
+                              textMonthFontWeight: 'bold',
+                           }}
+                       />
+                       <TouchableOpacity onPress={() => setDatePickerVisibility(false)} className="bg-slate-100 p-3 items-center">
+                          <Text className="text-slate-500 font-bold">Kapat</Text>
+                       </TouchableOpacity>
+                    </View>
+                  )}
 
                   {/* Reason Selection */}
                   <Text className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Gerekçe / Durum</Text>

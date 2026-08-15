@@ -38,9 +38,21 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
 
       // --- DEVAMSIZLIK ÇEKME ---
       try {
-         const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
-         if (attLogsData) {
-             const logs = JSON.parse(attLogsData);
+         let logs: any[] = [];
+         
+         // Önce veritabanından çekmeyi dene (farklı cihazdan giren veliler için)
+         try {
+           const { data: dbLogs } = await supabase.from('attendance_logs').select('*').eq('student_id', sId);
+           if (dbLogs && dbLogs.length > 0) logs = dbLogs;
+         } catch(e) {}
+
+         // Eğer veritabanı boş ise (veya çekemediyse) yerel cache'e bak
+         if (logs.length === 0) {
+            const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
+            if (attLogsData) logs = JSON.parse(attLogsData);
+         }
+
+         if (logs && logs.length > 0) {
              let mazeretsizSaat = 0;
              let mazeretliSaat = 0;
              let gecSayisi = 0;
@@ -54,7 +66,11 @@ export function AcademicDashboardScreen({ navigation, route }: any) {
                  if (tType === 'gec') {
                     gecSayisi++;
                  } else {
-                    let hours = log.scope === 'tam_gun' ? 8 : (log.scope === 'yarim_gun' ? 4 : (log.periods?.length || 0));
+                    let hours = 0;
+                    if (log.scope === 'tam_gun') hours = 8;
+                    else if (log.scope === 'yarim_gun') hours = 4;
+                    else if (log.periods && Array.isArray(log.periods)) hours = log.periods.length;
+                    
                     if (tType === 'mazeretsiz') mazeretsizSaat += hours;
                     if (tType === 'mazeretli') mazeretliSaat += hours;
                  }

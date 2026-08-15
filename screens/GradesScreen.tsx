@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, KeyboardAvoidingView, Platform, Keyboard, Modal, ActivityIndicator, Alert } from 'react-native';
 import { supabase } from '../lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 import { MEB_ELECTIVES, ACADEMIC_YEARS } from '../constants/MebCurriculum';
 
 const COL_WIDTH = 45;
@@ -19,6 +20,7 @@ const GRADE_EXCLUDED_SUBJECTS = [
 ];
 
 export function GradesScreen({ navigation, route }: any) {
+  const isFocused = useIsFocused();
   const [subjects, setSubjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -55,22 +57,49 @@ export function GradesScreen({ navigation, route }: any) {
               if (cached) existingGrades = JSON.parse(cached);
            }
            try {
-              const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
-              if (attLogsData) {
-                  const logs = JSON.parse(attLogsData);
+              let logs: any[] = [];
+              
+              try {
+                const { data: dbLogs } = await supabase.from('attendance_logs').select('*').eq('student_id', sId);
+                if (dbLogs && dbLogs.length > 0) logs = dbLogs;
+              } catch(e) {}
+
+              if (logs.length === 0) {
+                 const attLogsData = await AsyncStorage.getItem(`@att_logs_${sId}`);
+                 if (attLogsData) logs = JSON.parse(attLogsData);
+              }
+
+              if (logs.length > 0) {
                   let mazeretsizSaat = 0;
                   let mazeretliSaat = 0;
+                  let gecSayisi = 0;
                   const STATUS_OPTS: Record<string, string> = {
-                    'yok': 'mazeretsiz', 'gec': 'mazeretsiz', 'rapor': 'mazeretli', 'izin': 'mazeretli', 'faaliyet': 'present'
+                    'yok': 'mazeretsiz', 'gec': 'gec', 'rapor': 'mazeretli', 'izin': 'mazeretli', 'faaliyet': 'present'
                   };
+                  
                   logs.forEach((log: any) => {
                       const tType = STATUS_OPTS[log.statusId] || 'present';
                       if (tType === 'present') return;
-                      let hours = log.scope === 'tam_gun' ? 8 : (log.scope === 'yarim_gun' ? 4 : (log.periods?.length || 0));
-                      if (tType === 'mazeretsiz') mazeretsizSaat += hours;
-                      if (tType === 'mazeretli') mazeretliSaat += hours;
+                      if (tType === 'gec') {
+                         gecSayisi++;
+                      } else {
+                         let hours = 0;
+                         if (log.scope === 'tam_gun') hours = 8;
+                         else if (log.scope === 'yarim_gun') hours = 4;
+                         else if (log.periods && Array.isArray(log.periods)) hours = log.periods.length;
+                         
+                         if (tType === 'mazeretsiz') mazeretsizSaat += hours;
+                         if (tType === 'mazeretli') mazeretliSaat += hours;
+                      }
                   });
-                  setAttStats({ mazeretsiz: +(mazeretsizSaat / 8).toFixed(2), mazeretli: +(mazeretliSaat / 8).toFixed(2) });
+                  
+                  const gecDenGelenYarimGunler = Math.floor(gecSayisi / 5);
+                  mazeretsizSaat += (gecDenGelenYarimGunler * 4);
+
+                  setAttStats({ 
+                      mazeretsiz: +(mazeretsizSaat / 8).toFixed(2), 
+                      mazeretli: +(mazeretliSaat / 8).toFixed(2) 
+                  });
               }
            } catch(e) {}
 
@@ -143,7 +172,9 @@ export function GradesScreen({ navigation, route }: any) {
       }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { 
+    if (isFocused) fetchData(); 
+  }, [isFocused]);
 
 
 
