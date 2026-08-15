@@ -334,6 +334,9 @@ export function AttendanceScreen({ navigation, route }: any) {
                      className="flex-row items-center bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-6"
                   >
                      <Text className="text-xl mr-3">📅</Text>
+                     <Text className="font-bold text-slate-700 text-base">{formDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' })}</Text>
+                  </TouchableOpacity>
+
                   {isDatePickerVisible && (
                     <View className="mb-6 rounded-2xl overflow-hidden border border-slate-200">
                        <Calendar
