@@ -127,9 +127,9 @@ export function ParentDashboardScreen({ navigation }: any) {
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 p-6">
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60 }}>
             <View className="flex-row justify-between items-center mb-6 mt-4">
-               <Text className="text-3xl font-extrabold text-text">{panelTitle}</Text>
-               <TouchableOpacity onPress={handleLogout} className="bg-gray-100 p-3 rounded-full">
-                  <Text className="text-xl">🚪</Text>
+               <Text className="text-2xl font-extrabold text-text flex-1 mr-2">{panelTitle}</Text>
+               <TouchableOpacity onPress={handleLogout} className="bg-red-50 border border-red-100 px-3 py-2 rounded-xl flex-row items-center">
+                  <Text className="text-red-600 font-bold text-xs">🏠 Çıkış Yap</Text>
                </TouchableOpacity>
             </View>
 
