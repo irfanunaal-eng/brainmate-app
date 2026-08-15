@@ -13,6 +13,8 @@ export function ParentDashboardScreen({ navigation }: any) {
   const [panelTitle, setPanelTitle] = useState('Eğitimci Paneli');
   const [userRole, setUserRole] = useState<string>('');
   const [isPremium, setIsPremium] = useState(false);
+  const [subStatus, setSubStatus] = useState<string | null>(null);
+  const [subEndsAt, setSubEndsAt] = useState<string | null>(null);
   
   useEffect(() => {
     checkExistingPairing();
@@ -22,7 +24,7 @@ export function ParentDashboardScreen({ navigation }: any) {
   const checkExistingPairing = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      const { data: profile } = await supabase.from('profiles').select('role, subscription_status, trial_ends_at').eq('id', user.id).single();
       let role = '';
       if (profile) {
         role = profile.role;
@@ -32,6 +34,9 @@ export function ParentDashboardScreen({ navigation }: any) {
         else if (role === 'class_teacher') setPanelTitle('Sınıf Rehber Öğretmeni Paneli');
         else if (role === 'private_tutor') setPanelTitle('Özel Ders Öğretmeni Paneli');
         else if (role === 'student_coach') setPanelTitle('Öğrenci Koçu Paneli');
+        
+        setSubStatus(profile.subscription_status || null);
+        setSubEndsAt(profile.trial_ends_at || null);
       }
 
       // Mümkün olan tüm bağlantıları topla
@@ -245,7 +250,15 @@ export function ParentDashboardScreen({ navigation }: any) {
           </View>
 
           {/* Kilitli İçerik / Premium Çağrısı */}
-          {!isPremium && (
+          {userRole === 'teacher' || userRole === 'class_teacher' ? (
+             <View className="bg-indigo-50 p-6 rounded-3xl mb-8 border-2 border-indigo-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
+               <View className="absolute -right-4 -top-4 w-20 h-20 bg-indigo-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
+               <Text className="text-indigo-800 font-extrabold text-xl mb-2" style={{ marginBottom: 8 }}>⭐ Sınırsız Kurumsal Erişim</Text>
+               <Text className="text-indigo-700 mb-1 text-sm leading-5">
+                 Okul/Sınıf öğretmeni olduğunuz için tüm BrainMate Pro özellikleri kurumunuz adına tamamen ücretsizdir.
+               </Text>
+             </View>
+          ) : !isPremium ? (
              <View className="bg-amber-50 p-6 rounded-3xl mb-8 border-2 border-amber-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
                <View className="absolute -right-4 -top-4 w-20 h-20 bg-amber-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
                
@@ -260,6 +273,19 @@ export function ParentDashboardScreen({ navigation }: any) {
                >
                  <Text className="text-white font-extrabold text-lg">BrainMate Pro'ya Geç 🚀</Text>
                </TouchableOpacity>
+             </View>
+          ) : (
+             <View className="bg-emerald-50 p-6 rounded-3xl mb-8 border-2 border-emerald-200 relative overflow-hidden" style={{ padding: 24, marginBottom: 32, overflow: 'hidden' }}>
+               <View className="absolute -right-4 -top-4 w-20 h-20 bg-emerald-200 rounded-full opacity-50" style={{ position: 'absolute', right: -16, top: -16, width: 80, height: 80 }} />
+               <Text className="text-emerald-800 font-extrabold text-xl mb-2" style={{ marginBottom: 8 }}>⭐ BrainMate Pro Aktif</Text>
+               <Text className="text-emerald-700 mb-1 text-sm leading-5 font-bold">
+                 Durum: {subStatus === 'trialing' ? 'Ücretsiz Deneme Sürecinde' : 'Aktif Abonelik'}
+               </Text>
+               {subEndsAt && (
+                 <Text className="text-emerald-600 mb-1 text-sm leading-5">
+                   Geçerlilik Tarihi: {new Date(subEndsAt).toLocaleDateString('tr-TR')}
+                 </Text>
+               )}
              </View>
           )}
 
