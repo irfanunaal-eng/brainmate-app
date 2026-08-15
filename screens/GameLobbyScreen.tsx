@@ -176,16 +176,6 @@ export function GameLobbyScreen({ route }: any) {
                </TouchableOpacity>
              </View>
 
-             <View className={`p-5 rounded-3xl mb-6 shadow-sm ${selectedMode === 'solo' ? 'bg-indigo-50 border-indigo-100' : 'bg-rose-50 border-rose-100'} border`}>
-                <Text className={`text-lg font-black mb-1 ${selectedMode === 'solo' ? 'text-indigo-800' : 'text-rose-800'}`}>
-                  {selectedMode === 'solo' ? 'Kelime Hazneni Genişlet' : 'Meydan Okuma Zamanı!'}
-                </Text>
-                <Text className={`text-sm font-medium ${selectedMode === 'solo' ? 'text-indigo-600/80' : 'text-rose-600/80'}`}>
-                  {selectedMode === 'solo' 
-                     ? 'İngilizcede en sık kullanılan hayati kelimeleri sırayla aç. Hızlı olan kazanır, can (❤️) puanlarına dikkat et!' 
-                     : 'Sosyal ağından bir "Ebedi Rakip" veya "Kanka" seç. Aynı kelimeleri kim daha hızlı bilecek?'}
-                </Text>
-             </View>
 
               {selectedMode === 'duel' && (
                  <View className="mb-6">
