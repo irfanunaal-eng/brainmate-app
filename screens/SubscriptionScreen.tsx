@@ -5,7 +5,8 @@ import { supabase } from '../lib/supabase';
 
 export function SubscriptionScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
-  const [price, setPrice] = useState<string | null>(null);
+  const [basePrice, setBasePrice] = useState<number | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual'>('annual');
   
   useEffect(() => {
      const checkRole = async () => {
@@ -17,13 +18,22 @@ export function SubscriptionScreen({ navigation }: any) {
         }
 
         if (role === 'parent' || role === 'student_coach' || role === 'private_tutor') {
-           setPrice('199');
+           setBasePrice(199);
         } else {
-           setPrice('49'); // Default or Student
+           setBasePrice(49); // Default or Student
         }
      };
      checkRole();
   }, []);
+
+  let monthlyEquiv = basePrice;
+  let totalBilled = basePrice;
+  let isAnnual = selectedPlan === 'annual';
+
+  if (basePrice !== null && isAnnual) {
+      monthlyEquiv = Math.round(basePrice * 0.75); // 25% discount
+      totalBilled = monthlyEquiv * 12;
+  }
 
   const handleSubscribe = async () => {
     setLoading(true);
@@ -41,12 +51,13 @@ export function SubscriptionScreen({ navigation }: any) {
       trialEndsAt.setDate(trialEndsAt.getDate() + 3);
 
       // Update the user's profile with trial status
+      const planString = isAnnual ? `annual_${totalBilled}` : `monthly_${basePrice}`;
       const { error } = await supabase
         .from('profiles')
         .update({ 
            subscription_status: 'trialing', 
            trial_ends_at: trialEndsAt.toISOString(),
-           subscription_plan: `monthly_${price}`
+           subscription_plan: planString
         })
         .eq('id', user.id);
 
@@ -97,20 +108,50 @@ export function SubscriptionScreen({ navigation }: any) {
           ))}
         </View>
 
+        {/* Plan Selector */}
+        <View className="px-6 mb-4 flex-row justify-between space-x-3" style={{ flexDirection: 'row', paddingHorizontal: 24, marginBottom: 16 }}>
+          <TouchableOpacity 
+            onPress={() => setSelectedPlan('monthly')}
+            className={`flex-1 rounded-2xl p-4 border-2 ${!isAnnual ? 'bg-indigo-500/20 border-indigo-500' : 'bg-slate-800 border-slate-700'}`}
+            style={{ flex: 1, padding: 16, borderRadius: 16, borderWidth: 2, marginRight: 6 }}
+          >
+            <Text className="text-white font-bold text-base text-center mb-1">Aylık Plan</Text>
+            <Text className="text-slate-400 font-medium text-xs text-center">{basePrice} ₺/ay</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            onPress={() => setSelectedPlan('annual')}
+            className={`flex-1 rounded-2xl p-4 border-2 relative ${isAnnual ? 'bg-indigo-500/20 border-indigo-500' : 'bg-slate-800 border-slate-700'}`}
+            style={{ flex: 1, padding: 16, borderRadius: 16, borderWidth: 2, marginLeft: 6 }}
+          >
+            <View className="absolute -top-3 self-center bg-emerald-500 px-2 py-0.5 rounded-full" style={{ position: 'absolute', top: -12, alignSelf: 'center' }}>
+              <Text className="text-white font-bold text-[10px]">%25 İNDİRİM</Text>
+            </View>
+            <Text className="text-white font-bold text-base text-center mb-1">Yıllık Plan</Text>
+            <Text className="text-slate-400 font-medium text-xs text-center">{basePrice ? Math.round(basePrice * 0.75) : '...'} ₺/ay</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Pricing Card */}
         <View className="px-6 mb-8">
           <View className="bg-slate-800 rounded-3xl p-6 border-2 border-indigo-500 relative shadow-2xl">
             <View className="absolute -top-4 self-center bg-indigo-500 px-4 py-1 rounded-full shadow-lg">
-               <Text className="text-white font-black text-xs uppercase tracking-widest">En Popüler Plan</Text>
+               <Text className="text-white font-black text-xs uppercase tracking-widest">{isAnnual ? 'En Çok Tercih Edilen' : 'Standart Tarife'}</Text>
             </View>
             
             <View className="items-center mt-4 mb-2">
                <Text className="text-slate-400 font-bold mb-1 uppercase tracking-widest text-xs">YENİ NESİL EĞİTİM</Text>
                <View className="flex-row items-end justify-center mb-3">
-                 <Text className="text-5xl font-black text-white">{price === null ? '...' : price} ₺</Text>
+                 <Text className="text-5xl font-black text-white">{monthlyEquiv === null ? '...' : monthlyEquiv} ₺</Text>
                  <Text className="text-slate-400 font-bold mb-2 ml-1">/ ay</Text>
                </View>
-               <Text className="text-indigo-400 font-bold text-sm bg-indigo-500/10 px-3 py-1 rounded-full">12 Ay Geçerli Sabit Fiyat Garantisi</Text>
+               {isAnnual ? (
+                 <Text className="text-emerald-400 font-bold text-sm bg-emerald-500/10 px-3 py-1 rounded-full text-center">
+                   12 Ay için Peşin {totalBilled} ₺ Tahsil Edilir
+                 </Text>
+               ) : (
+                 <Text className="text-indigo-400 font-bold text-sm bg-indigo-500/10 px-3 py-1 rounded-full text-center">Her Ay Yenilerek Tahsil Edilir</Text>
+               )}
             </View>
             
             <View className="bg-slate-700/50 rounded-2xl p-4 mt-4">
