@@ -38,7 +38,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '6_U10', title: 'Unit 10: Democracy', desc: 'Seçimler, Oylama ve Sınıf Başkanı.', unlocked: false, stageNames: ['Elections', 'Voting Process', 'Class President', 'Campaigns', 'Results'], words: 24 },
   ],
   '7': [
-    { id: '7_U1', title: 'Unit 1: Appearance', desc: 'Dış Görünüş ve Karakterler.', unlocked: true, stageNames: ['Physical traits', 'Personality', 'Comparison', 'Describing People', 'Guess Who'], words: 40 },
+    { id: '7_U1', title: 'Unit 1: Appearance', desc: 'Dış Görünüş, Kişilik ve Kıyaslamalar.', unlocked: true, stageNames: ['Physical traits', 'Personality', 'Comparison', 'Describing People', 'Guess Who'], words: 27 },
+    { id: '7_U2', title: 'Unit 2: Sports', desc: 'Spor, Ekipmanlar ve Sıklık Zarfları.', unlocked: true, stageNames: ['Indoor/Outdoor Sports', 'Equipment', 'Results', 'Frequency', 'Action Verbs'], words: 27 },
+    { id: '7_U3', title: 'Unit 3: Biographies', desc: 'Ünlüler, Biyografiler ve Geçmiş Zaman.', unlocked: true, stageNames: ['Life Events', 'Past Simple', 'Discoveries', 'Education', 'Occupations'], words: 26 },
+    { id: '7_U4', title: 'Unit 4: Wild Animals', desc: 'Vahşi Hayvanlar, Yaşam Alanları.', unlocked: true, stageNames: ['Animals', 'Habitats', 'Features/Body Parts', 'Endangered Species', 'Protection'], words: 26 },
+    { id: '7_U5', title: 'Unit 5: Television', desc: 'TV Programları ve Tercihler.', unlocked: true, stageNames: ['TV Programs', 'Media/Equipment', 'Preferences', 'Opinions/Adjectives', 'News'], words: 25 },
+    { id: '7_U6', title: 'Unit 6: Celebrations', desc: 'Partiler, Davetler ve İhtiyaçlar.', unlocked: false, stageNames: ['Party Types', 'Invitations', 'Quantities (A lot/Few)', 'Organizing', 'Gifts/Snacks'], words: 26 },
+    { id: '7_U7', title: 'Unit 7: Dreams', desc: 'Gelecek Planları, Tahminler, Batıl İnançlar.', unlocked: false, stageNames: ['Dreams/Future', 'Predictions (Will)', 'Professions', 'Superstitions', 'Hopes'], words: 24 },
+    { id: '7_U8', title: 'Unit 8: Public Buildings', desc: 'Şehir Binaları, Amaç Belirtme ve Alışveriş.', unlocked: false, stageNames: ['Buildings', 'Reasons (To verb...)', 'Shopping', 'Actions', 'Looking For'], words: 25 },
+    { id: '7_U9', title: 'Unit 9: Environment', desc: 'Çevre Sorunları, Çözümler ve Zorunluluk.', unlocked: false, stageNames: ['Eco-friendly Habits', 'Global Issues (Pollution)', 'Must/Mustn\'t', 'Recycling', 'Energy'], words: 25 },
+    { id: '7_U10', title: 'Unit 10: Planets', desc: 'Güneş Sistemi, Gezegenler ve Uzay.', unlocked: false, stageNames: ['Solar System', 'Planets', 'Space Exploration', 'Comparatives', 'Facts/Distance'], words: 26 },
   ],
   '8': [
     { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davetler ve LGS Hazırlık.', unlocked: true, stageNames: ['Making Friends', 'Invitations', 'Accepting', 'Refusing / Excuses', 'Personal Traits'], words: 45 },
