@@ -414,9 +414,9 @@ export function StudentDashboardScreen({ navigation }: any) {
 
           <View className="items-center mr-4">
             <TouchableOpacity onPress={() => navigation.navigate('GameLobbyScreen')} className="items-center justify-center bg-purple-50 border-2 border-purple-100 w-[56px] h-[56px] rounded-2xl mb-1">
-              <Text className="text-3xl">👾</Text>
+              <Text className="text-3xl">🧩</Text>
             </TouchableOpacity>
-            <Text className="text-[10px] font-bold text-purple-700">Oyunlar</Text>
+            <Text className="text-[10px] font-bold text-purple-700">Edu-Pratik</Text>
           </View>
           
           <View className="items-center mr-4">
