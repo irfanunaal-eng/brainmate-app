@@ -136,7 +136,7 @@ export function GameLobbyScreen({ route }: any) {
   const [duelOpponent, setDuelOpponent] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [activePath, setActivePath] = useState<'school' | 'global'>('school');
-  const [activeGrade, setActiveGrade] = useState<string>('5');
+  const [activeGrade, setActiveGrade] = useState<string>('5');\n  const [englishTab, setEnglishTab] = useState<'vocab' | 'grammar'>('vocab');
   const [activeSubject, setActiveSubject] = useState<string>('english');
   const [userProgress, setUserProgress] = useState<any[]>([]);
 
@@ -298,6 +298,24 @@ export function GameLobbyScreen({ route }: any) {
                       ))}
                     </ScrollView>
                   </View>
+
+                  {/* English Mode Tabs */}
+                  {activeSubject === 'english' && activePath === 'school' && (
+                    <View className="flex-row mb-6 bg-gray-100 p-1 rounded-2xl mx-1">
+                      <TouchableOpacity 
+                        onPress={() => { setEnglishTab('vocab'); setExpandedLevel(null); }}
+                        className={`flex-1 py-3 items-center rounded-xl ${englishTab === 'vocab' ? 'bg-indigo-500 shadow-sm' : ''}`}
+                      >
+                        <Text className={`font-bold ${englishTab === 'vocab' ? 'text-white' : 'text-gray-500'}`}>📚 Kelime Ezberleme</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity 
+                        onPress={() => { setEnglishTab('grammar'); setExpandedLevel(null); }}
+                        className={`flex-1 py-3 items-center rounded-xl ${englishTab === 'grammar' ? 'bg-teal-500 shadow-sm' : ''}`}
+                      >
+                        <Text className={`font-bold ${englishTab === 'grammar' ? 'text-white' : 'text-gray-500'}`}>🧩 Gramerler</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 </>
               )}
 
@@ -346,14 +364,14 @@ export function GameLobbyScreen({ route }: any) {
               )}
 
               <Text className="text-xl font-extrabold text-gray-800 mb-4">
-                {activePath === 'school' ? `${activeGrade}. Sınıf ${SUBJECTS.find(s => s.id === activeSubject)?.label} Üniteleri` : 'CEFR Kur Seviyeleri (1000+ Kelime)'}
+                {activePath === 'school' ? (activeSubject === 'english' ? `${activeGrade}. Sınıf İngilizce ${englishTab === 'vocab' ? 'Kelime Üniteleri' : 'Gramer Konuları'}` : `${activeGrade}. Sınıf ${SUBJECTS.find(s => s.id === activeSubject)?.label} Üniteleri`) : 'CEFR Kur Seviyeleri (1000+ Kelime)'}
               </Text>
 
               {/* Levels List */}
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
                 {(() => {
                   const itemsToRender = activePath === 'school' 
-                      ? (CURRICULUM_GRADES[activeGrade] || []) 
+                      ? (activeSubject === 'english' && englishTab === 'grammar' ? (CURRICULUM_GRAMMAR_GRADES[activeGrade] || []) : (CURRICULUM_GRADES[activeGrade] || []))
                       : GLOBAL_LEVELS.filter(l => !l.grades || l.grades.includes(activeGrade));
                   
                   return itemsToRender.map((level, idx) => {
