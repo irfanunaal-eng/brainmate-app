@@ -14,21 +14,21 @@ const GLOBAL_LEVELS = [
 
 const CURRICULUM_GRADES: Record<string, any[]> = {
   '5': [
-    { id: '5_U1', title: 'Unit 1: Hello World!', desc: 'Tanışma ve Selamlaşma, Sınıf İçi Emirler.', unlocked: true, stages: 5, words: 20 },
-    { id: '5_U2', title: 'Unit 2: My Town', desc: 'Ülkeler, Milletler ve Yönler.', unlocked: true, stages: 5, words: 25 },
-    { id: '5_U3', title: 'Unit 3: Games and Hobbies', desc: 'Oyunlar, Hobiler ve Sporlar.', unlocked: true, stages: 6, words: 30 },
-    { id: '5_U4', title: 'Unit 4: My Daily Routine', desc: 'Günlük Rutinler, Eylemler ve Zaman.', unlocked: false, stages: 8, words: 35 },
-    { id: '5_U5', title: 'Unit 5: Health', desc: 'Sağlık İfadeleri ve Hastalıklar.', unlocked: false, stages: 6, words: 30 },
+    { id: '5_U1', title: 'Unit 1: Hello!', desc: 'Tanışma ve Selamlaşma, Sınıf İçi Emirler.', unlocked: true, stageNames: ['Greetings', 'Introductions', 'Classroom Rules', 'Numbers & Age', 'Mixed Practice'], words: 20 },
+    { id: '5_U2', title: 'Unit 2: My Town', desc: 'Ülkeler, Milletler ve Yönler.', unlocked: true, stageNames: ['Places', 'Directions', 'Countries', 'Nationalities', 'Locations'], words: 25 },
+    { id: '5_U3', title: 'Unit 3: Games and Hobbies', desc: 'Oyunlar, Hobiler ve Sporlar.', unlocked: true, stageNames: ['Sports', 'Hobbies', 'Board Games', 'Abilities (Can)', 'Likes/Dislikes', 'Mixed Puzzle'], words: 30 },
+    { id: '5_U4', title: 'Unit 4: My Daily Routine', desc: 'Günlük Rutinler, Eylemler ve Zaman.', unlocked: false, stageNames: ['Morning Routine', 'Telling Time', 'School Day', 'After School', 'Evening Routine'], words: 35 },
+    { id: '5_U5', title: 'Unit 5: Health', desc: 'Sağlık İfadeleri ve Hastalıklar.', unlocked: false, stageNames: ['Body Parts', 'Illnesses', 'Feelings', 'Advices (Should)', 'At the Doctor'], words: 30 },
   ],
   '6': [
-    { id: '6_U1', title: 'Unit 1: Life', desc: 'Günlük Yaşam Döngüsü ve İşler.', unlocked: true, stages: 5, words: 25 },
-    { id: '6_U2', title: 'Unit 2: Yummy Breakfast', desc: 'Yiyecekler ve Tercihler.', unlocked: false, stages: 6, words: 35 },
+    { id: '6_U1', title: 'Unit 1: Life', desc: 'Günlük Yaşam Döngüsü ve İşler.', unlocked: true, stageNames: ['Daily Activities', 'Time & Dates', 'Family Routines', 'Chores', 'Weekly Tracker'], words: 25 },
+    { id: '6_U2', title: 'Unit 2: Yummy Breakfast', desc: 'Yiyecekler ve Tercihler.', unlocked: false, stageNames: ['Breakfast Items', 'Drinks', 'Preferences', 'Ordering Food', 'Healthy Choices'], words: 35 },
   ],
   '7': [
-    { id: '7_U1', title: 'Unit 1: Appearance', desc: 'Dış Görünüş ve Karakterler.', unlocked: true, stages: 5, words: 40 },
+    { id: '7_U1', title: 'Unit 1: Appearance', desc: 'Dış Görünüş ve Karakterler.', unlocked: true, stageNames: ['Physical traits', 'Personality', 'Comparison', 'Describing People', 'Guess Who'], words: 40 },
   ],
   '8': [
-    { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davetler ve LGS Hazırlık.', unlocked: true, stages: 8, words: 45 },
+    { id: '8_U1', title: 'Unit 1: Friendship', desc: 'Arkadaşlık, Davetler ve LGS Hazırlık.', unlocked: true, stageNames: ['Making Friends', 'Invitations', 'Accepting', 'Refusing / Excuses', 'Personal Traits'], words: 45 },
   ]
 };
 
@@ -247,8 +247,9 @@ export function GameLobbyScreen({ route }: any) {
                         {expandedLevel === level.id && (
                           <View className="bg-indigo-50/50 rounded-b-2xl border border-t-0 border-indigo-100 p-2 mx-2">
                             <View className="flex-row flex-wrap justify-between p-2">
-                              {[...Array(level.stages)].map((_, i) => {
+                              {[...Array(level.stageNames ? level.stageNames.length : (level.stages || 1))].map((_, i) => {
                                   const isStageUnlocked = adminOverride || i < 3; // Demo: first three stages unlocked natively
+                                  const stageNameStr = level.stageNames ? `${i+1}. ${level.stageNames[i]}` : `Aşama ${i+1}`;
                                   
                                   // Pseudo-metrics for completion parity:
                                   let completionPct = 0;
@@ -273,8 +274,12 @@ export function GameLobbyScreen({ route }: any) {
                                       
                                       <View className="z-10 w-full px-3">
                                         <View className="flex-row justify-between w-full items-center mb-0.5">
-                                          <Text className={`font-black ${isStageUnlocked ? (completionPct === 100 ? 'text-emerald-700' : 'text-indigo-800') : 'text-gray-400'}`}>
-                                            Aşama {i+1}
+                                          <Text 
+                                            className={`font-black flex-1 pr-1 ${isStageUnlocked ? (completionPct === 100 ? 'text-emerald-700' : 'text-indigo-800') : 'text-gray-400'}`}
+                                            adjustsFontSizeToFit
+                                            numberOfLines={1}
+                                          >
+                                            {stageNameStr}
                                           </Text>
                                           {isStageUnlocked && completionPct > 0 && (
                                             <Text className={`text-[10px] font-black ${completionPct === 100 ? 'text-emerald-600' : 'text-amber-600'}`}>
@@ -284,7 +289,7 @@ export function GameLobbyScreen({ route }: any) {
                                         </View>
 
                                         <View className="flex-row justify-between w-full items-center">
-                                          <Text className={`text-[10px] font-bold ${isStageUnlocked ? 'text-gray-500' : 'text-gray-400'}`}>{level.words} Kelime</Text>
+                                          <Text className={`text-[10px] font-bold ${isStageUnlocked ? 'text-gray-500' : 'text-gray-400'}`}>~25 Kelime</Text>
                                           
                                           {isStageUnlocked && completionPct === 100 && successScore !== null && (
                                             <Text className="text-[10px] font-black text-emerald-700">Başarı: {successScore}</Text>
