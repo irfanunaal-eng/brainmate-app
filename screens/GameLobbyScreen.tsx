@@ -170,11 +170,12 @@ export function GameLobbyScreen({ route }: any) {
               {/* School specific selectors */}
               {activePath === 'school' && (
                 <>
-                  {/* Grade Tabs (Only visible for admin/override to switch between grades in demo, regular students are locked to their profile grade) */}
-                  {adminOverride && (
-                    <View className="mb-4">
-                      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
-                        {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => (
+                  {/* Grade Tabs */}
+                  <View className="mb-4">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                      {['5', '6', '7', '8', '9', '10', '11', '12'].map(g => {
+                        // TODO: Later we can check if g !== userRegisteredGrade to disable it. For now, keep it visible.
+                        return (
                           <TouchableOpacity
                             key={g}
                             onPress={() => switchGrade(g)}
@@ -182,10 +183,10 @@ export function GameLobbyScreen({ route }: any) {
                           >
                             <Text className={`font-black ${activeGrade === g ? 'text-white' : 'text-gray-600'}`}>{g}. Sınıf</Text>
                           </TouchableOpacity>
-                        ))}
-                      </ScrollView>
-                    </View>
-                  )}
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
 
                   {/* Subject Selector */}
                   <View className="mb-6">
