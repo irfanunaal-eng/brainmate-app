@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Modal } from 'react-native';
 import { supabase } from '../lib/supabase';
-import { checkPremiumStatus } from '../lib/premium';
+import { checkPremiumStatus, requirePremium } from '../lib/premium';
 
 export function ParentDashboardScreen({ navigation }: any) {
   const [pairingCode, setPairingCode] = useState('');
@@ -147,6 +147,13 @@ export function ParentDashboardScreen({ navigation }: any) {
       console.log('Logout error:', error);
     } finally {
       navigation.replace('RoleSelection');
+    }
+  };
+
+  const handleProtectedNav = async (screen: string, params: any, featureName: string) => {
+    const hasPremium = await requirePremium(navigation, featureName);
+    if (hasPremium) {
+      navigation.navigate(screen, params);
     }
   };
 
@@ -317,7 +324,7 @@ export function ParentDashboardScreen({ navigation }: any) {
 
             {userRole === 'parent' && (
               <View className="items-center mr-4">
-                <TouchableOpacity onPress={() => navigation.navigate('LocationTrackingScreen')} className="items-center justify-center bg-sky-50 border-2 border-sky-200 w-[56px] h-[56px] rounded-2xl mb-1">
+                <TouchableOpacity onPress={() => handleProtectedNav('LocationTrackingScreen', {}, 'Konum Takibi')} className="items-center justify-center bg-sky-50 border-2 border-sky-200 w-[56px] h-[56px] rounded-2xl mb-1">
                   <Text className="text-3xl">📍</Text>
                 </TouchableOpacity>
                 <Text className="text-[10px] font-bold text-sky-700">Konum</Text>
@@ -325,21 +332,21 @@ export function ParentDashboardScreen({ navigation }: any) {
             )}
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('NotesScreen', { studentId })} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => handleProtectedNav('NotesScreen', { studentId }, 'Öğrenci Notları')} className="items-center justify-center bg-fuchsia-50 border-2 border-fuchsia-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">📌</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-fuchsia-700">Notlar/Ödev</Text>
             </View>
 
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('ScheduleScreen', { studentId: studentId })} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => handleProtectedNav('ScheduleScreen', { studentId: studentId }, 'Haftalık Program')} className="items-center justify-center bg-orange-50 border-2 border-orange-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">🗓️</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-orange-700">Program</Text>
             </View>
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('GradesScreen', { studentId })} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => handleProtectedNav('GradesScreen', { studentId }, 'Sınav Notları Analizi')} className="items-center justify-center bg-teal-50 border-2 border-teal-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">📝</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-teal-700">Sınav Notları</Text>
@@ -347,7 +354,7 @@ export function ParentDashboardScreen({ navigation }: any) {
 
             {['parent', 'teacher', 'student_coach', 'class_teacher'].includes(userRole) && (
               <View className="items-center mr-4">
-                <TouchableOpacity onPress={() => navigation.navigate('EvaluationsScreen', { studentId })} className="items-center justify-center bg-lime-50 border-2 border-lime-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <TouchableOpacity onPress={() => handleProtectedNav('EvaluationsScreen', { studentId }, 'Eğitimci Değerlendirmeleri')} className="items-center justify-center bg-lime-50 border-2 border-lime-100 w-[56px] h-[56px] rounded-2xl mb-1">
                   <Text className="text-3xl">📋</Text>
                 </TouchableOpacity>
                 <Text className="text-[10px] font-bold text-lime-700">Değerlendirme</Text>
@@ -356,7 +363,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             
             {userRole !== 'private_tutor' && (
               <View className="items-center mr-4">
-                <TouchableOpacity onPress={() => navigation.navigate('AttendanceScreen', { studentId })} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
+                <TouchableOpacity onPress={() => handleProtectedNav('AttendanceScreen', { studentId }, 'Devamsızlık Takibi')} className="items-center justify-center bg-cyan-50 border-2 border-cyan-100 w-[56px] h-[56px] rounded-2xl mb-1">
                   <Text className="text-3xl">🚦</Text>
                 </TouchableOpacity>
                 <Text className="text-[10px] font-bold text-cyan-700">Devamsızlık</Text>
@@ -364,7 +371,7 @@ export function ParentDashboardScreen({ navigation }: any) {
             )}
             
             <View className="items-center mr-4">
-              <TouchableOpacity onPress={() => navigation.navigate('TasksScreen', { studentId })} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
+              <TouchableOpacity onPress={() => handleProtectedNav('TasksScreen', { studentId }, 'Öğrenci Görev Yönetimi')} className="items-center justify-center bg-rose-50 border-2 border-rose-100 w-[56px] h-[56px] rounded-2xl mb-1">
                 <Text className="text-3xl">🎯</Text>
               </TouchableOpacity>
               <Text className="text-[10px] font-bold text-rose-700">Görev Ata</Text>
