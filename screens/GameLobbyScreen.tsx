@@ -74,7 +74,16 @@ const CURRICULUM_GRADES: Record<string, any[]> = {
     { id: '9_U10', title: 'Unit 10: TV & Social Media', desc: 'Medya, Sosyal Ağlar ve Tahminler.', unlocked: false, stageNames: ['Media Streams', 'IT Words', 'Predictions', 'Safety', 'Accounts'], words: 25 },
   ],
   '10': [
-    { id: '10_U1', title: 'Unit 1: School Life', desc: 'Okul Yaşamı, Kurallar ve Dersler.', unlocked: true, stageNames: ['School Subjects', 'Obligations (Must/Have to)', 'Extracurricular Activities'], words: 45 },
+    { id: '10_U1', title: 'Unit 1: School Life', desc: 'Okul Kuralları, Zorunlu/Seçmeli Dersler.', unlocked: true, stageNames: ['School Subjects', 'Rules/Obligations', 'Extracurricular', 'Campus Life', 'Grades/Exams'], words: 26 },
+    { id: '10_U2', title: 'Unit 2: Plans', desc: 'Gelecek Planları, Davetler ve Kararlar.', unlocked: true, stageNames: ['Future Plans', 'Intentions', 'Invitations', 'Arrangements', 'Careers'], words: 25 },
+    { id: '10_U3', title: 'Unit 3: Legendary Figures', desc: 'Mitler, Efsaneler ve Geçmiş Olaylar.', unlocked: true, stageNames: ['Myths/Legends', 'Fantasy Elements', 'Heroes/Villains', 'Ancient Times', 'Stories'], words: 25 },
+    { id: '10_U4', title: 'Unit 4: Traditions', desc: 'Gelenekler, Alışkanlıklar ve Used to.', unlocked: true, stageNames: ['Customs', 'Past Habits (Used to)', 'Childhood', 'Festivals', 'Beliefs'], words: 25 },
+    { id: '10_U5', title: 'Unit 5: Travel', desc: 'Seyahat, Tatiller ve Deneyimler.', unlocked: true, stageNames: ['Journeys', 'Vacations', 'Experiences', 'Accommodations', 'Adventures'], words: 25 },
+    { id: '10_U6', title: 'Unit 6: Helpful Tips', desc: 'Tavsiyeler, Öneriler ve If Cümlesi.', unlocked: false, stageNames: ['Advice/Suggestions', 'Health Tips', 'If Clauses', 'Solutions', 'Warnings'], words: 25 },
+    { id: '10_U7', title: 'Unit 7: Food and Festivals', desc: 'Yemekler, Tarifler ve Festivaller.', unlocked: false, stageNames: ['World Dishes', 'Cooking Methods', 'Festivals', 'Passive Voice', 'Traditions'], words: 25 },
+    { id: '10_U8', title: 'Unit 8: Digital Era', desc: 'Teknoloji, İnternet ve Siber Güvenlik.', unlocked: false, stageNames: ['Gadgets/Devices', 'Internet Terms', 'Social Media', 'Relative Clauses', 'Safety'], words: 25 },
+    { id: '10_U9', title: 'Unit 9: Modern Heroes', desc: 'Çağdaş Kahramanlar ve Başarı Hikayeleri.', unlocked: false, stageNames: ['Achievements', 'Character Traits', 'Past Perfect', 'Records', 'Contributions'], words: 25 },
+    { id: '10_U10', title: 'Unit 10: Shopping', desc: 'Alışveriş, Şikayetler ve Reported Speech.', unlocked: false, stageNames: ['Buying Goods', 'Complaints', 'Reported Speech', 'Payments', 'Returns'], words: 25 },
   ],
   '11': [
     { id: '11_U1', title: 'Unit 1: Future Jobs', desc: 'Gelecekteki Meslekler ve İstihdam.', unlocked: true, stageNames: ['Professions', 'Job Interviews', 'Future Tenses'], words: 50 },
