@@ -133,52 +133,51 @@ export function ParentDashboardScreen({ navigation }: any) {
                </TouchableOpacity>
             </View>
 
-            {/* Öğrenci Ekleme Bölümü */}
-            <View className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm mb-8">
-               <Text className="font-extrabold text-gray-800 text-lg mb-2">Öğrenci Ekle</Text>
-               <Text className="text-gray-500 mb-4 text-sm font-medium">Öğrencinin cihazındaki 6 haneli kodu girerek sisteme dahil edin.</Text>
-               
-               <TextInput 
-                 className="bg-gray-50 px-5 py-4 rounded-2xl border border-gray-200 text-2xl tracking-widest uppercase font-extrabold text-center text-primary mb-3"
-                 placeholder="XXXXXX"
-                 placeholderTextColor="#cbd5e1"
-                 maxLength={6}
-                 autoCapitalize="characters"
-                 value={pairingCode}
-                 onChangeText={setPairingCode}
-               />
-               {errorMessage ? <Text className="text-red-500 font-bold mb-3 text-center px-1 text-xs">{errorMessage}</Text> : null}
-
-               <TouchableOpacity onPress={handlePairing} className="bg-secondary w-full py-4 rounded-xl items-center shadow-sm">
-                 <Text className="text-white font-bold text-lg">Öğrenciyi Listeye Ekle</Text>
-               </TouchableOpacity>
+            {/* Compact Öğrenci Ekleme Bölümü */}
+            <View className="mb-8">
+               <Text className="font-extrabold text-gray-800 text-sm uppercase tracking-widest mb-2 ml-1">KOD İLE ÖĞRENCİ EKLE</Text>
+               <View className="flex-row items-center space-x-2">
+                 <TextInput 
+                   className="flex-1 bg-white px-4 py-3.5 rounded-xl border border-gray-200 text-lg font-bold text-center tracking-widest uppercase text-gray-800 shadow-sm"
+                   placeholder="XXXXXX"
+                   placeholderTextColor="#cbd5e1"
+                   maxLength={6}
+                   autoCapitalize="characters"
+                   value={pairingCode}
+                   onChangeText={setPairingCode}
+                 />
+                 <TouchableOpacity onPress={handlePairing} className="bg-indigo-600 px-6 py-3.5 rounded-xl shadow-sm ml-2">
+                   <Text className="text-white font-bold text-base">Ekle</Text>
+                 </TouchableOpacity>
+               </View>
+               {errorMessage ? <Text className="text-red-500 font-bold mt-2 px-1 text-xs">{errorMessage}</Text> : null}
             </View>
 
-            <Text className="text-xl font-extrabold text-gray-800 mb-4">Öğrenci Listem</Text>
+            <Text className="font-extrabold text-gray-800 text-sm uppercase tracking-widest mb-2 ml-1">KAYITLI ÖĞRENCİLER</Text>
             
             {linkedStudents.length === 0 ? (
-               <View className="items-center justify-center p-8 bg-gray-50 border border-dashed border-gray-200 rounded-3xl">
+               <View className="items-center justify-center p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
                   <Text className="text-3xl mb-3">👥</Text>
-                  <Text className="text-gray-500 font-bold text-center">Henüz listenizde öğrenci bulunmuyor. Yukarıdan ekleyebilirsiniz.</Text>
+                  <Text className="text-gray-500 font-medium text-center text-sm">Henüz listenizde öğrenci bulunmuyor. Yukarıdaki alandan ekleyebilirsiniz.</Text>
                </View>
             ) : (
-               linkedStudents.map((link, idx) => (
-                  <TouchableOpacity 
-                    key={idx} 
-                    onPress={() => selectStudent(link.student_id, link.profiles?.full_name || 'Öğrenci')}
-                    className="bg-white p-4 rounded-2xl mb-3 border border-gray-100 shadow-sm flex-row justify-between items-center"
-                  >
-                     <View className="flex-row items-center">
-                        <View className="w-12 h-12 bg-indigo-50 rounded-full items-center justify-center mr-4">
-                           <Text className="text-2xl">🎓</Text>
-                        </View>
-                        <View>
-                           <Text className="font-extrabold text-gray-800 text-lg">{link.profiles?.full_name}</Text>
-                           <Text className="text-primary font-bold text-xs uppercase tracking-widest mt-0.5">Profili İncele ➔</Text>
-                        </View>
-                     </View>
-                  </TouchableOpacity>
-               ))
+               <View className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mb-6">
+                 {linkedStudents.map((link, idx) => (
+                    <TouchableOpacity 
+                      key={idx} 
+                      onPress={() => selectStudent(link.student_id, link.profiles?.full_name || 'Öğrenci')}
+                      className={`px-5 py-4 flex-row justify-between items-center ${idx !== linkedStudents.length -1 ? 'border-b border-gray-100' : ''} active:bg-gray-50`}
+                    >
+                       <View>
+                          <Text className="font-extrabold text-gray-900 text-base mb-0.5">{link.profiles?.full_name}</Text>
+                          <Text className="text-gray-400 font-bold text-[10px] uppercase tracking-widest">Öğrenci Profili</Text>
+                       </View>
+                       <View className="bg-slate-100 px-3 py-1.5 rounded-md border border-slate-200">
+                          <Text className="text-slate-600 font-bold text-xs">Eriş ➔</Text>
+                       </View>
+                    </TouchableOpacity>
+                 ))}
+               </View>
             )}
           </ScrollView>
         </KeyboardAvoidingView>
